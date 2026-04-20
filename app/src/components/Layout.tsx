@@ -1,24 +1,36 @@
 import { Link } from "@tanstack/react-router";
-import { Hammer, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import * as React from "react";
 
 import { ApiStatusBadge } from "@/components/ApiStatusBadge";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-full flex-col">
-      <header className="border-b border-border bg-background/80 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-          <Link to="/" className="flex items-center gap-2 text-sm font-semibold">
-            <Hammer className="h-4 w-4 text-primary" />
-            lumina-forge
+    <div className="bg-paper flex min-h-full flex-col">
+      <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+          <Link
+            to="/"
+            className="group flex items-center gap-2.5 text-foreground"
+          >
+            {/* logo-light has the paper background matching the header;
+                logo.svg (navy bg) ships for dark mode and packaged icons. */}
+            <img
+              src="/logo-light.svg"
+              alt=""
+              className="h-8 w-8 shrink-0 rounded-md transition group-hover:scale-105"
+            />
+            <span className="font-display text-lg font-bold tracking-tight">
+              lumina<span className="text-primary">·</span>forge
+            </span>
           </Link>
-          <nav className="flex items-center gap-4 text-sm">
+          <nav className="flex items-center gap-5 text-sm">
             <NavLink to="/">Inventory</NavLink>
             <NavLink to="/optimize">Optimize</NavLink>
             <Link
               to="/settings"
-              className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
+              className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground [&.active]:text-foreground"
+              activeProps={{ className: "active" }}
             >
               <Settings className="h-4 w-4" />
               Settings
@@ -27,7 +39,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+        {children}
+      </main>
       <footer className="border-t border-border py-3 text-center text-xs text-muted-foreground">
         <span>Expedition 33 randomizer helper — all local, no telemetry.</span>
       </footer>

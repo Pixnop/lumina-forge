@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>lumina-forge (mark)</title>
+  <defs>
+    <radialGradient id="glowM" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F4C269" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#F4C269" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#F4C269" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gemM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE4A8"/>
+      <stop offset="60%" stop-color="#F4C269"/>
+      <stop offset="100%" stop-color="#C98F3A"/>
+    </linearGradient>
+  </defs>
+  <!-- no background — hammer follows text color via currentColor -->
+  <circle cx="32" cy="28" r="20" fill="url(#glowM)"/>
+  <g transform="rotate(-30 32 32)" fill="currentColor">
+    <rect x="29.5" y="30" width="5" height="24" rx="1.5"/>
+    <rect x="16" y="18" width="32" height="14" rx="2.5"/>
+  </g>
+  <g transform="rotate(-30 32 32)">
+    <rect x="29.5" y="30" width="1.6" height="24" fill="#2CC4B4" opacity="0.5"/>
+    <rect x="16" y="18" width="2.5" height="14" rx="1" fill="#2CC4B4" opacity="0.7"/>
+    <polygon points="32,20.5 36,25 32,29.5 28,25" fill="url(#gemM)"/>
+    <polygon points="32,20.5 36,25 32,25" fill="#FFE4A8" opacity="0.9"/>
+    <polygon points="32,25 36,25 32,29.5" fill="#C98F3A" opacity="0.8"/>
+    <circle cx="30" cy="23" r="0.8" fill="#FFFFFF" opacity="0.95"/>
+  </g>
+</svg>

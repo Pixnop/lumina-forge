@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="7" fill="#0B1025"/>
+  <!-- simplified gem-in-hammer silhouette at this size -->
+  <g transform="rotate(-30 16 16)">
+    <rect x="14.5" y="15" width="3" height="12" rx="0.8" fill="#2A2F4A"/>
+    <rect x="8" y="9" width="16" height="7" rx="1.2" fill="#2A2F4A"/>
+    <rect x="8" y="9" width="1.3" height="7" fill="#2CC4B4"/>
+    <polygon points="16,10.5 18,12.5 16,14.5 14,12.5" fill="#F4C269"/>
+  </g>
+</svg>

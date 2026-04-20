@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>lumina-forge (light)</title>
+  <defs>
+    <radialGradient id="glowL" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F4C269" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#F4C269" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#F4C269" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hammerL" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A1F3A"/>
+      <stop offset="100%" stop-color="#0B1025"/>
+    </linearGradient>
+    <linearGradient id="gemL" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE4A8"/>
+      <stop offset="60%" stop-color="#F4C269"/>
+      <stop offset="100%" stop-color="#C98F3A"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#FAF8F3"/>
+  <!-- subtle warm wash in the upper-left and cool wash in the lower-right — gouache paper feel -->
+  <circle cx="18" cy="18" r="24" fill="#F4C269" opacity="0.08"/>
+  <circle cx="48" cy="48" r="22" fill="#2CC4B4" opacity="0.06"/>
+  <!-- soft gem glow -->
+  <circle cx="32" cy="28" r="20" fill="url(#glowL)"/>
+  <!-- painterly particles — darker on paper -->
+  <circle cx="13" cy="18" r="1.4" fill="#C98F3A" opacity="0.7"/>
+  <circle cx="51" cy="14" r="1" fill="#C98F3A" opacity="0.55"/>
+  <circle cx="50" cy="45" r="1.2" fill="#2CC4B4" opacity="0.75"/>
+  <circle cx="14" cy="47" r="1" fill="#2CC4B4" opacity="0.55"/>
+  <!-- hammer -->
+  <g transform="rotate(-30 32 32)">
+    <rect x="29.5" y="30" width="5" height="24" rx="1.5" fill="url(#hammerL)"/>
+    <rect x="29.5" y="30" width="1.6" height="24" fill="#2CC4B4" opacity="0.4"/>
+    <rect x="16" y="18" width="32" height="14" rx="2.5" fill="url(#hammerL)"/>
+    <rect x="16" y="18" width="2.5" height="14" rx="1" fill="#2CC4B4" opacity="0.65"/>
+    <polygon points="32,20.5 36,25 32,29.5 28,25" fill="url(#gemL)"/>
+    <polygon points="32,20.5 36,25 32,25" fill="#FFE4A8" opacity="0.9"/>
+    <polygon points="32,25 36,25 32,29.5" fill="#C98F3A" opacity="0.8"/>
+    <circle cx="30" cy="23" r="0.8" fill="#FFFFFF" opacity="0.95"/>
+  </g>
+</svg>

@@ -72,3 +72,19 @@ class VaultInfoResponse(BaseModel):
     luminas: int
     skills: int
     synergies: int
+
+
+class VaultItem(BaseModel):
+    """Thin projection of a vault entry — enough for autocomplete UIs."""
+
+    slug: str
+    name: str
+    category: str | None = None
+    character: str | None = None
+    pp_cost: int | None = None
+    ap_cost: int | None = None
+    base_damage: int | None = None
+
+
+class VaultItemsResponse(BaseModel):
+    items: list[VaultItem]

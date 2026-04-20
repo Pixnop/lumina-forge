@@ -24,6 +24,8 @@ from optimizer.api.schemas import (
     OptimizeResponse,
     RankedBuildResponse,
     VaultInfoResponse,
+    VaultItem,
+    VaultItemsResponse,
 )
 from optimizer.engine import EngineOptions, optimize
 from optimizer.models import RankedBuild
@@ -107,6 +109,15 @@ def _register_routes(app: FastAPI) -> None:
             synergies=len(index.synergies),
         )
 
+    @app.get("/vault/items", response_model=VaultItemsResponse)
+    def vault_items(
+        index: IndexDep,
+        type: str,
+        character: str | None = None,
+    ) -> VaultItemsResponse:
+        items = _project_items(index, type, character)
+        return VaultItemsResponse(items=items)
+
     @app.post("/vault/reload", response_model=VaultInfoResponse)
     def vault_reload(request: Request) -> VaultInfoResponse:
         vault_dir: Path = request.app.state.vault_dir
@@ -147,6 +158,60 @@ def _register_routes(app: FastAPI) -> None:
 
 
 # --- helpers ----------------------------------------------------------------
+
+
+_KNOWN_TYPES: frozenset[str] = frozenset({"character", "picto", "weapon", "lumina", "skill"})
+
+
+def _project_items(index: VaultIndex, type: str, character: str | None) -> list[VaultItem]:
+    type_low = type.lower()
+    if type_low not in _KNOWN_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"unknown type {type!r}. Known: {sorted(_KNOWN_TYPES)}",
+        )
+
+    if type_low == "character":
+        entries: list[VaultItem] = [
+            VaultItem(slug=c.slug, name=c.name) for c in index.characters.values()
+        ]
+    elif type_low == "picto":
+        entries = [
+            VaultItem(slug=p.slug, name=p.name, category=p.category, pp_cost=p.lumina_points_cost)
+            for p in index.pictos.values()
+        ]
+    elif type_low == "lumina":
+        entries = [
+            VaultItem(slug=lu.slug, name=lu.name, category=lu.category, pp_cost=lu.pp_cost)
+            for lu in index.luminas.values()
+        ]
+    elif type_low == "weapon":
+        entries = [
+            VaultItem(
+                slug=w.slug,
+                name=w.name,
+                character=w.character,
+                base_damage=w.base_damage,
+            )
+            for w in index.weapons.values()
+        ]
+    else:  # skill
+        entries = [
+            VaultItem(
+                slug=s.slug,
+                name=s.name,
+                character=s.character,
+                category=s.category,
+                ap_cost=s.ap_cost,
+            )
+            for s in index.skills.values()
+        ]
+
+    if character is not None:
+        char_low = character.lower()
+        entries = [e for e in entries if (e.character or "").lower() == char_low]
+    entries.sort(key=lambda e: e.name.lower())
+    return entries
 
 
 def _to_response(rank: int, r: RankedBuild) -> RankedBuildResponse:

@@ -41,6 +41,30 @@ def test_vault_info_reports_fixture_counts(client: TestClient) -> None:
     }
 
 
+def test_vault_items_filters_by_type(client: TestClient) -> None:
+    response = client.get("/vault/items", params={"type": "picto"})
+    assert response.status_code == 200
+    items = response.json()["items"]
+    assert len(items) == 6
+    # Each item carries at least slug + name
+    assert all(i["slug"] and i["name"] for i in items)
+    # Sorted by name
+    assert [i["name"] for i in items] == sorted(i["name"] for i in items)
+
+
+def test_vault_items_filters_weapons_by_character(client: TestClient) -> None:
+    response = client.get("/vault/items", params={"type": "weapon", "character": "gustave"})
+    assert response.status_code == 200
+    items = response.json()["items"]
+    assert len(items) == 2
+    assert {i["slug"] for i in items} == {"noahram", "heavy-hammer"}
+
+
+def test_vault_items_rejects_unknown_type(client: TestClient) -> None:
+    response = client.get("/vault/items", params={"type": "bogus"})
+    assert response.status_code == 400
+
+
 def test_vault_reload_is_idempotent(client: TestClient) -> None:
     before = client.get("/vault/info").json()
     reload_resp = client.post("/vault/reload")

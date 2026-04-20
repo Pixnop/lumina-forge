@@ -34,10 +34,9 @@ scrape *FLAGS:
 scrape-pictos:
     uv run scraper --source fextralife --type picto
 
-# Run the optimizer CLI against a sample inventory
-optimize inventory="examples/inventory.json":
-    @echo "TODO — optimizer lands in Phase 3"
-    # uv run optimizer --inventory {{inventory}}
+# Run the optimizer CLI against a JSON inventory
+optimize inventory="examples/gustave-basic.json" *FLAGS:
+    uv run optimizer --inventory {{inventory}} {{FLAGS}}
 
 # --- Quality ----------------------------------------------------------------
 

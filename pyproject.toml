@@ -42,6 +42,11 @@ select = [
   "SIM",  # simplify
   "RUF",  # ruff-specific
 ]
+ignore = [
+  "RUF001",  # ambiguous unicode in strings — we use math notation deliberately
+  "RUF002",  # ambiguous unicode in docstrings — idem
+  "RUF003",  # ambiguous unicode in comments — idem
+]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]  # allow asserts in tests

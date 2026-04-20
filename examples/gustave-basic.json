@@ -1,0 +1,40 @@
+{
+  "character": "gustave",
+  "level": 30,
+  "attributes": {
+    "might": 40,
+    "agility": 15,
+    "defense": 10,
+    "luck": 15,
+    "vitality": 10
+  },
+  "weapons_available": [
+    "abysseram",
+    "blodam",
+    "chevalam"
+  ],
+  "pictos_available": [
+    "double-third",
+    "augmented-attack",
+    "augmented-counter-i",
+    "alternating-critical",
+    "critical-break",
+    "critical-burn",
+    "greater-powerful",
+    "gradient-overcharge",
+    "charging-critical",
+    "empowering-jumps"
+  ],
+  "pictos_mastered": [
+    "augmented-attack",
+    "double-third"
+  ],
+  "luminas_extra": [],
+  "pp_budget": 20,
+  "skills_known": [
+    "lumiere-assault",
+    "overcharge",
+    "from-fire",
+    "marking-shot"
+  ]
+}

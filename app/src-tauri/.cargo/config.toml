@@ -1,0 +1,5 @@
+# Force LLVM's lld linker on Windows GNU — GNU ld chokes on Tauri's huge
+# symbol table with "export ordinal too large" above ~64k. rust-lld is
+# bundled with every rustup gnu toolchain and handles large DLLs cleanly.
+[target.x86_64-pc-windows-gnu]
+linker = "rust-lld"

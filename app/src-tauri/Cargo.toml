@@ -1,18 +1,16 @@
 [package]
-name = "app"
+name = "lumina-forge"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "lumina-forge desktop shell"
+authors = ["Léon Fievet"]
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [lib]
-# The `_lib` suffix may seem redundant but it is necessary
-# to make the lib name unique and wouldn't conflict with the bin name.
-# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+# Desktop-only on Windows — drop cdylib/staticlib, both trigger the GNU
+# linker's 65535-exports limit on Tauri's huge dependency graph. rlib is
+# enough for the bin below. Add cdylib back if we ever target Android/iOS.
 name = "app_lib"
-crate-type = ["staticlib", "cdylib", "rlib"]
+crate-type = ["rlib"]
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }

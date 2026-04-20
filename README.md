@@ -26,21 +26,24 @@ Given the items you have right now (pictos, weapons, luminas, skills), the optim
 ## Quickstart
 
 ```bash
-just setup        # install Python + Node deps
-just test         # run the Python test suite
-just --list       # see all available commands
+just setup                          # install Python + Node deps
+just test                           # run the Python test suite
+just scrape                         # full Fextralife scrape into vault/
+just scrape --dry-run --limit 3     # parse 3 entries without writing anything
+just scrape --type picto --refresh  # re-fetch only the Pictos index
+just --list                         # see all available commands
 ```
 
 Open `vault/` as an Obsidian vault to browse the knowledge base.
 
 ## Phases
 
-- **Phase 1** — scaffold (this commit): repo structure, empty vault, tooling skeleton
-- **Phase 2** — scraping: Fextralife + Maxroll + Game8 + clair-builds into the vault
-- **Phase 3** — optimizer: CLI-first, then FastAPI wrapper
-- **Phase 4** — desktop app: Tauri + React
+- **Phase 1** — scaffold: repo structure, empty vault, tooling skeleton. ✅
+- **Phase 2** — scraping: Fextralife populates the vault with ~700 entries across 5 types. ✅
+- **Phase 3** — optimizer: CLI-first, then FastAPI wrapper.
+- **Phase 4** — desktop app: Tauri + React.
 
-See [`docs/architecture.md`](docs/architecture.md) for the full design.
+See [`docs/architecture.md`](docs/architecture.md) for the full design and [`docs/scraping.md`](docs/scraping.md) for how to add a new source.
 
 ## License
 

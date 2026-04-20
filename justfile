@@ -26,10 +26,13 @@ setup-node:
 dev:
     @echo "TODO — Tauri dev server lands in Phase 4"
 
-# Run the scraper against all known sources
-scrape:
-    @echo "TODO — scraper lands in Phase 2"
-    # uv run scraper
+# Run the scraper against all known sources (defaults: fextralife, every type)
+scrape *FLAGS:
+    uv run scraper {{FLAGS}}
+
+# Scrape a subset — alias kept handy for quick debugging
+scrape-pictos:
+    uv run scraper --source fextralife --type picto
 
 # Run the optimizer CLI against a sample inventory
 optimize inventory="examples/inventory.json":

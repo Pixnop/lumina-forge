@@ -55,6 +55,10 @@ warn_unused_configs = true
 warn_unreachable = true
 files = ["packages/scraper/src", "packages/optimizer/src"]
 
+[[tool.mypy.overrides]]
+module = ["frontmatter", "yaml"]
+ignore_missing_imports = true
+
 # --- pytest -----------------------------------------------------------------
 
 [tool.pytest.ini_options]

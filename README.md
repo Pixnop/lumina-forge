@@ -34,6 +34,9 @@ just optimize                             # rank the top 5 Gustave builds
 just optimize examples/gustave-basic.json --mode balanced --top 3
 just api                                  # start local HTTP API on :8000
 just api --port 8765 --reload             # dev mode with autoreload
+just dev                                  # run the desktop app (needs `just api` running)
+just dev-web                              # web-only dev (Vite, no native window)
+just build-web                            # type-check + Vite production build
 just --list                               # see all available commands
 ```
 
@@ -45,7 +48,8 @@ Open `vault/` as an Obsidian vault to browse the knowledge base.
 - **Phase 2** — scraping: Fextralife populates the vault with ~700 entries across 5 types. ✅
 - **Phase 3** — optimizer: CLI that ranks top-N builds from a JSON inventory. ✅
 - **Phase 3.5** — local HTTP API (FastAPI): `POST /optimize`, vault introspection, CORS-ready for Tauri. ✅
-- **Phase 4** — desktop app: Tauri + React.
+- **Phase 4** — desktop app: Tauri + React (Vite + TS strict), Tailwind v4 + shadcn/ui, TanStack Query+Router. Inventory form, Optimize page with top-N ranking, build detail, settings. ✅
+- **Phase 4.5** — packaging (`.msi`), Python sidecar, knowledge-base browser.
 
 See [`docs/architecture.md`](docs/architecture.md) for the full design and [`docs/scraping.md`](docs/scraping.md) for how to add a new source.
 

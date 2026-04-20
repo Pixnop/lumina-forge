@@ -22,9 +22,17 @@ setup-node:
 
 # --- Develop ----------------------------------------------------------------
 
-# Run the desktop app in dev mode (Phase 4)
+# Run the desktop app in dev mode (expects `just api` running in another shell).
 dev:
-    @echo "TODO — Tauri dev server lands in Phase 4"
+    cd app && pnpm tauri dev
+
+# Same, but Vite only (faster iteration on UI, no native window)
+dev-web:
+    cd app && pnpm dev
+
+# Type-check and production-build the web bundle
+build-web:
+    cd app && pnpm build
 
 # Run the scraper against all known sources (defaults: fextralife, every type)
 scrape *FLAGS:

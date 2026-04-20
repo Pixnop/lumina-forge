@@ -50,6 +50,20 @@ optimize inventory="examples/gustave-basic.json" *FLAGS:
 api *FLAGS:
     uv run lumina-forge-api {{FLAGS}}
 
+# Bundle the API into a standalone .exe for Tauri to ship as a sidecar
+build-api-exe:
+    uv run python scripts/build_api_exe.py
+
+# Sync the vault into Tauri's bundled resources (run before `bundle`)
+sync-vault-resources:
+    rm -rf app/src-tauri/resources/vault
+    mkdir -p app/src-tauri/resources
+    cp -r vault app/src-tauri/resources/vault
+
+# End-to-end: API exe + vault sync + Tauri release build → MSI + NSIS installers
+bundle: build-api-exe sync-vault-resources
+    cd app && pnpm tauri build
+
 # --- Quality ----------------------------------------------------------------
 
 # Run Python tests

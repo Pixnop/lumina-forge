@@ -1,0 +1,68 @@
+# --- Worktrees ---
+.worktrees/
+
+# --- IDE ---
+.idea/
+.vscode/
+*.iml
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.uv/
+
+# --- Node ---
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.turbo/
+.next/
+.nuxt/
+.svelte-kit/
+.cache/
+
+# --- Tauri ---
+src-tauri/target/
+
+# --- Scraper caches / generated data ---
+cache/
+*.sqlite
+*.sqlite3
+*.db
+
+# --- Env / secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Obsidian runtime state (keep config, drop runtime) ---
+vault/.obsidian/workspace*
+vault/.obsidian/cache
+vault/.trash/
+
+# --- Logs ---
+*.log
+logs/

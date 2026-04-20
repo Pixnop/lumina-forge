@@ -1,0 +1,71 @@
+# lumina-forge — task runner
+# https://github.com/casey/just
+
+set windows-shell := ["pwsh.exe", "-NoLogo", "-Command"]
+
+# Default: list available recipes
+default:
+    @just --list
+
+# --- Setup ------------------------------------------------------------------
+
+# Install Python + Node dependencies
+setup: setup-py setup-node
+
+# Install Python deps via uv (workspace-aware)
+setup-py:
+    uv sync --all-packages
+
+# Install Node deps via pnpm
+setup-node:
+    pnpm install
+
+# --- Develop ----------------------------------------------------------------
+
+# Run the desktop app in dev mode (Phase 4)
+dev:
+    @echo "TODO — Tauri dev server lands in Phase 4"
+
+# Run the scraper against all known sources
+scrape:
+    @echo "TODO — scraper lands in Phase 2"
+    # uv run scraper
+
+# Run the optimizer CLI against a sample inventory
+optimize inventory="examples/inventory.json":
+    @echo "TODO — optimizer lands in Phase 3"
+    # uv run optimizer --inventory {{inventory}}
+
+# --- Quality ----------------------------------------------------------------
+
+# Run Python tests
+test:
+    uv run pytest
+
+# Type-check with mypy
+typecheck:
+    uv run mypy packages/scraper packages/optimizer
+
+# Lint with ruff
+lint:
+    uv run ruff check .
+
+# Auto-format with ruff
+format:
+    uv run ruff format .
+
+# Run everything CI would run
+check: lint typecheck test
+
+# --- Release ----------------------------------------------------------------
+
+# Build the desktop app in release mode (Phase 4)
+build:
+    @echo "TODO — release build lands in Phase 4"
+
+# --- Housekeeping -----------------------------------------------------------
+
+# Remove caches and generated artifacts
+clean:
+    uv cache clean
+    pnpm store prune

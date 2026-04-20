@@ -1,0 +1,63 @@
+[project]
+name = "lumina-forge"
+version = "0.1.0"
+description = "Obsidian knowledge base + scraper + build optimizer for Clair Obscur: Expedition 33 randomizer runs."
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [{ name = "Léon Fievet" }]
+
+# The root package is a meta-project — all runtime code lives in the
+# workspace members (scraper, optimizer). We only pin dev tooling here.
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3",
+  "pytest-cov>=5.0",
+  "ruff>=0.8",
+  "mypy>=1.13",
+]
+
+# --- uv workspace -----------------------------------------------------------
+
+[tool.uv.workspace]
+members = ["packages/scraper", "packages/optimizer"]
+
+# --- ruff -------------------------------------------------------------------
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+extend-exclude = [".worktrees", "cache", "vault"]
+
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # pyflakes
+  "I",    # isort
+  "B",    # bugbear
+  "UP",   # pyupgrade
+  "SIM",  # simplify
+  "RUF",  # ruff-specific
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # allow asserts in tests
+
+# --- mypy -------------------------------------------------------------------
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_unused_configs = true
+warn_unreachable = true
+files = ["packages/scraper/src", "packages/optimizer/src"]
+
+# --- pytest -----------------------------------------------------------------
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["packages/scraper/tests", "packages/optimizer/tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config", "--import-mode=importlib"]

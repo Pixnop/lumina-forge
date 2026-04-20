@@ -1,0 +1,26 @@
+[project]
+name = "lumina-forge-optimizer"
+version = "0.1.0"
+description = "Ranks Expedition 33 builds from the items a player has on hand."
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [{ name = "Léon Fievet" }]
+
+dependencies = [
+  # Vault + API deps arrive in Phase 3
+  # "pydantic>=2.10",
+  # "python-frontmatter>=1.1",
+  # "fastapi>=0.115",
+  # "uvicorn>=0.32",
+]
+
+[project.scripts]
+optimizer = "optimizer.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/optimizer"]

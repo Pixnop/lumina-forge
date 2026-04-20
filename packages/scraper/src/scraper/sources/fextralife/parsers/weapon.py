@@ -70,14 +70,28 @@ def parse_weapons(page: RawPage) -> Iterator[Weapon]:
 
 
 def _character_heading_for(table: Tag) -> str | None:
-    """Walk backwards through previous siblings to find a header naming the owner."""
-    known = {"Gustave", "Lune", "Maelle", "Sciel", "Monoco", "Verso"}
+    """Walk backwards to find the nearest heading naming the owner.
+
+    Fextralife sometimes merges two characters into a single table (e.g.
+    "Gustave & Verso All Weapons Comparison Table"). In that case we pick
+    the *first* playable name mentioned in the heading so the weapon is at
+    least assigned to someone — better than silently dropping it.
+    """
+    known = ["Gustave", "Lune", "Maelle", "Monoco", "Sciel", "Verso"]
     node = table.find_previous(["h2", "h3", "h4"])
     while node is not None:
         text = clean_text(node.get_text(" ", strip=True))
+        low = text.lower()
+        # Pick the name appearing earliest in the heading text.
+        earliest_pos = len(text) + 1
+        earliest_name: str | None = None
         for name in known:
-            if name.lower() in text.lower():
-                return name
+            idx = low.find(name.lower())
+            if idx != -1 and idx < earliest_pos:
+                earliest_pos = idx
+                earliest_name = name
+        if earliest_name is not None:
+            return earliest_name
         node = node.find_previous(["h2", "h3", "h4"])
     return None
 

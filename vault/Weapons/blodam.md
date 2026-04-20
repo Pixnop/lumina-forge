@@ -1,6 +1,6 @@
 ---
 base_damage: 3487
-character: Verso
+character: Gustave
 name: Blodam
 passives:
 - effect: Perfection is now based on current Health. Gain 1 Rank every 20% missing

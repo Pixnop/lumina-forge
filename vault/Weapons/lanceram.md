@@ -1,6 +1,6 @@
 ---
 base_damage: 3713
-character: Verso
+character: Gustave
 name: Lanceram
 passives:
 - effect: Rank can't be lower than C.

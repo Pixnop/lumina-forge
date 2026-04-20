@@ -1,6 +1,6 @@
 ---
 base_damage: 2841
-character: Verso
+character: Gustave
 name: Contorso
 passives:
 - effect: Switch to Rank S on Break. Base Attack can Break.

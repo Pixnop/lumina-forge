@@ -1,6 +1,6 @@
 ---
 base_damage: 2938
-character: Verso
+character: Gustave
 name: Sakaram
 passives:
 - effect: Can't lose Perfection. No damage increase from Rank.

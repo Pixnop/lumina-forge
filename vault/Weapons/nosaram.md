@@ -1,6 +1,6 @@
 ---
 base_damage: 3551
-character: Verso
+character: Gustave
 name: Nosaram
 passives:
 - effect: Double Perfection gained on Free Aim shots.

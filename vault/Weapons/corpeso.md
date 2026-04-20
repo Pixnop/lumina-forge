@@ -1,6 +1,6 @@
 ---
 base_damage: 3648
-character: Verso
+character: Gustave
 name: Corpeso
 passives:
 - effect: Base Attack applies 2 Burn stack per Rank.

@@ -1,6 +1,6 @@
 ---
 base_damage: 2873
-character: Verso
+character: Gustave
 name: Glaceso
 passives:
 - effect: +1 Perfection on Critical hit.

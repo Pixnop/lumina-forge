@@ -1,5 +1,5 @@
 ---
-character: Verso
+character: Gustave
 name: Esquiso
 passives:
 - effect: Gain Aureole on Rank S, but drop to Rank D

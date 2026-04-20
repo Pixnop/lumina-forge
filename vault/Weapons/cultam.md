@@ -1,6 +1,6 @@
 ---
 base_damage: 3132
-character: Verso
+character: Gustave
 name: Cultam
 passives:
 - effect: No Perfection loss on damage taken. Perfection is instead lost on being

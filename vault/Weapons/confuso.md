@@ -1,6 +1,6 @@
 ---
 base_damage: 3067
-character: Verso
+character: Gustave
 name: Confuso
 passives:
 - effect: Light damage can Burn on Critical hits.

@@ -1,6 +1,6 @@
 ---
 base_damage: 3551
-character: Verso
+character: Gustave
 name: Liteso
 passives:
 - effect: Base Attack consumes all Shields to deal 100% increased damage per Shield.

@@ -1,6 +1,6 @@
 ---
 base_damage: 3067
-character: Verso
+character: Gustave
 name: Dreameso
 passives:
 - effect: Gain 1 Rank on Counterattack

@@ -1,6 +1,6 @@
 ---
 base_damage: 3390
-character: Verso
+character: Gustave
 name: Delaram
 passives:
 - effect: Start battle on Rank B, but 50% Health.

@@ -1,6 +1,6 @@
 ---
 base_damage: 3454
-character: Verso
+character: Gustave
 name: Cruleram
 passives:
 - effect: Don't lose Rank when taking damage from Powerless enemies.

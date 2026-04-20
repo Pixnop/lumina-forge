@@ -1,6 +1,6 @@
 ---
 base_damage: 1776
-character: Verso
+character: Gustave
 name: Dualiso
 passives:
 - effect: Play again after a Base Attack.

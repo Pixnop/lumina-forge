@@ -1,6 +1,6 @@
 ---
 base_damage: 3228
-character: Verso
+character: Gustave
 name: Simoso
 passives:
 - effect: An ethereal Sword deals Light damage on any damage dealt with Skills.

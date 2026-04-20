@@ -1,6 +1,6 @@
 ---
 base_damage: 2970
-character: Verso
+character: Gustave
 name: Danseso
 passives:
 - effect: Base attack gives 1 Perfection per Burn on target.

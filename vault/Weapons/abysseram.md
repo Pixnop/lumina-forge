@@ -1,6 +1,6 @@
 ---
 base_damage: 3228
-character: Verso
+character: Gustave
 name: Abysseram
 passives:
 - effect: 50% increased damage on Rank D. No damage increase on other ranks.

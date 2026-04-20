@@ -1,6 +1,6 @@
 ---
 base_damage: 2260
-character: Verso
+character: Gustave
 name: Noahram
 passives:
 - effect: N/A

@@ -1,6 +1,6 @@
 ---
 base_damage: 2583
-character: Verso
+character: Gustave
 name: Sireso
 passives:
 - effect: Bonus damage from Perfection applies to all allies at half value. Bonus

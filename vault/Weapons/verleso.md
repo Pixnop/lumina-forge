@@ -1,6 +1,6 @@
 ---
 base_damage: 3454
-character: Verso
+character: Gustave
 name: Verleso
 passives:
 - effect: N/A

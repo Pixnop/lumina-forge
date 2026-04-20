@@ -1,6 +1,6 @@
 ---
 base_damage: 3713
-character: Verso
+character: Gustave
 name: Tireso
 passives:
 - effect: Gain 1 Rank on applying Mark.

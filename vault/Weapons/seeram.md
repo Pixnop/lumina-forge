@@ -1,6 +1,6 @@
 ---
 base_damage: 3713
-character: Verso
+character: Gustave
 name: Seeram
 passives:
 - effect: -1 to all Perfection gain but can't reach Rank S.

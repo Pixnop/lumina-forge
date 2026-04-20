@@ -1,6 +1,6 @@
 ---
 base_damage: 3067
-character: Verso
+character: Gustave
 name: Chevalam
 passives:
 - effect: Start battle at Rank S, but can't be Healed or gain Shields.

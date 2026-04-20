@@ -1,6 +1,6 @@
 ---
 base_damage: 3261
-character: Verso
+character: Gustave
 name: Gaulteram
 passives:
 - effect: When hit, lose 1 Perfection instead of 1 rank.

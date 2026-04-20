@@ -1,6 +1,6 @@
 ---
 base_damage: 2809
-character: Verso
+character: Gustave
 name: Demonam
 passives:
 - effect: Casting a Light Skill increases damage of next Physical Skill cast by 50%

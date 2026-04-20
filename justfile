@@ -38,6 +38,10 @@ scrape-pictos:
 optimize inventory="examples/gustave-basic.json" *FLAGS:
     uv run optimizer --inventory {{inventory}} {{FLAGS}}
 
+# Start the local HTTP API (FastAPI + uvicorn)
+api *FLAGS:
+    uv run lumina-forge-api {{FLAGS}}
+
 # --- Quality ----------------------------------------------------------------
 
 # Run Python tests

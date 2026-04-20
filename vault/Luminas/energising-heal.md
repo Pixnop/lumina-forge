@@ -1,0 +1,12 @@
+---
+effect: On Healing an ally, also give 2 AP.
+name: Energising Heal
+pp_cost: 10
+source_picto: energising-heal
+sources:
+- https://expedition33.wiki.fextralife.com/Energising+Heal
+- https://expedition33.wiki.fextralife.com/Luminas
+type: lumina
+---
+
+

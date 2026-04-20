@@ -60,6 +60,11 @@ sync-vault-resources:
     mkdir -p app/src-tauri/resources
     cp -r vault app/src-tauri/resources/vault
 
+# Rasterize app/public/logo.svg → regenerate every Tauri icon variant
+icons:
+    cd app && node scripts/rasterize_logo.mjs
+    cd app && pnpm tauri icon src-tauri/icons/_source-1024.png
+
 # End-to-end: API exe + vault sync + Tauri release build → MSI + NSIS installers
 bundle: build-api-exe sync-vault-resources
     cd app && pnpm tauri build

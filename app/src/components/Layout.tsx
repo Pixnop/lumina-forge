@@ -3,6 +3,7 @@ import { Settings } from "lucide-react";
 import * as React from "react";
 
 import { ApiStatusBadge } from "@/components/ApiStatusBadge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,18 +14,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
             to="/"
             className="group flex items-center gap-2.5 text-foreground"
           >
-            {/* logo-light has the paper background matching the header;
-                logo.svg (navy bg) ships for dark mode and packaged icons. */}
+            {/* Two image layers, toggled by the .dark class on <html>. */}
             <img
               src="/logo-light.svg"
               alt=""
-              className="h-8 w-8 shrink-0 rounded-md transition group-hover:scale-105"
+              className="h-8 w-8 shrink-0 rounded-md transition group-hover:scale-105 dark:hidden"
+            />
+            <img
+              src="/logo.svg"
+              alt="lumina-forge"
+              className="hidden h-8 w-8 shrink-0 rounded-md transition group-hover:scale-105 dark:block"
             />
             <span className="font-display text-lg font-bold tracking-tight">
               lumina<span className="text-primary">·</span>forge
             </span>
           </Link>
-          <nav className="flex items-center gap-5 text-sm">
+          <nav className="flex items-center gap-4 text-sm">
             <NavLink to="/">Inventory</NavLink>
             <NavLink to="/optimize">Optimize</NavLink>
             <Link
@@ -35,6 +40,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Settings className="h-4 w-4" />
               Settings
             </Link>
+            <ThemeToggle />
             <ApiStatusBadge />
           </nav>
         </div>

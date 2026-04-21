@@ -23,6 +23,7 @@ effect_structured:
   luck_crit_rate: 0.004
   base_crit_damage: 1.50
   damage_cap_per_hit: 9999
+  hits_per_rotation: 3
 sources:
   - https://maxroll.gg/clair-obscur-expedition-33/mechanics/damage
   - https://expedition33.wiki.fextralife.com/Combat+Mechanics

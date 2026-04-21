@@ -27,6 +27,8 @@ MIGHT_PER_POINT: float = 0.02  # +2% damage per Might point
 AGILITY_CRIT_RATE: float = 0.004  # +0.4% crit rate per Agility point
 LUCK_CRIT_RATE: float = 0.004  # +0.4% crit rate per Luck point
 BASE_CRIT_DAMAGE: float = 1.5
+DAMAGE_CAP_PER_HIT: int = 9999  # hard per-hit clamp — see cap-9999.md
+HITS_PER_ROTATION: int = 3  # assume 1 hit per turn — pessimistic
 DEFAULT_PICTO_BOOST: float = 0.05  # fallback when effect_structured has nothing
 
 
@@ -34,6 +36,12 @@ class DamageModel(Protocol):
     """Contract for anything that turns a :class:`Build` into a DPS estimate."""
 
     def estimate(self, build: Build) -> DamageEstimate: ...
+
+    def rotation_ceiling(self) -> float:
+        """Hard clamp on full-rotation damage. Applied by the engine after
+        all external multipliers (synergy bonuses etc.) so the cap is the
+        very last gate — matching the in-game 9999-per-hit ceiling."""
+        ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -46,6 +54,8 @@ class DefaultDamageModel:
     agility_crit_rate: float = AGILITY_CRIT_RATE
     luck_crit_rate: float = LUCK_CRIT_RATE
     base_crit_damage: float = BASE_CRIT_DAMAGE
+    damage_cap_per_hit: int = DAMAGE_CAP_PER_HIT
+    hits_per_rotation: int = HITS_PER_ROTATION
 
     def estimate(self, build: Build) -> DamageEstimate:
         base = float(build.weapon.base_damage or 0) * self.rotation_turns
@@ -64,6 +74,8 @@ class DefaultDamageModel:
         )
         crit_mult = 1.0 + crit_rate * (self.base_crit_damage - 1.0)
         synergy_mult = self.synergy_multiplier
+        # Compute raw — the engine clamps to `rotation_ceiling()` after
+        # folding in any additional multipliers (synergy bonuses, etc.).
         est_dps = base * might_mult * picto_mult * lumina_mult * crit_mult * synergy_mult
         return DamageEstimate(
             base=base,
@@ -74,6 +86,9 @@ class DefaultDamageModel:
             synergy_mult=synergy_mult,
             est_dps=est_dps,
         )
+
+    def rotation_ceiling(self) -> float:
+        return float(self.damage_cap_per_hit) * self.hits_per_rotation
 
 
 @dataclass(frozen=True, slots=True)
@@ -91,6 +106,9 @@ class VaultFormulaModel:
     def estimate(self, build: Build) -> DamageEstimate:
         return self.inner.estimate(build)
 
+    def rotation_ceiling(self) -> float:
+        return self.inner.rotation_ceiling()
+
     @classmethod
     def from_formula(
         cls,
@@ -107,6 +125,8 @@ class VaultFormulaModel:
             agility_crit_rate=_as_float(s.get("agility_crit_rate"), AGILITY_CRIT_RATE),
             luck_crit_rate=_as_float(s.get("luck_crit_rate"), LUCK_CRIT_RATE),
             base_crit_damage=_as_float(s.get("base_crit_damage"), BASE_CRIT_DAMAGE),
+            damage_cap_per_hit=_as_int(s.get("damage_cap_per_hit"), DAMAGE_CAP_PER_HIT),
+            hits_per_rotation=_as_int(s.get("hits_per_rotation"), HITS_PER_ROTATION),
         )
         return cls(inner=inner)
 
@@ -139,15 +159,25 @@ _KEYWORDS_DPS = ("damage", "hit", "strike", "critical", "burn", "stain", "powerf
 
 
 def _picto_contribution(effect_structured: dict[str, object], effect_text: str) -> float:
-    """Heuristic: if ``effect_structured`` has known DPS keys, use them;
-    otherwise nudge the multiplier up slightly when the effect description
-    reads offensive. Clamp to a reasonable range to prevent runaway stacks."""
-    numeric_sum = 0.0
+    """Heuristic: if ``effect_structured`` has known DPS keys, use them —
+    scaled by ``trigger_uptime`` when the effect is conditional.
+    Otherwise nudge the multiplier up slightly on offensive-sounding text.
+    Clamp to a reasonable range to prevent runaway stacks.
+    """
+    damage_sum = 0.0
+    other_sum = 0.0
     for key, value in effect_structured.items():
         if not isinstance(value, int | float):
             continue
-        if key in _NUMERIC_KEYS_DIRECT or "damage" in key or "crit" in key:
-            numeric_sum += float(value)
+        if key == "damage_bonus" or "damage" in key:
+            damage_sum += float(value)
+        elif key in _NUMERIC_KEYS_DIRECT or "crit" in key:
+            other_sum += float(value)
+
+    uptime_raw = effect_structured.get("trigger_uptime", 1.0)
+    uptime = float(uptime_raw) if isinstance(uptime_raw, int | float) else 1.0
+    numeric_sum = damage_sum * uptime + other_sum
+
     if numeric_sum > 0:
         return min(numeric_sum, 1.0)
     low = (effect_text or "").lower()

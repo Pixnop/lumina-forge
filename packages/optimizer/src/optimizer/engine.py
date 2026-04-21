@@ -92,6 +92,7 @@ def _score(
     matched = matcher.matches(build)
     synergy_mult = matcher.multiplier(matched)
     damage = _apply_synergy(model.estimate(build), synergy_mult)
+    damage = _apply_ceiling(damage, model.rotation_ceiling())
     utility = util_scorer.score(build)
     total = damage.est_dps * (1.0 + utility_weight * utility.score_0_1)
     return RankedBuild(
@@ -102,6 +103,21 @@ def _score(
         total_score=total,
         rotation_hint=suggest_rotation(build),
         why=_explain(build, damage, utility, matched),
+    )
+
+
+def _apply_ceiling(damage: DamageEstimate, ceiling: float) -> DamageEstimate:
+    """Clamp the final est_dps to the model's rotation ceiling (in-game cap)."""
+    if damage.est_dps <= ceiling:
+        return damage
+    return DamageEstimate(
+        base=damage.base,
+        might_mult=damage.might_mult,
+        picto_mult=damage.picto_mult,
+        lumina_mult=damage.lumina_mult,
+        crit_mult=damage.crit_mult,
+        synergy_mult=damage.synergy_mult,
+        est_dps=ceiling,
     )
 
 

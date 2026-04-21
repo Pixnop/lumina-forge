@@ -81,7 +81,52 @@ def parse_effect_structured(text: str) -> dict[str, Any]:
         if keyword in low:
             result[key] = flag
 
+    # Estimate how often the damage clause actually fires. Multiplied onto
+    # damage_bonus by the scorer so Alternating Critical (≈50% uptime) no
+    # longer ranks the same as a flat +100% damage picto.
+    uptime = _estimate_trigger_uptime(text)
+    if uptime < 1.0 and "damage_bonus" in result:
+        result["trigger_uptime"] = uptime
+
     return result
+
+
+# Common trigger phrasings → how often they're up in a typical rotation.
+# Numbers are pragmatic averages, not exact: the goal is to break ties
+# between "always on" and "conditional" pictos, not to be a simulator.
+_UPTIME_PATTERNS: list[tuple[re.Pattern[str], float]] = [
+    (re.compile(r"every\s+third\s+(?:hit|attack)", re.I), 0.33),
+    (re.compile(r"every\s+(?:second|2nd|other)\s+(?:hit|attack)", re.I), 0.50),
+    (re.compile(r"on\s+(?:a\s+)?critical\s+(?:hit|strike)", re.I), 0.30),
+    (re.compile(r"after\s+(?:a\s+)?critical", re.I), 0.30),
+    (re.compile(r"on\s+burning\s+enemies", re.I), 0.70),
+    (re.compile(r"on\s+stained\s+enemies", re.I), 0.45),
+    (re.compile(r"on\s+marked\s+enemies", re.I), 0.55),
+    (re.compile(r"on\s+powerful\s+(?:skills?|attacks?)", re.I), 0.40),
+    (
+        re.compile(
+            r"(?:gradient\s+3"
+            r"|when\s+gradient\s+(?:is\s+)?(?:full|max)"
+            r"|consume\s+\d+\s+gradient)",
+            re.I,
+        ),
+        0.33,
+    ),
+    (re.compile(r"at\s+low\s+hp|when\s+hp\s+below", re.I), 0.25),
+    (re.compile(r"first\s+(?:hit|attack|turn)", re.I), 0.20),
+    (re.compile(r"when\s+shield(?:ed)?", re.I), 0.35),
+    (re.compile(r"once\s+per\s+(?:battle|turn)", re.I), 0.15),
+]
+
+
+def _estimate_trigger_uptime(text: str) -> float:
+    """Return uptime in [0, 1]. Defaults to 1.0 (always on) when no
+    conditional phrasing is recognised."""
+    low = text.lower()
+    for pattern, uptime in _UPTIME_PATTERNS:
+        if pattern.search(low):
+            return uptime
+    return 1.0
 
 
 def _classify(kind: str, tail: str) -> str | None:

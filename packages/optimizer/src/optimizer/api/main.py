@@ -16,7 +16,7 @@ cli = typer.Typer(add_completion=False, help="Run the lumina-forge local API.")
 @cli.callback(invoke_without_command=True)
 def run(
     host: Annotated[str, typer.Option("--host", help="Bind address.")] = "127.0.0.1",
-    port: Annotated[int, typer.Option("--port", help="Bind port.")] = 8000,
+    port: Annotated[int, typer.Option("--port", help="Bind port.")] = 31733,
     vault_dir: Annotated[
         Path, typer.Option("--vault-dir", help="Vault root to serve from.")
     ] = Path("vault"),

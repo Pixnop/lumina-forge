@@ -7,7 +7,11 @@ export function useHealth() {
   return useQuery({
     queryKey: ["health"],
     queryFn: api.health,
-    refetchInterval: 10_000,
+    // Poll fast on failure so the badge recovers as soon as the
+    // sidecar finishes booting (usually 3-5 s on Windows). Back off to
+    // 10 s once we're connected to avoid hammering /health.
+    refetchInterval: (query) => (query.state.error ? 2_000 : 10_000),
+    refetchIntervalInBackground: true,
     retry: 1,
   });
 }

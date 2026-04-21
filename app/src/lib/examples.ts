@@ -17,6 +17,7 @@ export const GUSTAVE_EXAMPLE: Inventory = {
     "gradient-overcharge",
     "charging-critical",
     "empowering-jumps",
+    "rush-on-powerful",
   ],
   pictos_mastered: ["augmented-attack", "double-third"],
   luminas_extra: [],

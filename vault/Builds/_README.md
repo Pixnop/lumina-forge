@@ -23,8 +23,8 @@ role: Offensive
 dps_tier: S                     # S | A | B | C — tier of this build within the character's options
 weapon: Weapons/overcharged-hammer
 pictos:
-  - Pictos/augmented-critical
-  - Pictos/elemental-amplifier
+  - Pictos/augmented-attack
+  - Pictos/critical-burn
   - Pictos/second-chance
 luminas:
   - Luminas/might-boost

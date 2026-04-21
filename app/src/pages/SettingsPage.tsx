@@ -3,6 +3,7 @@ import * as React from "react";
 
 import { useVaultInfo, useVaultReload } from "@/api/hooks";
 import { ApiStatusBadge } from "@/components/ApiStatusBadge";
+import { SidecarLogPanel } from "@/components/SidecarLogPanel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -102,6 +103,8 @@ export function SettingsPage() {
           )}
         </CardContent>
       </Card>
+
+      <SidecarLogPanel />
     </div>
   );
 }

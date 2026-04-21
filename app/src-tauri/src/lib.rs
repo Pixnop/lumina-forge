@@ -1,10 +1,52 @@
-use std::sync::Mutex;
+use std::collections::VecDeque;
+use std::sync::{Arc, Mutex};
 
-use tauri::{Manager, RunEvent, WindowEvent};
+use chrono::Local;
+use tauri::{AppHandle, Manager, RunEvent, State, WindowEvent};
 use tauri_plugin_shell::{process::CommandChild, ShellExt};
+
+const LOG_CAPACITY: usize = 200;
 
 /// Holds the Python API sidecar so we can terminate it when the app exits.
 struct Sidecar(Mutex<Option<CommandChild>>);
+
+/// Ring buffer of lines captured from the sidecar's stdout/stderr.
+#[derive(Default, Clone)]
+struct SidecarLogs(Arc<Mutex<VecDeque<String>>>);
+
+impl SidecarLogs {
+    fn push(&self, stream: &str, line: &str) {
+        let stamped = format!(
+            "{} {:<6} {}",
+            Local::now().format("%H:%M:%S"),
+            stream,
+            line.trim_end()
+        );
+        let mut buf = self.0.lock().unwrap();
+        if buf.len() >= LOG_CAPACITY {
+            buf.pop_front();
+        }
+        buf.push_back(stamped);
+    }
+
+    fn snapshot(&self) -> Vec<String> {
+        self.0.lock().unwrap().iter().cloned().collect()
+    }
+
+    fn clear(&self) {
+        self.0.lock().unwrap().clear();
+    }
+}
+
+#[tauri::command]
+fn get_sidecar_logs(logs: State<'_, SidecarLogs>) -> Vec<String> {
+    logs.snapshot()
+}
+
+#[tauri::command]
+fn clear_sidecar_logs(logs: State<'_, SidecarLogs>) -> () {
+    logs.clear();
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -12,57 +54,13 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_shell::init())
         .manage(Sidecar(Mutex::new(None)))
+        .manage(SidecarLogs::default())
+        .invoke_handler(tauri::generate_handler![
+            get_sidecar_logs,
+            clear_sidecar_logs
+        ])
         .setup(|app| {
-            // Spawn the PyInstaller-bundled API as a sidecar. The binary
-            // lives next to the Tauri executable at runtime (Tauri copies
-            // `binaries/lumina-forge-api-<triple>.exe` → the resource root).
-            //
-            // `vault/` is bundled under the OS-specific resource directory;
-            // we pass it through via --vault-dir so the sidecar can find it.
-            let vault_dir = app
-                .path()
-                .resource_dir()
-                .map(|p| p.join("resources/vault"))
-                .ok();
-
-            let mut command = app
-                .shell()
-                .sidecar("lumina-forge-api")
-                .expect("sidecar binary missing — did `build_api_exe.py` run?");
-
-            // Hand the sidecar our PID so it can self-terminate on force-kill.
-            let parent_pid = std::process::id().to_string();
-            command = command.arg("--parent-pid").arg(parent_pid);
-
-            if let Some(vault) = vault_dir.as_ref() {
-                command = command
-                    .arg("--vault-dir")
-                    .arg(vault.to_string_lossy().to_string());
-            }
-
-            let (mut rx, child) = command.spawn().expect("failed to spawn API sidecar");
-            app.state::<Sidecar>().0.lock().unwrap().replace(child);
-
-            // Drain the sidecar's stdout/stderr into our own log so we
-            // don't leak file descriptors and can see early failures.
-            tauri::async_runtime::spawn(async move {
-                while let Some(event) = rx.recv().await {
-                    match event {
-                        tauri_plugin_shell::process::CommandEvent::Stdout(line) => {
-                            log::info!("api/out: {}", String::from_utf8_lossy(&line));
-                        }
-                        tauri_plugin_shell::process::CommandEvent::Stderr(line) => {
-                            log::info!("api/err: {}", String::from_utf8_lossy(&line));
-                        }
-                        tauri_plugin_shell::process::CommandEvent::Terminated(status) => {
-                            log::info!("api sidecar exited: {:?}", status);
-                            break;
-                        }
-                        _ => {}
-                    }
-                }
-            });
-
+            spawn_sidecar(app.handle())?;
             Ok(())
         })
         .on_window_event(|window, event| {
@@ -91,4 +89,59 @@ pub fn run() {
                 }
             }
         });
+}
+
+fn spawn_sidecar(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
+    let vault_dir = app
+        .path()
+        .resource_dir()
+        .map(|p| p.join("resources/vault"))
+        .ok();
+
+    let mut command = app
+        .shell()
+        .sidecar("lumina-forge-api")
+        .expect("sidecar binary missing — did `build_api_exe.py` run?");
+
+    // Hand the sidecar our PID so it can self-terminate on force-kill.
+    let parent_pid = std::process::id().to_string();
+    command = command.arg("--parent-pid").arg(parent_pid);
+
+    if let Some(vault) = vault_dir.as_ref() {
+        command = command
+            .arg("--vault-dir")
+            .arg(vault.to_string_lossy().to_string());
+    }
+
+    let (mut rx, child) = command.spawn().expect("failed to spawn API sidecar");
+    app.state::<Sidecar>().0.lock().unwrap().replace(child);
+
+    let logs: SidecarLogs = (*app.state::<SidecarLogs>()).clone();
+    logs.push("sys", "sidecar spawned");
+
+    tauri::async_runtime::spawn(async move {
+        while let Some(event) = rx.recv().await {
+            match event {
+                tauri_plugin_shell::process::CommandEvent::Stdout(line) => {
+                    let s = String::from_utf8_lossy(&line).to_string();
+                    log::info!("api/out: {}", s);
+                    logs.push("out", &s);
+                }
+                tauri_plugin_shell::process::CommandEvent::Stderr(line) => {
+                    let s = String::from_utf8_lossy(&line).to_string();
+                    log::info!("api/err: {}", s);
+                    logs.push("err", &s);
+                }
+                tauri_plugin_shell::process::CommandEvent::Terminated(status) => {
+                    let msg = format!("sidecar exited: code={:?} signal={:?}", status.code, status.signal);
+                    log::info!("{}", msg);
+                    logs.push("sys", &msg);
+                    break;
+                }
+                _ => {}
+            }
+        }
+    });
+
+    Ok(())
 }

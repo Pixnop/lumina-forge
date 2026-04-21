@@ -33,10 +33,15 @@ from optimizer.vault import VaultIndex, VaultLoader
 
 log = logging.getLogger(__name__)
 
-DEFAULT_CORS_ORIGINS: tuple[str, ...] = (
-    "http://localhost:5173",  # Vite dev server
-    "http://localhost:1420",  # Tauri dev window
-)
+# The API binds 127.0.0.1 only, so any caller already has local access.
+# Use a wildcard to cover every local webview origin we might see:
+# - http://localhost:5173   (Vite dev server)
+# - http://localhost:1420   (Tauri dev window)
+# - http://tauri.localhost  (Tauri 2 release on Windows / Linux)
+# - https://tauri.localhost (Tauri 2 release on macOS)
+# The `*` would conflict with allow_credentials=True per CORS, but we
+# never set credentials.
+DEFAULT_CORS_ORIGINS: tuple[str, ...] = ("*",)
 
 
 def create_app(

@@ -16,6 +16,13 @@ variables:
   - status_multiplier
   - damage_reduction
 applies_to: "All offensive skills except Painted Power finishers (see painted-power.md)"
+effect_structured:
+  rotation_turns: 3
+  might_per_point: 0.02
+  agility_crit_rate: 0.004
+  luck_crit_rate: 0.004
+  base_crit_damage: 1.50
+  damage_cap_per_hit: 9999
 sources:
   - https://maxroll.gg/clair-obscur-expedition-33/mechanics/damage
   - https://expedition33.wiki.fextralife.com/Combat+Mechanics

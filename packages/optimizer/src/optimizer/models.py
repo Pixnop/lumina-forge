@@ -83,6 +83,14 @@ class SynergyItem(_VaultItem):
     score_bonus: float = 0.0
 
 
+class FormulaItem(_VaultItem):
+    """Notes under ``Formulas/`` — carry the damage-math constants the engine consumes."""
+
+    variables: list[str] = Field(default_factory=list)
+    applies_to: str = ""
+    effect_structured: dict[str, Any] = Field(default_factory=dict)
+
+
 # --- inventory (user input) -------------------------------------------------
 
 

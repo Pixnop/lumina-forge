@@ -1,13 +1,16 @@
 """Damage estimation.
 
-Phase 3 uses a deliberately-simple placeholder formula behind a
-``DamageModel`` Protocol. When Maxroll/Game8 adapters populate the vault
-with real formulas, swap in a ``VaultFormulaModel`` that reads the
-``Formulas/`` notes at startup — the engine doesn't care.
+Two models implement the ``DamageModel`` protocol:
+
+- :class:`DefaultDamageModel` hard-codes the constants (kept as a
+  fallback when the vault is empty or unavailable).
+- :class:`VaultFormulaModel` reads the same knobs from
+  ``vault/Formulas/damage-formula.md``'s ``effect_structured`` block,
+  so iterating on the math is now a data edit instead of a code change.
+
+Both compute the same equation:
 
     est_dps = base × might × picto × lumina × crit × synergy
-
-Each factor is independent and unit-tested in isolation.
 """
 
 from __future__ import annotations
@@ -15,9 +18,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
-from optimizer.models import Build, DamageEstimate
+from optimizer.models import Build, DamageEstimate, FormulaItem
 
-# Design constants — these are the tunable knobs for the placeholder formula.
+# Placeholder-formula defaults. Mirrored in vault/Formulas/damage-formula.md
+# so the two models produce identical numbers out of the box.
 ROTATION_TURNS: int = 3
 MIGHT_PER_POINT: float = 0.02  # +2% damage per Might point
 AGILITY_CRIT_RATE: float = 0.004  # +0.4% crit rate per Agility point
@@ -34,16 +38,31 @@ class DamageModel(Protocol):
 
 @dataclass(frozen=True, slots=True)
 class DefaultDamageModel:
-    """Placeholder formula — easy to reason about, trivial to unit-test."""
+    """Placeholder formula with hard-coded constants."""
 
     synergy_multiplier: float = 1.0
+    rotation_turns: int = ROTATION_TURNS
+    might_per_point: float = MIGHT_PER_POINT
+    agility_crit_rate: float = AGILITY_CRIT_RATE
+    luck_crit_rate: float = LUCK_CRIT_RATE
+    base_crit_damage: float = BASE_CRIT_DAMAGE
 
     def estimate(self, build: Build) -> DamageEstimate:
-        base = self._base(build)
-        might_mult = self._might_mult(build)
-        picto_mult = self._picto_mult(build)
-        lumina_mult = self._lumina_mult(build)
-        crit_mult = self._crit_mult(build)
+        base = float(build.weapon.base_damage or 0) * self.rotation_turns
+        might_mult = 1.0 + build.attributes.might * self.might_per_point
+        picto_mult = 1.0
+        for picto in build.pictos:
+            picto_mult *= 1.0 + _picto_contribution(picto.effect_structured, picto.effect)
+        lumina_total = 0.0
+        for lumina in build.luminas:
+            lumina_total += _picto_contribution(lumina.effect_structured, lumina.effect)
+        lumina_mult = 1.0 + lumina_total
+        crit_rate = min(
+            1.0,
+            (build.attributes.agility * self.agility_crit_rate)
+            + (build.attributes.luck * self.luck_crit_rate),
+        )
+        crit_mult = 1.0 + crit_rate * (self.base_crit_damage - 1.0)
         synergy_mult = self.synergy_multiplier
         est_dps = base * might_mult * picto_mult * lumina_mult * crit_mult * synergy_mult
         return DamageEstimate(
@@ -56,35 +75,52 @@ class DefaultDamageModel:
             est_dps=est_dps,
         )
 
-    # --- factors ----------------------------------------------------------
 
-    @staticmethod
-    def _base(build: Build) -> float:
-        return float(build.weapon.base_damage or 0) * ROTATION_TURNS
+@dataclass(frozen=True, slots=True)
+class VaultFormulaModel:
+    """A :class:`DefaultDamageModel` whose constants come from the vault.
 
-    @staticmethod
-    def _might_mult(build: Build) -> float:
-        return 1.0 + build.attributes.might * MIGHT_PER_POINT
+    Use :meth:`from_formula` to pull the knobs from a ``FormulaItem`` loaded
+    via ``VaultLoader`` — typically the note at ``Formulas/damage-formula.md``.
+    Missing keys fall back to the Python defaults, so a partially-populated
+    formula note still produces a coherent model.
+    """
 
-    @staticmethod
-    def _picto_mult(build: Build) -> float:
-        product = 1.0
-        for picto in build.pictos:
-            product *= 1.0 + _picto_contribution(picto.effect_structured, picto.effect)
-        return product
+    inner: DefaultDamageModel
 
-    @staticmethod
-    def _lumina_mult(build: Build) -> float:
-        total = 0.0
-        for lumina in build.luminas:
-            total += _picto_contribution(lumina.effect_structured, lumina.effect)
-        return 1.0 + total
+    def estimate(self, build: Build) -> DamageEstimate:
+        return self.inner.estimate(build)
 
-    @staticmethod
-    def _crit_mult(build: Build) -> float:
-        attrs = build.attributes
-        crit_rate = min(1.0, (attrs.agility * AGILITY_CRIT_RATE) + (attrs.luck * LUCK_CRIT_RATE))
-        return 1.0 + crit_rate * (BASE_CRIT_DAMAGE - 1.0)
+    @classmethod
+    def from_formula(
+        cls,
+        formula: FormulaItem | None,
+        synergy_multiplier: float = 1.0,
+    ) -> VaultFormulaModel:
+        if formula is None:
+            return cls(inner=DefaultDamageModel(synergy_multiplier=synergy_multiplier))
+        s = formula.effect_structured
+        inner = DefaultDamageModel(
+            synergy_multiplier=synergy_multiplier,
+            rotation_turns=_as_int(s.get("rotation_turns"), ROTATION_TURNS),
+            might_per_point=_as_float(s.get("might_per_point"), MIGHT_PER_POINT),
+            agility_crit_rate=_as_float(s.get("agility_crit_rate"), AGILITY_CRIT_RATE),
+            luck_crit_rate=_as_float(s.get("luck_crit_rate"), LUCK_CRIT_RATE),
+            base_crit_damage=_as_float(s.get("base_crit_damage"), BASE_CRIT_DAMAGE),
+        )
+        return cls(inner=inner)
+
+
+def _as_float(raw: object, default: float) -> float:
+    if isinstance(raw, int | float):
+        return float(raw)
+    return default
+
+
+def _as_int(raw: object, default: int) -> int:
+    if isinstance(raw, int | float):
+        return int(raw)
+    return default
 
 
 # --- heuristics -------------------------------------------------------------

@@ -12,6 +12,7 @@ from pydantic import BaseModel
 
 from optimizer.models import (
     CharacterItem,
+    FormulaItem,
     LuminaItem,
     PictoItem,
     SkillItem,
@@ -34,6 +35,7 @@ class VaultIndex:
     luminas: dict[str, LuminaItem] = field(default_factory=dict)
     skills: dict[str, SkillItem] = field(default_factory=dict)
     synergies: list[SynergyItem] = field(default_factory=list)
+    formulas: dict[str, FormulaItem] = field(default_factory=dict)
 
     def weapons_for(self, character_slug: str) -> list[WeaponItem]:
         target = character_slug.lower()
@@ -54,6 +56,7 @@ _FOLDER_TO_TYPE: dict[str, type[BaseModel]] = {
     "Luminas": LuminaItem,
     "Skills": SkillItem,
     "Synergies": SynergyItem,
+    "Formulas": FormulaItem,
 }
 
 
@@ -110,5 +113,7 @@ class VaultLoader:
             index.skills[item.slug] = item
         elif isinstance(item, SynergyItem):
             index.synergies.append(item)
+        elif isinstance(item, FormulaItem):
+            index.formulas[item.slug] = item
         else:  # pragma: no cover — exhaustive above
             log.warning("vault: unknown item type from folder %s", folder)

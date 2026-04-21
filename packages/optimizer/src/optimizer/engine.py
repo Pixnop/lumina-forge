@@ -7,7 +7,7 @@ import logging
 from dataclasses import dataclass
 
 from optimizer.enumerator import build_context, enumerate_builds
-from optimizer.formulas import DamageModel, DefaultDamageModel
+from optimizer.formulas import DamageModel, DefaultDamageModel, VaultFormulaModel
 from optimizer.models import (
     Build,
     DamageEstimate,
@@ -48,7 +48,14 @@ def optimize(
     opts = options or EngineOptions()
     utility_weight = opts.resolved_utility_weight()
 
-    model: DamageModel = damage_model or DefaultDamageModel()
+    # Prefer the vault-driven model when Formulas/damage-formula.md exists,
+    # so editing that note changes the math without touching Python.
+    if damage_model is not None:
+        model: DamageModel = damage_model
+    elif (formula := index.formulas.get("damage-formula")) is not None:
+        model = VaultFormulaModel.from_formula(formula)
+    else:
+        model = DefaultDamageModel()
     matcher = SynergyMatcher(tuple(index.synergies))
     util_scorer = UtilityScorer()
 

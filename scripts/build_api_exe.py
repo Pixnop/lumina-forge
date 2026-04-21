@@ -33,7 +33,9 @@ def target_triple() -> str:
         system = platform.system().lower()
         machine = platform.machine().lower()
         if system == "windows":
-            return "x86_64-pc-windows-gnu" if machine in ("amd64", "x86_64") else f"{machine}-pc-windows-gnu"
+            if machine in ("amd64", "x86_64"):
+                return "x86_64-pc-windows-gnu"
+            return f"{machine}-pc-windows-gnu"
         if system == "darwin":
             return "aarch64-apple-darwin" if machine == "arm64" else "x86_64-apple-darwin"
         return "x86_64-unknown-linux-gnu"

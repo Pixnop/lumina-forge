@@ -19,6 +19,7 @@ from scraper.sources.fextralife.parsers._common import (
     slugify,
     wiki_tables,
 )
+from scraper.sources.fextralife.parsers._effect import parse_effect_structured
 
 log = logging.getLogger(__name__)
 
@@ -48,6 +49,7 @@ def parse_pictos(page: RawPage) -> Iterator[Picto]:
             slug=slugify(name),
             name=name,
             effect=effect,
+            effect_structured=parse_effect_structured(effect),
             stats_granted=_parse_attributes(attrs_text),
             lumina_points_cost=pp_cost,
             sources=sources,  # type: ignore[arg-type]  # pydantic coerces str -> HttpUrl

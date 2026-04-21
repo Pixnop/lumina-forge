@@ -1,5 +1,7 @@
 ---
 effect: 50% increased Breaking damage with Gradient Attacks.
+effect_structured:
+  break_damage_bonus: 0.5
 lumina_points_cost: 5
 name: Gradient Breaker
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: 25% increased Break damage.
+effect_structured:
+  break_damage_bonus: 0.25
 lumina_points_cost: 10
 name: Breaker
 sources:

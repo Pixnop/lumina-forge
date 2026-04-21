@@ -1,5 +1,7 @@
 ---
 effect: 50% increased damage if Exhausted.
+effect_structured:
+  damage_bonus: 0.5
 lumina_points_cost: 2
 name: Exhausting Power
 sources:

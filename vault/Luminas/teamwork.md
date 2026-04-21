@@ -1,5 +1,7 @@
 ---
 effect: 10% increased damage while all allies are alive.
+effect_structured:
+  damage_bonus: 0.1
 name: Teamwork
 pp_cost: 5
 source_picto: teamwork

@@ -1,5 +1,7 @@
 ---
 effect: 50% increased damage if Exhausted.
+effect_structured:
+  damage_bonus: 0.5
 name: Exhausting Power
 pp_cost: 2
 source_picto: exhausting-power

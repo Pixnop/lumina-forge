@@ -1,5 +1,7 @@
 ---
 effect: 25% increased damage on Burning Targets.
+effect_structured:
+  damage_bonus: 0.25
 lumina_points_cost: 10
 name: Burn Affinity
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: Apply Shell when falling below 50% Health
+effect_structured:
+  has_heal: true
 name: SOS Shell
 pp_cost: 5
 source_picto: sos-shell

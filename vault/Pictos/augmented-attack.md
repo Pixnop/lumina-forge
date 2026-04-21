@@ -1,5 +1,7 @@
 ---
 effect: 50% increased Base Attack damage.
+effect_structured:
+  damage_bonus: 0.5
 lumina_points_cost: 7
 name: Augmented Attack
 sources:

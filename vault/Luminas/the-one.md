@@ -1,5 +1,7 @@
 ---
 effect: Max Health is reduced to 1.
+effect_structured:
+  has_heal: true
 name: The One
 pp_cost: 1
 source_picto: the-one

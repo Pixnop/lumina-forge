@@ -1,5 +1,7 @@
 ---
 effect: Every third hit of a Skill deals double damage.
+effect_structured:
+  damage_bonus: 0.33
 name: Double Third
 pp_cost: 10
 source_picto: double-third

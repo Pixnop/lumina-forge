@@ -1,6 +1,8 @@
 ---
 effect: Recovers 10% Health on turn start. (Reward for spending Chroma at the Red
   Woods Nevron quest)
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 10
 name: Recovery
 sources:

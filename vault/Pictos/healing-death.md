@@ -1,5 +1,7 @@
 ---
 effect: On death, the rest of the Expedition recover all Health.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 5
 name: Healing Death
 sources:

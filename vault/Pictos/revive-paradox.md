@@ -1,5 +1,7 @@
 ---
 effect: Play immediately when revived.
+effect_structured:
+  has_revive: 1.0
 lumina_points_cost: 5
 name: Revive Paradox
 sources:

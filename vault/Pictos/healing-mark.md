@@ -1,5 +1,7 @@
 ---
 effect: Recover 25% Health on hitting a Marked enemy. Once per turn.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 20
 name: Healing Mark
 sources:

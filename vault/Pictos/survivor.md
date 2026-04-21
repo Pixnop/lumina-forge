@@ -1,5 +1,7 @@
 ---
 effect: Survive fatal damage with 1 Health. Once per battle.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 20
 name: Survivor
 sources:

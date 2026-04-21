@@ -1,5 +1,8 @@
 ---
 effect: +10% to Shell damage reduction.
+effect_structured:
+  damage_bonus: 0.1
+  has_defense_buff: true
 name: Greater Shell
 pp_cost: 10
 source_picto: greater-shell

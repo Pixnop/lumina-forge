@@ -1,5 +1,7 @@
 ---
 effect: Deal 50% more damage if fighting alone.
+effect_structured:
+  damage_bonus: 0.5
 lumina_points_cost: 1
 name: Solo Fighter
 sources:

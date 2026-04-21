@@ -1,5 +1,7 @@
 ---
 effect: Deal 25% more damage, but take 25% more damage.
+effect_structured:
+  damage_bonus: 0.25
 name: Glass Canon
 pp_cost: 10
 source_picto: glass-canon

@@ -1,5 +1,7 @@
 ---
 effect: 25% increased damage on Burning Targets.
+effect_structured:
+  damage_bonus: 0.25
 name: Burn Affinity
 pp_cost: 10
 source_picto: burn-affinity

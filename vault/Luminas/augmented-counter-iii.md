@@ -1,5 +1,7 @@
 ---
 effect: 75% increased Counterattack damage.
+effect_structured:
+  damage_bonus: 0.75
 name: Augmented Counter III
 pp_cost: 7
 source_picto: augmented-counter-iii

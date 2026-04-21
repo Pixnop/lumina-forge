@@ -1,5 +1,7 @@
 ---
 effect: Apply Powerful when falling below 50% Health.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 5
 name: SOS Power
 sources:

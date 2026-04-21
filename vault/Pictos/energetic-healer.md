@@ -1,5 +1,7 @@
 ---
 effect: +2AP on Healing an ally. Once per turn.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 10
 name: Energetic Healer
 sources:

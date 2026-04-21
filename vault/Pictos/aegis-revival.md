@@ -1,5 +1,8 @@
 ---
 effect: +1 Shield on being revived.
+effect_structured:
+  has_defense_buff: 1.0
+  has_revive: 1.0
 lumina_points_cost: 5
 name: Aegis Revival
 sources:

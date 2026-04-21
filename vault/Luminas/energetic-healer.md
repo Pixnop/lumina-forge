@@ -1,5 +1,7 @@
 ---
 effect: +2AP on Healing an ally. Once per turn.
+effect_structured:
+  has_heal: true
 name: Energetic Healer
 pp_cost: 10
 source_picto: energetic-healer

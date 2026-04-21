@@ -20,6 +20,7 @@ from scraper.sources.fextralife.parsers._common import (
     slugify,
     wiki_tables,
 )
+from scraper.sources.fextralife.parsers._effect import parse_effect_structured
 
 log = logging.getLogger(__name__)
 
@@ -49,6 +50,7 @@ def parse_luminas(page: RawPage) -> Iterator[Lumina]:
             slug=slug,
             name=name,
             effect=effect,
+            effect_structured=parse_effect_structured(effect),
             pp_cost=pp_cost,
             source_picto=slug,
             sources=sources,  # type: ignore[arg-type]

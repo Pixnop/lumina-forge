@@ -1,5 +1,8 @@
 ---
 effect: +15% to Powerless damage reduction.
+effect_structured:
+  damage_bonus: 0.15
+  has_defense_buff: 1.0
 lumina_points_cost: 15
 name: Greater Powerless
 sources:

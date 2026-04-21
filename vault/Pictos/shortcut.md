@@ -1,5 +1,7 @@
 ---
 effect: Immediately play when falling below 30% Health. Once per battle.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 5
 name: Shortcut
 sources:

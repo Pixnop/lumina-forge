@@ -1,5 +1,7 @@
 ---
 effect: On Critical hit, 100% increased damage of the next non-Critical hit.
+effect_structured:
+  damage_bonus: 1.0
 name: Alternating Critical
 pp_cost: 10
 source_picto: alternating-critical

@@ -1,5 +1,7 @@
 ---
 effect: When healing an ally, also Heal self for 50% of that value.
+effect_structured:
+  has_heal: true
 name: Shared Care
 pp_cost: 10
 source_picto: shared-care

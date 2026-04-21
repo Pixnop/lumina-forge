@@ -1,5 +1,8 @@
 ---
 effect: 50% increased Critical Chance if Health is below 30%.
+effect_structured:
+  crit_rate_bonus: 0.5
+  has_heal: 1.0
 lumina_points_cost: 5
 name: Critical Moment
 sources:

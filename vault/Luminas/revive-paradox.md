@@ -1,5 +1,7 @@
 ---
 effect: Play immediately when revived.
+effect_structured:
+  has_revive: true
 name: Revive Paradox
 pp_cost: 5
 source_picto: revive-paradox

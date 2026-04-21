@@ -1,5 +1,7 @@
 ---
 effect: 15% increased damage for each Status Effect on self.
+effect_structured:
+  damage_bonus: 0.15
 lumina_points_cost: 3
 name: Tainted
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: 100% on Critical Chance on hitting a Stunned target.
+effect_structured:
+  crit_rate_bonus: 1.0
 lumina_points_cost: 5
 name: Critical Stun
 sources:

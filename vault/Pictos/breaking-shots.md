@@ -1,5 +1,7 @@
 ---
 effect: 50% increased Break damage with Free Aim Shots.
+effect_structured:
+  break_damage_bonus: 0.5
 lumina_points_cost: 1
 name: Breaking Shots
 sources:

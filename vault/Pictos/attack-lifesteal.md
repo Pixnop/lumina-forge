@@ -1,5 +1,7 @@
 ---
 effect: Recover 15% Health on Base Attack.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 15
 name: Attack Lifesteal
 sources:

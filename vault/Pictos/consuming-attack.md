@@ -1,5 +1,7 @@
 ---
 effect: Base attack consumes up to 100 Burns to deal 10% more damage per Burn consumed.
+effect_structured:
+  damage_bonus: 0.1
 lumina_points_cost: 10
 name: Consuming Attack
 sources:

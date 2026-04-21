@@ -1,5 +1,7 @@
 ---
 effect: Healing Tints also remove all Status Effects from the target.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 5
 name: Cleansing Tint
 sources:

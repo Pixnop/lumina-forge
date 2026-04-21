@@ -1,5 +1,7 @@
 ---
 effect: On death, allies gain 3 Shield points.
+effect_structured:
+  has_defense_buff: 1.0
 lumina_points_cost: 10
 name: Shielding Death
 sources:

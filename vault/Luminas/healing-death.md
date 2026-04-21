@@ -1,5 +1,7 @@
 ---
 effect: On death, the rest of the Expedition recover all Health.
+effect_structured:
+  has_heal: true
 name: Healing Death
 pp_cost: 5
 source_picto: healing-death

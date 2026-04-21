@@ -1,5 +1,7 @@
 ---
 effect: 25% increased Break damage against Slowed enemies.
+effect_structured:
+  break_damage_bonus: 0.25
 lumina_points_cost: 5
 name: Breaking Slow
 sources:

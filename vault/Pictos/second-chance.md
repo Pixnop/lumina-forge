@@ -1,5 +1,8 @@
 ---
 effect: Revive with 100% Health. Once per battle.
+effect_structured:
+  has_heal: 1.0
+  has_revive: 1.0
 lumina_points_cost: 40
 name: Second Chance
 sources:

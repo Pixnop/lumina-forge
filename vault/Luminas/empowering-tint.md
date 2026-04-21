@@ -1,5 +1,7 @@
 ---
 effect: Healing Tints also apply Powerful.
+effect_structured:
+  has_heal: true
 name: Empowering Tint
 pp_cost: 5
 source_picto: empowering-tint

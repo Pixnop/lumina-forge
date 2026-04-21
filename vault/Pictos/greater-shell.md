@@ -1,5 +1,8 @@
 ---
 effect: +10% to Shell damage reduction.
+effect_structured:
+  damage_bonus: 0.1
+  has_defense_buff: 1.0
 lumina_points_cost: 10
 name: Greater Shell
 sources:

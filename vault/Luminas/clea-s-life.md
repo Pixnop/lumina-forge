@@ -1,5 +1,7 @@
 ---
 effect: On turn start, if no damage taken since last turn, recover 100% Health.
+effect_structured:
+  has_heal: true
 name: Clea's Life
 pp_cost: 30
 source_picto: clea-s-life

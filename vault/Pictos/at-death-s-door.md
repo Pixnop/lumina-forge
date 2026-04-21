@@ -1,5 +1,8 @@
 ---
 effect: Deal 50% more damage if Health is below 10%.
+effect_structured:
+  damage_bonus: 0.5
+  has_heal: 1.0
 lumina_points_cost: 5
 name: At Death's Door
 sources:

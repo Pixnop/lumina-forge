@@ -1,5 +1,7 @@
 ---
 effect: 25% increased Break damage on Critical Hits.
+effect_structured:
+  break_damage_bonus: 0.25
 name: Critical Break
 pp_cost: 5
 source_picto: critical-break

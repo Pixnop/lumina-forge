@@ -1,5 +1,7 @@
 ---
 effect: On receiving damage, consume 1 AP to take 30% less damage, if possible.
+effect_structured:
+  damage_bonus: 0.3
 lumina_points_cost: 1
 name: Defensive Mode
 sources:

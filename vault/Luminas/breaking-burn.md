@@ -1,5 +1,7 @@
 ---
 effect: 25% increased Break damage on Burning enemies.
+effect_structured:
+  break_damage_bonus: 0.25
 name: Breaking Burn
 pp_cost: 5
 source_picto: breaking-burn

@@ -1,5 +1,8 @@
 ---
 effect: +1 Shield on being revived.
+effect_structured:
+  has_defense_buff: true
+  has_revive: true
 name: Aegis Revival
 pp_cost: 5
 source_picto: aegis-revival

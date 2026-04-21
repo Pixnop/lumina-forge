@@ -1,5 +1,7 @@
 ---
 effect: +25% increased damage with Gradient Attacks.
+effect_structured:
+  damage_bonus: 0.25
 lumina_points_cost: 5
 name: Gradient Fighter
 sources:

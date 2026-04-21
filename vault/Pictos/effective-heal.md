@@ -1,5 +1,7 @@
 ---
 effect: Double all Heals received.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 30
 name: Effective Heal
 sources:

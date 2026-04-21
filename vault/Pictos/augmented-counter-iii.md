@@ -1,5 +1,7 @@
 ---
 effect: 75% increased Counterattack damage.
+effect_structured:
+  damage_bonus: 0.75
 lumina_points_cost: 7
 name: Augmented Counter III
 sources:

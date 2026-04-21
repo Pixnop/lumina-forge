@@ -40,7 +40,7 @@ def _parent_is_alive(pid: int) -> bool:
     live. Only ``ProcessLookupError`` (ESRCH) is a reliable "dead" signal.
     """
     if sys.platform == "win32":
-        import ctypes  # noqa: PLC0415 — platform-gated
+        import ctypes
 
         PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
         STILL_ACTIVE = 259
@@ -93,7 +93,7 @@ def main() -> None:
         threading.Thread(target=_watch_parent, args=(parent_pid,), daemon=True).start()
 
     os.chdir(_bundled_vault_dir().parent)
-    from optimizer.api.main import main as api_main  # noqa: PLC0415 — lazy import for speed
+    from optimizer.api.main import main as api_main
     api_main()
 
 

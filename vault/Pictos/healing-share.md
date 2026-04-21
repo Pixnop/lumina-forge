@@ -1,5 +1,7 @@
 ---
 effect: Receive 15% of all Heals affecting other characters.
+effect_structured:
+  has_heal: 1.0
 lumina_points_cost: 5
 name: Healing Share
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: 50% increased Break damage on Counterattack.
+effect_structured:
+  break_damage_bonus: 0.5
 lumina_points_cost: 3
 name: Breaking Counter
 sources:

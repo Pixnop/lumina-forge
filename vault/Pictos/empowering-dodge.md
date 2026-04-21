@@ -1,6 +1,8 @@
 ---
 effect: 5% increased damage for each consecutive successful Dodge. Can stack up to
   10 times.
+effect_structured:
+  damage_bonus: 0.05
 lumina_points_cost: 5
 name: Empowering Dodge
 sources:

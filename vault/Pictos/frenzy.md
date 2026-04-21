@@ -1,5 +1,7 @@
 ---
 effect: Each successive Skill hit deals 10% more damage.
+effect_structured:
+  damage_bonus: 0.1
 lumina_points_cost: 20
 name: Frenzy
 sources:

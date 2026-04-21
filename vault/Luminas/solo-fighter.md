@@ -1,5 +1,7 @@
 ---
 effect: Deal 50% more damage if fighting alone.
+effect_structured:
+  damage_bonus: 0.5
 name: Solo Fighter
 pp_cost: 1
 source_picto: solo-fighter

@@ -1,5 +1,6 @@
 import { Download, RefreshCw, Upload } from "lucide-react";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 import { useVaultItems } from "@/api/hooks";
 import { MultiSelectList } from "@/components/MultiSelectList";
@@ -28,6 +29,7 @@ const ATTRIBUTE_KEYS: ReadonlyArray<keyof Inventory["attributes"]> = [
 ];
 
 export function InventoryForm() {
+  const { t } = useTranslation();
   const draft = useInventoryStore((s) => s.draft);
   const setDraft = useInventoryStore((s) => s.setDraft);
   const setCharacter = useInventoryStore((s) => s.setCharacter);
@@ -73,7 +75,7 @@ export function InventoryForm() {
       const parsed = JSON.parse(text) as Inventory;
       setDraft({ ...emptyInventory(parsed.character ?? "gustave"), ...parsed });
     } catch (err) {
-      alert(`Invalid JSON: ${(err as Error).message}`);
+      alert(t("inventory.invalid_json", { error: (err as Error).message }));
     } finally {
       ev.target.value = "";
     }
@@ -96,31 +98,31 @@ export function InventoryForm() {
     <div className="grid gap-4">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle>Character & attributes</CardTitle>
+          <CardTitle>{t("inventory.character_attributes")}</CardTitle>
           <div className="flex items-center gap-2">
             <label className="cursor-pointer">
               <input type="file" accept="application/json" className="hidden" onChange={importJson} />
               <span className="inline-flex h-9 items-center gap-1.5 rounded-md border border-input bg-background px-3 text-sm font-medium hover:bg-accent">
                 <Upload className="h-3.5 w-3.5" />
-                Import JSON
+                {t("inventory.import_json")}
               </span>
             </label>
             <Button variant="outline" size="sm" onClick={exportJson}>
               <Download className="h-3.5 w-3.5" />
-              Export JSON
+              {t("inventory.export_json")}
             </Button>
             <Button variant="ghost" size="sm" onClick={() => reset(draft.character)}>
               <RefreshCw className="h-3.5 w-3.5" />
-              Clear
+              {t("inventory.clear")}
             </Button>
           </div>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="space-y-2">
-            <Label>Character</Label>
+            <Label>{t("inventory.character")}</Label>
             <Select value={draft.character} onValueChange={setCharacter}>
               <SelectTrigger>
-                <SelectValue placeholder="Choose a character" />
+                <SelectValue placeholder={t("inventory.choose_character")} />
               </SelectTrigger>
               <SelectContent>
                 {(characters.data?.items ?? []).map((c) => (
@@ -132,7 +134,7 @@ export function InventoryForm() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="level">Level</Label>
+            <Label htmlFor="level">{t("inventory.level")}</Label>
             <Input
               id="level"
               type="number"
@@ -142,7 +144,7 @@ export function InventoryForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="pp_budget">PP budget</Label>
+            <Label htmlFor="pp_budget">{t("inventory.pp_budget")}</Label>
             <Input
               id="pp_budget"
               type="number"
@@ -153,8 +155,8 @@ export function InventoryForm() {
           </div>
           {ATTRIBUTE_KEYS.map((key) => (
             <div key={key} className="space-y-2">
-              <Label htmlFor={`attr-${key}`} className="capitalize">
-                {key}
+              <Label htmlFor={`attr-${key}`}>
+                {t(`inventory.attr.${key}`)}
               </Label>
               <Input
                 id={`attr-${key}`}
@@ -177,7 +179,7 @@ export function InventoryForm() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Weapons available ({draft.character})</CardTitle>
+          <CardTitle>{t("inventory.weapons_for", { character: draft.character })}</CardTitle>
         </CardHeader>
         <CardContent>
           <MultiSelectList
@@ -185,32 +187,32 @@ export function InventoryForm() {
             value={draft.weapons_available}
             onChange={(weapons_available) => patch({ weapons_available })}
             renderMeta={weaponMeta}
-            placeholder="Search weapons…"
-            emptyMessage="No weapons for this character."
+            placeholder={t("inventory.search_weapons")}
+            emptyMessage={t("inventory.no_weapons")}
           />
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Pictos available</CardTitle>
+          <CardTitle>{t("inventory.pictos_available")}</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div>
             <Label className="mb-2 block text-xs text-muted-foreground">
-              All pictos you own
+              {t("inventory.all_pictos")}
             </Label>
             <MultiSelectList
               items={pictos.data?.items ?? []}
               value={draft.pictos_available}
               onChange={handlePicto}
               renderMeta={pictoMeta}
-              placeholder="Search pictos…"
+              placeholder={t("inventory.search_pictos")}
             />
           </div>
           <div>
             <Label className="mb-2 block text-xs text-muted-foreground">
-              Mastered (unlocks the lumina form)
+              {t("inventory.mastered")}
             </Label>
             <MultiSelectList
               items={(pictos.data?.items ?? []).filter((p) =>
@@ -219,8 +221,8 @@ export function InventoryForm() {
               value={draft.pictos_mastered}
               onChange={(pictos_mastered) => patch({ pictos_mastered })}
               disabled={masteredDisabled}
-              placeholder="Search mastered pictos…"
-              emptyMessage="Mark pictos available on the left first."
+              placeholder={t("inventory.search_mastered")}
+              emptyMessage={t("inventory.mastered_hint")}
             />
           </div>
         </CardContent>
@@ -228,7 +230,7 @@ export function InventoryForm() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Luminas (extra — on top of mastered pictos)</CardTitle>
+          <CardTitle>{t("inventory.luminas_extra")}</CardTitle>
         </CardHeader>
         <CardContent>
           <MultiSelectList
@@ -236,14 +238,14 @@ export function InventoryForm() {
             value={draft.luminas_extra}
             onChange={(luminas_extra) => patch({ luminas_extra })}
             renderMeta={pictoMeta}
-            placeholder="Search luminas…"
+            placeholder={t("inventory.search_luminas")}
           />
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Skills known ({draft.character})</CardTitle>
+          <CardTitle>{t("inventory.skills_for", { character: draft.character })}</CardTitle>
         </CardHeader>
         <CardContent>
           <MultiSelectList
@@ -251,15 +253,15 @@ export function InventoryForm() {
             value={draft.skills_known}
             onChange={(skills_known) => patch({ skills_known })}
             renderMeta={skillMeta}
-            placeholder="Search skills…"
-            emptyMessage="No skills for this character."
+            placeholder={t("inventory.search_skills")}
+            emptyMessage={t("inventory.no_skills")}
           />
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>JSON preview</CardTitle>
+          <CardTitle>{t("inventory.json_preview")}</CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea

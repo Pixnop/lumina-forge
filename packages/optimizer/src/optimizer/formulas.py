@@ -19,6 +19,7 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from optimizer.models import Build, DamageEstimate, FormulaItem
+from optimizer.rotation_sim import total_hits_per_rotation
 
 # Placeholder-formula defaults. Mirrored in vault/Formulas/damage-formula.md
 # so the two models produce identical numbers out of the box.
@@ -58,7 +59,8 @@ class DefaultDamageModel:
     hits_per_rotation: int = HITS_PER_ROTATION
 
     def estimate(self, build: Build) -> DamageEstimate:
-        base = float(build.weapon.base_damage or 0) * self.rotation_turns
+        total_hits = total_hits_per_rotation(build, self.rotation_turns)
+        base = float(build.weapon.base_damage or 0) * total_hits
         scaling_value = _scaling_attribute_value(build)
         might_mult = 1.0 + scaling_value * self.might_per_point
         picto_mult = 1.0

@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Sciel
+hits: 2
 name: Marking Card
 sources:
 - https://expedition33.wiki.fextralife.com/Marking+Card

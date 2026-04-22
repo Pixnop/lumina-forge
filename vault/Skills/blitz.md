@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Verso
+hits: 1
 name: Blitz
 sources:
 - https://expedition33.wiki.fextralife.com/Blitz

@@ -1,6 +1,7 @@
 ---
 ap_cost: 1
 character: Verso
+hits: 1
 name: Sabotage
 sources:
 - https://expedition33.wiki.fextralife.com/Sabotage

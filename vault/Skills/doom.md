@@ -1,6 +1,7 @@
 ---
 ap_cost: 2
 character: Sciel
+hits: 3
 name: Doom
 sources:
 - https://expedition33.wiki.fextralife.com/Doom

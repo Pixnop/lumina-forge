@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Verso
+hits: 5
 name: Light Holder
 sources:
 - https://expedition33.wiki.fextralife.com/Light+Holder

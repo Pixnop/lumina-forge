@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Monoco
+hits: 1
 name: Sakapatate Slam
 sources:
 - https://expedition33.wiki.fextralife.com/Sakapatate+Slam

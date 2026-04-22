@@ -1,6 +1,7 @@
 ---
 ap_cost: 2
 character: Verso
+hits: 1
 name: Quick Strike
 sources:
 - https://expedition33.wiki.fextralife.com/Quick+Strike

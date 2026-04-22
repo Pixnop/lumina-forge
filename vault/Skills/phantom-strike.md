@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Maelle
+hits: 4
 name: Phantom Strike
 sources:
 - https://expedition33.wiki.fextralife.com/Phantom+Strike

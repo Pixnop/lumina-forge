@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Monoco
+hits: 2
 name: Echassier Stabs
 sources:
 - https://expedition33.wiki.fextralife.com/Echassier+Stabs

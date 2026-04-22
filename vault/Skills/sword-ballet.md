@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Maelle
+hits: 5
 name: Sword Ballet
 sources:
 - https://expedition33.wiki.fextralife.com/Sword+Ballet

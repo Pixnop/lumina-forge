@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Lune
+hits: 1
 name: Sky Break
 sources:
 - https://expedition33.wiki.fextralife.com/Sky+Break

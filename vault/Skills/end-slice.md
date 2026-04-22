@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Sciel
+hits: 1
 name: End Slice
 sources:
 - https://expedition33.wiki.fextralife.com/End+Slice

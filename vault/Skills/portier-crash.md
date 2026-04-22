@@ -1,6 +1,7 @@
 ---
 ap_cost: 8
 character: Monoco
+hits: 1
 name: Portier Crash
 sources:
 - https://expedition33.wiki.fextralife.com/Portier+Crash

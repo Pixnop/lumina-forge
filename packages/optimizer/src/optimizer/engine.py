@@ -92,7 +92,7 @@ def _score(
     matched = matcher.matches(build)
     synergy_mult = matcher.multiplier(matched)
     damage = _apply_synergy(model.estimate(build), synergy_mult)
-    damage = _apply_ceiling(damage, model.rotation_ceiling())
+    damage = _apply_ceiling(damage, _build_ceiling(build, model))
     utility = util_scorer.score(build)
     total = damage.est_dps * (1.0 + utility_weight * utility.score_0_1)
     return RankedBuild(
@@ -104,6 +104,27 @@ def _score(
         rotation_hint=suggest_rotation(build),
         why=_explain(build, damage, utility, matched),
     )
+
+
+def _build_ceiling(build: Build, model: DamageModel) -> float:
+    """Use the real hit counts of the build's skills when they're known.
+
+    A 3-turn rotation that fires skills with 4-hit / 5-hit / 3-hit profiles
+    can legitimately output more total damage than the conservative 3-hit
+    baseline, because each hit is capped at 9999 independently. We take
+    the top-3 skills by hits, sum them, and only fall back to the model's
+    default ceiling when nothing's known.
+    """
+    ceiling = model.rotation_ceiling()
+    default_rotation_turns = 3
+    hit_counts = sorted(
+        (s.hits for s in build.skills_used if s.hits and s.hits > 0),
+        reverse=True,
+    )[:default_rotation_turns]
+    if not hit_counts:
+        return ceiling
+    cap_per_hit = ceiling / default_rotation_turns
+    return cap_per_hit * sum(hit_counts)
 
 
 def _apply_ceiling(damage: DamageEstimate, ceiling: float) -> DamageEstimate:

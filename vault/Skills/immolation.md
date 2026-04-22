@@ -1,6 +1,7 @@
 ---
 ap_cost: 2
 character: Lune
+hits: 1
 name: Immolation
 sources:
 - https://expedition33.wiki.fextralife.com/Immolation

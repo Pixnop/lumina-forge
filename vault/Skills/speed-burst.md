@@ -1,6 +1,7 @@
 ---
 ap_cost: 6
 character: Verso
+hits: 5
 name: Speed Burst
 sources:
 - https://expedition33.wiki.fextralife.com/Speed+Burst

@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Lune
+hits: 8
 name: Elemental Genesis
 sources:
 - https://expedition33.wiki.fextralife.com/Elemental+Genesis

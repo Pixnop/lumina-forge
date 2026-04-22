@@ -1,6 +1,7 @@
 ---
 ap_cost: 8
 character: Monoco
+hits: 3
 name: Danseuse Waltz
 sources:
 - https://expedition33.wiki.fextralife.com/Danseuse+Waltz

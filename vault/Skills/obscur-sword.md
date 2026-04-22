@@ -1,6 +1,7 @@
 ---
 ap_cost: 6
 character: Monoco
+hits: 5
 name: Obscur Sword
 sources:
 - https://expedition33.wiki.fextralife.com/Obscur+Sword

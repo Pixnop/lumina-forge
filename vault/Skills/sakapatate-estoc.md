@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Monoco
+hits: 1
 name: Sakapatate Estoc
 sources:
 - https://expedition33.wiki.fextralife.com/Sakapatate+Estoc

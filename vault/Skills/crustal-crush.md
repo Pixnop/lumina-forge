@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Lune
+hits: 5
 name: Crustal Crush
 sources:
 - https://expedition33.wiki.fextralife.com/Crustal+Crush

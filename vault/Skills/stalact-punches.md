@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Monoco
+hits: 4
 name: Stalact Punches
 sources:
 - https://expedition33.wiki.fextralife.com/Stalact+Punches

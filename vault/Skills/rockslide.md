@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Lune
+hits: 2
 name: Rockslide
 sources:
 - https://expedition33.wiki.fextralife.com/Rockslide

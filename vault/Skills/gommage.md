@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Maelle
+hits: 1
 name: Gommage
 sources:
 - https://expedition33.wiki.fextralife.com/Gommage

@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Sciel
+hits: 2
 name: Delaying Slash
 sources:
 - https://expedition33.wiki.fextralife.com/Delaying+Slash

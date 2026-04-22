@@ -1,6 +1,7 @@
 ---
 ap_cost: 1
 character: Maelle
+hits: 1
 name: Offensive Switch
 sources:
 - https://expedition33.wiki.fextralife.com/Offensive+Switch

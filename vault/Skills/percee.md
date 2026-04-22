@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Maelle
+hits: 1
 name: Percee
 sources:
 - https://expedition33.wiki.fextralife.com/Percee

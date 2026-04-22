@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Verso
+hits: 1
 name: Perfect Break
 sources:
 - https://expedition33.wiki.fextralife.com/Perfect+Break

@@ -37,6 +37,7 @@ class Skill(VaultEntry):
     category: SkillCategory | None = None
     targeting: Targeting | None = None
     element: Element | None = None
+    hits: int | None = None
     damage: DamageSpec | None = None
     status_applied: list[StatusApplication] = Field(default_factory=list)
     cooldown: int | None = None

@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Monoco
+hits: 3
 name: Chapelier Slash
 sources:
 - https://expedition33.wiki.fextralife.com/Chapelier+Slash

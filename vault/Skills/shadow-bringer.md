@@ -1,6 +1,7 @@
 ---
 ap_cost: 1
 character: Sciel
+hits: 10
 name: Shadow Bringer
 sources:
 - https://expedition33.wiki.fextralife.com/Shadow+Bringer

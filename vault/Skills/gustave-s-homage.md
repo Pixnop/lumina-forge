@@ -1,6 +1,7 @@
 ---
 ap_cost: 8
 character: Maelle
+hits: 8
 name: Gustave's Homage
 sources:
 - https://expedition33.wiki.fextralife.com/Gustave's+Homage

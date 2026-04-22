@@ -7,6 +7,7 @@ conflicts:
     value: Gustave
   - source: https://expedition33.wiki.fextralife.com/From+Fire+(Verso)
     value: Verso
+hits: 3
 name: From Fire
 sources:
 - https://expedition33.wiki.fextralife.com/From+Fire
@@ -28,4 +29,3 @@ Deals medium single target damage. 3 hits. Uses weapon's element. Heals self by 
 Deals medium single target damage. 3 hits. Uses weapon's element. Heals self by 20% Health if the target Burns : Increased damage.
 
 **Prerequisite:** N/A
-

@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Monoco
+hits: 3
 name: Cultist Slashes
 sources:
 - https://expedition33.wiki.fextralife.com/Cultist+Slashes

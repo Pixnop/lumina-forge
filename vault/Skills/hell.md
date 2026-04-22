@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Lune
+hits: 2
 name: Hell
 sources:
 - https://expedition33.wiki.fextralife.com/Hell

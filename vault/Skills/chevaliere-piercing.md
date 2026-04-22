@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Monoco
+hits: 6
 name: Chevaliere Piercing
 sources:
 - https://expedition33.wiki.fextralife.com/Chevaliere+Piercing

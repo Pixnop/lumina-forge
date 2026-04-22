@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Lune
+hits: 6
 name: Thunderfall
 sources:
 - https://expedition33.wiki.fextralife.com/Thunderfall

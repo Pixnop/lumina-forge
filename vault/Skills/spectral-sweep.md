@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Sciel
+hits: 6
 name: Spectral Sweep
 sources:
 - https://expedition33.wiki.fextralife.com/Spectral+Sweep

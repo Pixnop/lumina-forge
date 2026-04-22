@@ -1,6 +1,7 @@
 ---
 ap_cost: 1
 character: Lune
+hits: 1
 name: Tremor
 sources:
 - https://expedition33.wiki.fextralife.com/Tremor

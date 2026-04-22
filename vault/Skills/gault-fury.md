@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Monoco
+hits: 4
 name: Gault Fury
 sources:
 - https://expedition33.wiki.fextralife.com/Gault+Fury

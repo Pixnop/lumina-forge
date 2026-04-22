@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Sciel
+hits: 1
 name: Phantom Blade
 sources:
 - https://expedition33.wiki.fextralife.com/Phantom+Blade

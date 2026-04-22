@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Sciel
+hits: 3
 name: Firing Shadow
 sources:
 - https://expedition33.wiki.fextralife.com/Firing+Shadow

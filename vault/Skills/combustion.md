@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Maelle
+hits: 2
 name: Combustion
 sources:
 - https://expedition33.wiki.fextralife.com/Combustion

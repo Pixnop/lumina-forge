@@ -1,6 +1,7 @@
 ---
 ap_cost: 8
 character: Monoco
+hits: 4
 name: Duallist Storm
 sources:
 - https://expedition33.wiki.fextralife.com/Duallist+Storm

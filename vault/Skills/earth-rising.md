@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Lune
+hits: 1
 name: Earth Rising
 sources:
 - https://expedition33.wiki.fextralife.com/Earth+Rising

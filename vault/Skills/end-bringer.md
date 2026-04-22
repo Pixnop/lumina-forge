@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Verso
+hits: 6
 name: End Bringer
 sources:
 - https://expedition33.wiki.fextralife.com/End+Bringer

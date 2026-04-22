@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Gustave
+hits: 1
 name: Overcharge
 sources:
 - https://expedition33.wiki.fextralife.com/Overcharge

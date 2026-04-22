@@ -1,6 +1,7 @@
 ---
 ap_cost: 2
 character: Monoco
+hits: 1
 name: Ballet Charm
 sources:
 - https://expedition33.wiki.fextralife.com/Ballet+Charm

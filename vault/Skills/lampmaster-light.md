@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Monoco
+hits: 1
 name: Lampmaster Light
 sources:
 - https://expedition33.wiki.fextralife.com/Lampmaster+Light

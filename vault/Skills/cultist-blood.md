@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Monoco
+hits: 3
 name: Cultist Blood
 sources:
 - https://expedition33.wiki.fextralife.com/Cultist+Blood

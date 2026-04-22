@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Verso
+hits: 5
 name: Phantom Stars
 sources:
 - https://expedition33.wiki.fextralife.com/Phantom+Stars

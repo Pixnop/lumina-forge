@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Verso
+hits: 2
 name: Purification
 sources:
 - https://expedition33.wiki.fextralife.com/Purification

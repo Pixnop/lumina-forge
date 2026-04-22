@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Monoco
+hits: 3
 name: Sakapatate Fire
 sources:
 - https://expedition33.wiki.fextralife.com/Sakapatate+Fire

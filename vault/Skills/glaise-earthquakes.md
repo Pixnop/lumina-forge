@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Monoco
+hits: 3
 name: Glaise Earthquakes
 sources:
 - https://expedition33.wiki.fextralife.com/Glaise+Earthquakes

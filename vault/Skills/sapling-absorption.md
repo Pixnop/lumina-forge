@@ -1,6 +1,7 @@
 ---
 ap_cost: 6
 character: Monoco
+hits: 3
 name: Sapling Absorption
 sources:
 - https://expedition33.wiki.fextralife.com/Sapling+Absorption

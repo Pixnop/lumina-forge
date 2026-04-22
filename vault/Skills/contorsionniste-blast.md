@@ -1,6 +1,7 @@
 ---
 ap_cost: 6
 character: Monoco
+hits: 1
 name: Contorsionniste Blast
 sources:
 - https://expedition33.wiki.fextralife.com/Contorsionniste+Blast

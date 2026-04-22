@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Monoco
+hits: 2
 name: Hexga Crush
 sources:
 - https://expedition33.wiki.fextralife.com/Hexga+Crush

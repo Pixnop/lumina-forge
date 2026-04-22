@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Verso
+hits: 8
 name: Angel's Eyes
 sources:
 - https://expedition33.wiki.fextralife.com/Angel's+Eyes

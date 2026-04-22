@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Lune
+hits: 6
 name: Lightning Dance
 sources:
 - https://expedition33.wiki.fextralife.com/Lightning+Dance

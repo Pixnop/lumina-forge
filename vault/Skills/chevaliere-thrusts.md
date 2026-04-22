@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Monoco
+hits: 3
 name: Chevaliere Thrusts
 sources:
 - https://expedition33.wiki.fextralife.com/Chevaliere+Thrusts

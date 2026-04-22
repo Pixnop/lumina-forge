@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Monoco
+hits: 2
 name: Aberration Light
 sources:
 - https://expedition33.wiki.fextralife.com/Aberration+Light

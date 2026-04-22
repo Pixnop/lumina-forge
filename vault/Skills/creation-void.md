@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Monoco
+hits: 3
 name: Creation Void
 sources:
 - https://expedition33.wiki.fextralife.com/Creation+Void

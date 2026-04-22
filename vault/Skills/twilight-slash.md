@@ -1,6 +1,7 @@
 ---
 ap_cost: 2
 character: Sciel
+hits: 1
 name: Twilight Slash
 sources:
 - https://expedition33.wiki.fextralife.com/Twilight+Slash

@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Verso
+hits: 3
 name: Berserk Slash
 sources:
 - https://expedition33.wiki.fextralife.com/Berserk+Slash

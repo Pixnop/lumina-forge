@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Monoco
+hits: 1
 name: Clair Enfeeble
 sources:
 - https://expedition33.wiki.fextralife.com/Clair+Enfeeble

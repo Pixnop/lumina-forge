@@ -7,6 +7,7 @@ conflicts:
     value: Gustave
   - source: https://expedition33.wiki.fextralife.com/Marking+Shot+(Verso)
     value: Verso
+hits: 1
 name: Marking Shot
 sources:
 - https://expedition33.wiki.fextralife.com/Marking+Shot
@@ -28,4 +29,3 @@ Deals low single target Lightning damage. 1 hit. Applies Mark
 Deals low single target damage. 1 hit. Uses weapon's element. Applies Mark : Increased damage
 
 **Prerequisite:** Assault Zero
-

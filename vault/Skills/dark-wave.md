@@ -1,6 +1,7 @@
 ---
 ap_cost: 6
 character: Sciel
+hits: 3
 name: Dark Wave
 sources:
 - https://expedition33.wiki.fextralife.com/Dark+Wave

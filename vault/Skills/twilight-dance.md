@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Sciel
+hits: 4
 name: Twilight Dance
 sources:
 - https://expedition33.wiki.fextralife.com/Twilight+Dance

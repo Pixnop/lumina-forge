@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Monoco
+hits: 4
 name: Jar Lampstorm
 sources:
 - https://expedition33.wiki.fextralife.com/Jar+Lampstorm

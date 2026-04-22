@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Maelle
+hits: 5
 name: Burning Canvas
 sources:
 - https://expedition33.wiki.fextralife.com/Burning+Canvas

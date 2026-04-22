@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Maelle
+hits: 1
 name: Fencer's Flurry
 sources:
 - https://expedition33.wiki.fextralife.com/Fender's+Flurry

@@ -1,6 +1,7 @@
 ---
 ap_cost: 6
 character: Maelle
+hits: 3
 name: Fleuret Fury
 sources:
 - https://expedition33.wiki.fextralife.com/Fleuret+Fury

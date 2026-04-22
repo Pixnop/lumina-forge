@@ -7,6 +7,12 @@ conflicts:
     value: Gustave
   - source: https://expedition33.wiki.fextralife.com/Strike+Storm+(Verso)
     value: Verso
+  hits:
+  - source: https://expedition33.wiki.fextralife.com/Strike+Storm
+    value: 6
+  - source: https://expedition33.wiki.fextralife.com/Strike+Storm+(Verso)
+    value: 5
+hits: 6
 name: Strike Storm
 sources:
 - https://expedition33.wiki.fextralife.com/Strike+Storm
@@ -28,4 +34,3 @@ Deals very high single target damage. 6 hits. Uses Weapon's element. Critical Hi
 Deals very high single target damage. 5 hits. Uses weapon's element. Critical Hits generate 2 additional Perfection : Increased damage
 
 **Prerequisite:** Defiant Strike
-

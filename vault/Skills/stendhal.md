@@ -1,6 +1,7 @@
 ---
 ap_cost: 8
 character: Maelle
+hits: 1
 name: Stendhal
 sources:
 - https://expedition33.wiki.fextralife.com/Stendhal

@@ -1,6 +1,7 @@
 ---
 ap_cost: 6
 character: Monoco
+hits: 5
 name: Grosse Tete Whack
 sources:
 - https://expedition33.wiki.fextralife.com/Grosse+Tete+Whack

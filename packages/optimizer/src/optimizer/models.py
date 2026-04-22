@@ -65,6 +65,7 @@ class SkillItem(_VaultItem):
     category: str | None = None
     targeting: str | None = None
     element: str | None = None
+    hits: int | None = None
     cooldown: int | None = None
 
 

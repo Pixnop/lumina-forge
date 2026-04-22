@@ -1,6 +1,7 @@
 ---
 ap_cost: 2
 character: Maelle
+hits: 1
 name: Degagement
 sources:
 - https://expedition33.wiki.fextralife.com/Degagement

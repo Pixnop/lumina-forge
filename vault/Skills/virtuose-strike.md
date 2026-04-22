@@ -1,6 +1,7 @@
 ---
 ap_cost: 1
 character: Maelle
+hits: 5
 name: Virtuose Strike
 sources:
 - https://expedition33.wiki.fextralife.com/Virtuose+Strike

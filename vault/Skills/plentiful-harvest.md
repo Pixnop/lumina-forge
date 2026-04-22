@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Sciel
+hits: 2
 name: Plentiful Harvest
 sources:
 - https://expedition33.wiki.fextralife.com/Plentiful+Harvest

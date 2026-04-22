@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Maelle
+hits: 2
 name: Breaking Rules
 sources:
 - https://expedition33.wiki.fextralife.com/Breaking+Rules

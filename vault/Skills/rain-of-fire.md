@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Maelle
+hits: 2
 name: Rain of Fire
 sources:
 - https://expedition33.wiki.fextralife.com/Rain+of+Fire

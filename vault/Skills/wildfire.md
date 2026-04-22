@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Lune
+hits: 1
 name: Wildfire
 sources:
 - https://expedition33.wiki.fextralife.com/Wildfire

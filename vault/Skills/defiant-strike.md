@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Verso
+hits: 2
 name: Defiant Strike
 sources:
 - https://expedition33.wiki.fextralife.com/Defiant+Strike

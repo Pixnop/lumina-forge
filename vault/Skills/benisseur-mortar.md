@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Monoco
+hits: 3
 name: Benisseur Mortar
 sources:
 - https://expedition33.wiki.fextralife.com/Benisseur+Mortar

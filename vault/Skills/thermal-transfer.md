@@ -1,6 +1,7 @@
 ---
 ap_cost: 2
 character: Lune
+hits: 2
 name: Thermal Transfer
 sources:
 - https://expedition33.wiki.fextralife.com/Thermal+Transfer

@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Sciel
+hits: 1
 name: Final Path
 sources:
 - https://expedition33.wiki.fextralife.com/Final+Path

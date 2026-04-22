@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Maelle
+hits: 1
 name: Payback
 sources:
 - https://expedition33.wiki.fextralife.com/Payback

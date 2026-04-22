@@ -28,4 +28,3 @@ Applies Powerful to 1-3 allies, increasing the damage they deal for 3 turns. Giv
 Applies Powerful to 1-3 Allies, increasing damage they deal for 3 turns. Gives 0-2 Perfection : Duration increased to 5 turns.
 
 **Prerequisite:** Quick Strike
-

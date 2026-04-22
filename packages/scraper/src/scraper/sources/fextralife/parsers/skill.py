@@ -6,6 +6,7 @@ Columns: Name | AP Cost | Character | Prerequisite | Skill Effect
 from __future__ import annotations
 
 import logging
+import re
 from collections.abc import Iterator
 
 from scraper.models import RawPage, Skill
@@ -20,6 +21,8 @@ from scraper.sources.fextralife.parsers._common import (
 )
 
 log = logging.getLogger(__name__)
+
+_HITS_RE = re.compile(r"(\d+)\s+hits?\b", re.I)
 
 
 def parse_skills(page: RawPage) -> Iterator[Skill]:
@@ -44,11 +47,14 @@ def parse_skills(page: RawPage) -> Iterator[Skill]:
         if detail_url:
             sources.append(detail_url)
         sources.append(str(page.url))
+        hits_match = _HITS_RE.search(effect)
+        hits = int(hits_match.group(1)) if hits_match else None
         yield Skill(
             slug=slugify(name),
             name=name,
             character=character_name,
             ap_cost=ap_cost,
+            hits=hits,
             body=body,
             sources=sources,  # type: ignore[arg-type]
         )

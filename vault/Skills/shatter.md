@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Gustave
+hits: 1
 name: Shatter
 sources:
 - https://expedition33.wiki.fextralife.com/Shatter

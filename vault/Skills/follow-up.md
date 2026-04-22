@@ -1,6 +1,7 @@
 ---
 ap_cost: 5
 character: Verso
+hits: 1
 name: Follow Up
 sources:
 - https://expedition33.wiki.fextralife.com/Follow+Up

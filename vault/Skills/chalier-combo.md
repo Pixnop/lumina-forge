@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Monoco
+hits: 6
 name: Chalier Combo
 sources:
 - https://expedition33.wiki.fextralife.com/Chalier+Combo

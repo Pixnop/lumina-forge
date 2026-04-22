@@ -1,6 +1,7 @@
 ---
 ap_cost: 1
 character: Verso
+hits: 3
 name: Paradigm Shift
 sources:
 - https://expedition33.wiki.fextralife.com/Paradigm+Shift

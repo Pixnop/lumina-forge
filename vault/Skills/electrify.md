@@ -1,6 +1,7 @@
 ---
 ap_cost: 1
 character: Lune
+hits: 3
 name: Electrify
 sources:
 - https://expedition33.wiki.fextralife.com/Electrify

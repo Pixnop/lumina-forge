@@ -1,6 +1,7 @@
 ---
 ap_cost: 3
 character: Lune
+hits: 4
 name: Elemental Trick
 sources:
 - https://expedition33.wiki.fextralife.com/Elemental+Trick

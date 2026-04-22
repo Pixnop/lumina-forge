@@ -1,6 +1,7 @@
 ---
 ap_cost: 2
 character: Sciel
+hits: 1
 name: Focused Foretell
 sources:
 - https://expedition33.wiki.fextralife.com/Focused+Foretell

@@ -1,6 +1,7 @@
 ---
 ap_cost: 9
 character: Verso
+hits: 13
 name: Steeled Strike
 sources:
 - https://expedition33.wiki.fextralife.com/Steeled+Strike

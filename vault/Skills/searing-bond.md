@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Sciel
+hits: 1
 name: Searing Bond
 sources:
 - https://expedition33.wiki.fextralife.com/Searing+Bond

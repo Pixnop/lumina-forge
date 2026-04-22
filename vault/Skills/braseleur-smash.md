@@ -1,6 +1,7 @@
 ---
 ap_cost: 4
 character: Monoco
+hits: 2
 name: Braseleur Smash
 sources:
 - https://expedition33.wiki.fextralife.com/Braseleur+Smash

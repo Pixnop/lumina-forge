@@ -1,6 +1,7 @@
 ---
 ap_cost: 7
 character: Maelle
+hits: 1
 name: Momentum Strike
 sources:
 - https://expedition33.wiki.fextralife.com/Momentum+Strike

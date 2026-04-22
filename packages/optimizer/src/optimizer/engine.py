@@ -5,9 +5,12 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 
+from optimizer.archetype import ArchetypeMatcher, find_aspirational
 from optimizer.enumerator import build_context, enumerate_builds
 from optimizer.formulas import DamageModel, DefaultDamageModel, VaultFormulaModel
 from optimizer.models import (
+    ArchetypeMatch,
+    AspirationalBuild,
     Build,
     DamageEstimate,
     Inventory,
@@ -37,13 +40,21 @@ class EngineOptions:
         return {"dps": 0.0, "balanced": 0.2, "utility": 0.5}[self.mode]
 
 
+@dataclass(slots=True, frozen=True)
+class OptimizeResult:
+    """Top-K builds plus curated archetypes the player is close to running."""
+
+    builds: list[RankedBuild]
+    aspirational: list[AspirationalBuild]
+
+
 def optimize(
     inventory: Inventory,
     index: VaultIndex,
     options: EngineOptions | None = None,
     *,
     damage_model: DamageModel | None = None,
-) -> list[RankedBuild]:
+) -> OptimizeResult:
     """Enumerate valid builds for ``inventory`` and return the top ``options.top_k``.
 
     Builds are deduplicated by their (pictos, luminas) signature — for
@@ -51,6 +62,13 @@ def optimize(
     land in ``RankedBuild.weapon_alternatives``. This stops the top-K
     from being five copies of the same loadout with only the weapon slot
     changing.
+
+    Candidates that match a curated archetype under ``vault/Builds`` carry
+    an :class:`ArchetypeMatch` on the returned build; the score gains a
+    small tier-proportional bonus so known archetypes rise above generic
+    builds of equivalent DPS. Curated archetypes the player is within a
+    couple of items of running surface separately in
+    :attr:`OptimizeResult.aspirational`.
     """
     opts = options or EngineOptions()
     utility_weight = opts.resolved_utility_weight()
@@ -64,13 +82,23 @@ def optimize(
         model = DefaultDamageModel()
     matcher = SynergyMatcher(tuple(index.synergies))
     util_scorer = UtilityScorer()
+    archetype_matcher = ArchetypeMatcher(tuple(index.curated_builds))
+    skills_known = frozenset(inventory.skills_known)
 
     ctx = build_context(inventory, index)
 
     # Stage 1 — score every candidate and bucket them by loadout signature.
     groups: dict[tuple[str, ...], list[RankedBuild]] = {}
     for candidate in enumerate_builds(ctx):
-        ranked = _score(candidate, model, matcher, util_scorer, utility_weight)
+        ranked = _score(
+            candidate,
+            model,
+            matcher,
+            util_scorer,
+            utility_weight,
+            archetype_matcher,
+            skills_known,
+        )
         groups.setdefault(_signature(candidate), []).append(ranked)
 
     # Stage 2 — per signature, promote the best weapon; keep the rest as alts.
@@ -89,7 +117,12 @@ def optimize(
         winners.append(best.model_copy(update={"weapon_alternatives": alternatives}))
 
     winners.sort(key=_ranking_key, reverse=True)
-    return winners[: opts.top_k]
+
+    aspirational = find_aspirational(index.curated_builds, inventory)
+    return OptimizeResult(
+        builds=winners[: opts.top_k],
+        aspirational=aspirational,
+    )
 
 
 # --- internals --------------------------------------------------------------
@@ -108,9 +141,8 @@ def _signature(build: Build) -> tuple[str, ...]:
 
 
 def _ranking_key(ranked: RankedBuild) -> tuple[float, float]:
-    """Order by est_dps, break ties on raw_dps — so when several builds cap
-    at the same ceiling the one with the most headroom comes first."""
-    return (ranked.damage.est_dps, ranked.damage.raw_dps)
+    """Order by total_score (archetype bonus included), break ties on raw_dps."""
+    return (ranked.total_score, ranked.damage.raw_dps)
 
 
 def _score(
@@ -119,13 +151,18 @@ def _score(
     matcher: SynergyMatcher,
     util_scorer: UtilityScorer,
     utility_weight: float,
+    archetype_matcher: ArchetypeMatcher,
+    skills_known: frozenset[str],
 ) -> RankedBuild:
     matched = matcher.matches(build)
     synergy_mult = matcher.multiplier(matched)
     damage = _apply_synergy(model.estimate(build), synergy_mult)
     damage = _apply_ceiling(damage, _build_ceiling(build, model))
     utility = util_scorer.score(build)
+    archetype = archetype_matcher.match(build, skills_known=skills_known)
     total = damage.est_dps * (1.0 + utility_weight * utility.score_0_1)
+    if archetype is not None:
+        total *= 1.0 + archetype.bonus_applied
     return RankedBuild(
         build=build,
         damage=damage,
@@ -133,7 +170,8 @@ def _score(
         synergies_matched=matched,
         total_score=total,
         rotation_hint=suggest_rotation(build),
-        why=_explain(build, damage, utility, matched),
+        why=_explain(build, damage, utility, matched, archetype),
+        archetype=archetype,
     )
 
 
@@ -188,11 +226,22 @@ def _explain(
     damage: DamageEstimate,
     utility: UtilityScore,
     matched_synergies: list[SynergyItem],
+    archetype: ArchetypeMatch | None = None,
 ) -> list[str]:
-    reasons: list[str] = [
-        f"Weapon {build.weapon.name} contributes base damage {damage.base:.0f} over 3 turns.",
-        f"Pictos multiplier: ×{damage.picto_mult:.2f} ({', '.join(p.name for p in build.pictos)}).",
-    ]
+    reasons: list[str] = []
+    if archetype is not None:
+        suffix = "" if archetype.confidence == "exact" else " (variant — weapon differs)"
+        reasons.append(
+            f"Matches archetype **{archetype.name}** "
+            f"[{archetype.dps_tier or '?'}-tier]{suffix} "
+            f"— +{archetype.bonus_applied * 100:.0f}% ranking bonus."
+        )
+    reasons.append(
+        f"Weapon {build.weapon.name} contributes base damage {damage.base:.0f} over 3 turns."
+    )
+    reasons.append(
+        f"Pictos multiplier: ×{damage.picto_mult:.2f} ({', '.join(p.name for p in build.pictos)})."
+    )
     if build.luminas:
         reasons.append(
             f"Luminas multiplier: ×{damage.lumina_mult:.2f} "

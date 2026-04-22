@@ -1,4 +1,4 @@
-import { ChevronRight, Sparkles, Sword } from "lucide-react";
+import { Award, ChevronRight, Sparkles, Sword } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,6 +30,18 @@ export function BuildCard({ rank, build, active, onClick }: Props) {
           </CardTitle>
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </div>
+        {build.archetype && (
+          <div className="mt-1 flex items-center gap-2">
+            <Badge variant="success" className="gap-1">
+              <Award className="h-3 w-3" />
+              {build.archetype.name}
+            </Badge>
+            <span className="text-xs text-muted-foreground">
+              {build.archetype.dps_tier}-tier
+              {build.archetype.confidence === "variant" && " · variant"}
+            </span>
+          </div>
+        )}
       </CardHeader>
       <CardContent className="space-y-3 pt-0">
         <div className="grid grid-cols-2 gap-2 text-sm">

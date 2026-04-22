@@ -13,9 +13,11 @@ from __future__ import annotations
 
 from typing import Any, Literal, Self
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 Mode = Literal["dps", "utility", "balanced"]
+
+DpsTier = Literal["S", "A", "B", "C", "D"]
 
 
 # --- vault-side items -------------------------------------------------------
@@ -90,6 +92,46 @@ class FormulaItem(_VaultItem):
     variables: list[str] = Field(default_factory=list)
     applies_to: str = ""
     effect_structured: dict[str, Any] = Field(default_factory=dict)
+
+
+class CuratedBuild(_VaultItem):
+    """A hand-curated archetype under ``Builds/`` — used as a known-good reference.
+
+    Slugs in ``weapon``, ``pictos``, ``luminas``, ``required_skills`` are
+    stored bare (no ``Pictos/`` / ``Weapons/`` prefix) so they compare
+    directly against the other indices.
+    """
+
+    character: str | None = None
+    archetype: str | None = None
+    role: str | None = None
+    dps_tier: DpsTier | None = None
+    weapon: str | None = None
+    pictos: list[str] = Field(default_factory=list)
+    luminas: list[str] = Field(default_factory=list)
+    required_skills: list[str] = Field(default_factory=list)
+    attributes: dict[str, int] = Field(default_factory=dict)
+    dependencies: list[str] = Field(default_factory=list)
+    tags: list[str] = Field(default_factory=list)
+
+    @field_validator("weapon", mode="before")
+    @classmethod
+    def _strip_weapon_prefix(cls, value: object) -> object:
+        return _strip_folder_prefix(value) if isinstance(value, str) else value
+
+    @field_validator("pictos", "luminas", "required_skills", mode="before")
+    @classmethod
+    def _strip_path_prefix(cls, value: object) -> object:
+        if isinstance(value, list):
+            return [_strip_folder_prefix(v) if isinstance(v, str) else v for v in value]
+        return value
+
+
+def _strip_folder_prefix(slug: str) -> str:
+    """``Pictos/foo-bar`` → ``foo-bar``. Idempotent on already-bare slugs."""
+    if "/" in slug:
+        return slug.rsplit("/", 1)[-1].strip()
+    return slug.strip()
 
 
 # --- inventory (user input) -------------------------------------------------
@@ -215,6 +257,48 @@ class Build(BaseModel):
     attributes: Attributes = Field(default_factory=Attributes)
 
 
+class ArchetypeMatch(BaseModel):
+    """A ranked build recognised as (or close to) a curated archetype."""
+
+    model_config = ConfigDict(frozen=True)
+
+    slug: str
+    name: str
+    archetype: str | None = None
+    dps_tier: DpsTier | None = None
+    # ``exact``: weapon + pictos + luminas + required skills all match the
+    # curated loadout. ``variant``: pictos + luminas match, weapon differs —
+    # the curated build's "## Variants" section explicitly allows this.
+    confidence: Literal["exact", "variant"] = "exact"
+    bonus_applied: float = 0.0
+
+
+class AspirationalBuild(BaseModel):
+    """A curated archetype the player is close to being able to run."""
+
+    model_config = ConfigDict(frozen=True)
+
+    slug: str
+    name: str
+    character: str | None = None
+    archetype: str | None = None
+    dps_tier: DpsTier | None = None
+    # Slugs the player is missing from their inventory, bucketed by kind
+    # so the UI can render grouped hints ("Il vous manque: 1 picto, 1 skill").
+    missing_pictos: list[str] = Field(default_factory=list)
+    missing_luminas: list[str] = Field(default_factory=list)
+    missing_weapon: str | None = None
+    missing_skills: list[str] = Field(default_factory=list)
+
+    def missing_count(self) -> int:
+        return (
+            len(self.missing_pictos)
+            + len(self.missing_luminas)
+            + (1 if self.missing_weapon else 0)
+            + len(self.missing_skills)
+        )
+
+
 class RankedBuild(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -229,3 +313,5 @@ class RankedBuild(BaseModel):
     # descending. ``build.weapon`` is the primary pick; this list holds
     # the runners-up so the UI can show "also works with…".
     weapon_alternatives: list[WeaponAlternative] = Field(default_factory=list)
+    # Set when this candidate matches a curated archetype from ``vault/Builds``.
+    archetype: ArchetypeMatch | None = None

@@ -6,7 +6,14 @@ from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from optimizer.models import DamageEstimate, Inventory, Mode, UtilityScore
+from optimizer.models import (
+    ArchetypeMatch,
+    AspirationalBuild,
+    DamageEstimate,
+    Inventory,
+    Mode,
+    UtilityScore,
+)
 
 # --- request ----------------------------------------------------------------
 
@@ -57,12 +64,14 @@ class RankedBuildResponse(BaseModel):
     rotation_hint: list[str]
     why: list[str]
     weapon_alternatives: list[WeaponAlternativeResponse] = []
+    archetype: ArchetypeMatch | None = None
 
 
 class OptimizeResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     builds: list[RankedBuildResponse]
+    aspirational: list[AspirationalBuild] = []
     total_enumerated: int | None = None
 
 

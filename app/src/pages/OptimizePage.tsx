@@ -3,6 +3,7 @@ import { AlertCircle, ArrowLeft, Loader2, Wand2 } from "lucide-react";
 import * as React from "react";
 
 import { useOptimize } from "@/api/hooks";
+import { AspirationalList } from "@/components/AspirationalList";
 import { BuildCard } from "@/components/BuildCard";
 import { Button } from "@/components/ui/button";
 import {
@@ -112,21 +113,26 @@ export function OptimizePage() {
       )}
 
       {mutation.data && mutation.data.builds.length > 0 && (
-        <div className="grid gap-3 md:grid-cols-2">
-          {mutation.data.builds.map((b) => (
-            <BuildCard
-              key={b.rank}
-              rank={b.rank}
-              build={b}
-              onClick={() =>
-                navigate({
-                  to: "/builds/$rank",
-                  params: { rank: String(b.rank) },
-                })
-              }
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-3 md:grid-cols-2">
+            {mutation.data.builds.map((b) => (
+              <BuildCard
+                key={b.rank}
+                rank={b.rank}
+                build={b}
+                onClick={() =>
+                  navigate({
+                    to: "/builds/$rank",
+                    params: { rank: String(b.rank) },
+                  })
+                }
+              />
+            ))}
+          </div>
+          {mutation.data.aspirational && mutation.data.aspirational.length > 0 && (
+            <AspirationalList aspirational={mutation.data.aspirational} />
+          )}
+        </>
       )}
 
       {!mutation.data && !mutation.isPending && (

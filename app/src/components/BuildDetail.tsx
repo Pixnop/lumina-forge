@@ -1,3 +1,5 @@
+import { Award } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { RankedBuildResponse } from "@/types/api";
@@ -28,6 +30,22 @@ export function BuildDetail({ build }: Props) {
             <div className="text-sm text-muted-foreground">
               {build.loadout.character}
             </div>
+            {build.archetype && (
+              <div className="mt-2 flex items-center gap-2">
+                <Badge variant="success" className="gap-1">
+                  <Award className="h-3.5 w-3.5" />
+                  {build.archetype.name}
+                </Badge>
+                <span className="text-xs text-muted-foreground">
+                  {build.archetype.dps_tier}-tier
+                  {build.archetype.confidence === "variant"
+                    ? " · variant (weapon differs)"
+                    : " · exact"}
+                  {" · +"}
+                  {(build.archetype.bonus_applied * 100).toFixed(0)}% rank bonus
+                </span>
+              </div>
+            )}
           </div>
           <div className="text-right">
             <div className="text-xs uppercase tracking-wide text-muted-foreground">

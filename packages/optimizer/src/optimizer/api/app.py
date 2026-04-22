@@ -157,9 +157,10 @@ def _register_routes(app: FastAPI) -> None:
             mode=body.mode,
             weight_utility=body.weight_utility,
         )
-        ranked = optimize(body.inventory, index, options)
+        result = optimize(body.inventory, index, options)
         return OptimizeResponse(
-            builds=[_to_response(rank, r) for rank, r in enumerate(ranked, start=1)],
+            builds=[_to_response(rank, r) for rank, r in enumerate(result.builds, start=1)],
+            aspirational=list(result.aspirational),
         )
 
 
@@ -242,4 +243,5 @@ def _to_response(rank: int, r: RankedBuild) -> RankedBuildResponse:
             )
             for a in r.weapon_alternatives
         ],
+        archetype=r.archetype,
     )

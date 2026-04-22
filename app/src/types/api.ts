@@ -54,6 +54,29 @@ export interface BuildLoadout {
   skills_used: string[];
 }
 
+export type DpsTier = "S" | "A" | "B" | "C" | "D";
+
+export interface ArchetypeMatch {
+  slug: string;
+  name: string;
+  archetype?: string | null;
+  dps_tier?: DpsTier | null;
+  confidence: "exact" | "variant";
+  bonus_applied: number;
+}
+
+export interface AspirationalBuild {
+  slug: string;
+  name: string;
+  character?: string | null;
+  archetype?: string | null;
+  dps_tier?: DpsTier | null;
+  missing_pictos: string[];
+  missing_luminas: string[];
+  missing_weapon?: string | null;
+  missing_skills: string[];
+}
+
 export interface RankedBuildResponse {
   rank: number;
   total_score: number;
@@ -64,6 +87,7 @@ export interface RankedBuildResponse {
   rotation_hint: string[];
   why: string[];
   weapon_alternatives: WeaponAlternative[];
+  archetype?: ArchetypeMatch | null;
 }
 
 export interface OptimizeRequest {
@@ -75,6 +99,7 @@ export interface OptimizeRequest {
 
 export interface OptimizeResponse {
   builds: RankedBuildResponse[];
+  aspirational: AspirationalBuild[];
   total_enumerated?: number | null;
 }
 

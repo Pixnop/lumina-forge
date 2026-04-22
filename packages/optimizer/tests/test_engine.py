@@ -15,8 +15,8 @@ def test_returns_requested_top_k(
 ) -> None:
     inventory = Inventory.model_validate(sample_inventory_dict)
     index = VaultLoader(mini_vault).load()
-    ranked = optimize(inventory, index, EngineOptions(top_k=5))
-    assert len(ranked) == 5
+    result = optimize(inventory, index, EngineOptions(top_k=5))
+    assert len(result.builds) == 5
 
 
 def test_ranking_is_sorted_descending(
@@ -24,8 +24,8 @@ def test_ranking_is_sorted_descending(
 ) -> None:
     inventory = Inventory.model_validate(sample_inventory_dict)
     index = VaultLoader(mini_vault).load()
-    ranked = optimize(inventory, index, EngineOptions(top_k=5))
-    scores = [r.total_score for r in ranked]
+    result = optimize(inventory, index, EngineOptions(top_k=5))
+    scores = [r.total_score for r in result.builds]
     assert scores == sorted(scores, reverse=True)
 
 
@@ -35,8 +35,8 @@ def test_best_build_prefers_stronger_weapon(
     """Heavy Hammer (150 base) beats Noahram (100 base), all else equal."""
     inventory = Inventory.model_validate(sample_inventory_dict)
     index = VaultLoader(mini_vault).load()
-    ranked = optimize(inventory, index, EngineOptions(top_k=1))
-    assert ranked[0].build.weapon.slug == "heavy-hammer"
+    result = optimize(inventory, index, EngineOptions(top_k=1))
+    assert result.builds[0].build.weapon.slug == "heavy-hammer"
 
 
 def test_utility_mode_bumps_defensive_builds(
@@ -45,8 +45,8 @@ def test_utility_mode_bumps_defensive_builds(
     """In utility mode, defensive pictos should appear higher in the ranking."""
     inventory = Inventory.model_validate(sample_inventory_dict)
     index = VaultLoader(mini_vault).load()
-    dps_top = optimize(inventory, index, EngineOptions(top_k=10, mode="dps"))
-    util_top = optimize(inventory, index, EngineOptions(top_k=10, mode="utility"))
+    dps_top = optimize(inventory, index, EngineOptions(top_k=10, mode="dps")).builds
+    util_top = optimize(inventory, index, EngineOptions(top_k=10, mode="utility")).builds
 
     def has_defensive(rb) -> bool:  # type: ignore[no-untyped-def]
         return any(p.category == "Defensive" for p in rb.build.pictos)
@@ -64,9 +64,9 @@ def test_rotation_hint_is_populated(
 ) -> None:
     inventory = Inventory.model_validate(sample_inventory_dict)
     index = VaultLoader(mini_vault).load()
-    ranked = optimize(inventory, index, EngineOptions(top_k=1))
-    assert 1 <= len(ranked[0].rotation_hint) <= 3
-    assert all(isinstance(line, str) and line for line in ranked[0].rotation_hint)
+    result = optimize(inventory, index, EngineOptions(top_k=1))
+    assert 1 <= len(result.builds[0].rotation_hint) <= 3
+    assert all(isinstance(line, str) and line for line in result.builds[0].rotation_hint)
 
 
 def test_why_reasons_are_non_empty(
@@ -74,5 +74,5 @@ def test_why_reasons_are_non_empty(
 ) -> None:
     inventory = Inventory.model_validate(sample_inventory_dict)
     index = VaultLoader(mini_vault).load()
-    ranked = optimize(inventory, index, EngineOptions(top_k=1))
-    assert len(ranked[0].why) >= 2
+    result = optimize(inventory, index, EngineOptions(top_k=1))
+    assert len(result.builds[0].why) >= 2

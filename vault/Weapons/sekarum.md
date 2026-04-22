@@ -1,6 +1,8 @@
 ---
 base_damage: 3390
 character: Maelle
+image_path: _assets/Weapons/sekarum.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/sekarum-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Sekarum
 passives:
 - effect: Switch to Virtuose Stance on breaking any Shield.

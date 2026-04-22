@@ -1,6 +1,8 @@
 ---
 base_damage: 4035
 character: Sciel
+image_path: _assets/Weapons/direton.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/direton-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Direton
 passives:
 - effect: +1 AP per Moon charge on turn start.
@@ -12,6 +14,11 @@ passives:
   effect_structured:
     damage_bonus: 0.5
   name: Lvl. 10
+- effect: +1 AP per Moon charge on turn start.
+  effect_structured:
+    ap_bonus: 1
+    ap_trigger: turn_start
+  name: Lvl. 4
 scaling_stat: Agility
 sources:
 - https://expedition33.wiki.fextralife.com/Direton

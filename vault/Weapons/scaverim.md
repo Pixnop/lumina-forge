@@ -1,6 +1,8 @@
 ---
 base_damage: 4197
 character: Lune
+image_path: _assets/Weapons/scaverim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/scaverim-lune-weapon-expedition-33-wiki-guide-130px.png
 name: Scaverim
 passives:
 - effect: 50% chance to generate a Dark Stain when consuming Stains. Deal 50% more

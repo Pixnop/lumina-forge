@@ -1,6 +1,8 @@
 ---
 base_damage: 3067
 character: Monoco
+image_path: _assets/Weapons/ballaro.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/ballaro-monoco-weapon-expedition-33-wiki-guide-130px.png
 name: Ballaro
 passives:
 - effect: Reverse Bestial Wheel Order.
@@ -9,6 +11,11 @@ passives:
 - effect: 'Using an Upgraded Skill gives 1 AP to all other allies. Lvl: 20 : Almighty
     Mask gives 2 AP to all allies.'
   effect_structured: {}
+  name: Lvl. 10
+- effect: 'Using an Upgraded Skill gives 1 AP to all other allies. Lvl: 20 : Almighty
+    Mask gives 2 AP to all allies.'
+  effect_structured:
+    ap_bonus: 1
   name: Lvl. 10
 scaling_stat: Agility
 sources:

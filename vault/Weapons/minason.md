@@ -1,6 +1,8 @@
 ---
 base_damage: 2809
 character: Sciel
+image_path: _assets/Weapons/minason.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/minason-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Minason
 passives:
 - effect: Sun skills have increased damage for each Foretell on the target. Moon Skills

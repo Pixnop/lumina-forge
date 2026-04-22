@@ -1,6 +1,8 @@
 ---
 base_damage: 3810
 character: Lune
+image_path: _assets/Weapons/bonbim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/bonbimweapons_clair_obscur_expedition_33_wiki_guide_137px.png
 name: Bonbim
 passives:
 - effect: +5% Critical chance per Burn on the target.

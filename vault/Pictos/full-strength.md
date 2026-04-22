@@ -4,6 +4,8 @@ effect: 25% increased damage on full Health (the term 'increased' implies that t
 effect_structured:
   damage_bonus: 0.25
   has_heal: 1.0
+image_path: _assets/Pictos/full-strength.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/10-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 lumina_points_cost: 15
 name: Full Strength
 sources:

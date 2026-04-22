@@ -1,6 +1,8 @@
 ---
 base_damage: 3358
 character: Sciel
+image_path: _assets/Weapons/gobluson.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/gobluson-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Gobluson
 passives:
 - effect: During Twilight, every time Foretell is applied, it also affects another

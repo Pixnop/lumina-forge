@@ -3,6 +3,8 @@ effect: Each successful Parry increases damage by 5% until end of the following 
   Taking any damage removes this buff.
 effect_structured:
   damage_bonus: 0.05
+image_path: _assets/Pictos/empowering-parry.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/7-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 lumina_points_cost: 5
 name: Empowering Parry
 sources:

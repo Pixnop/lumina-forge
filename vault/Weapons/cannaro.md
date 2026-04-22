@@ -1,6 +1,8 @@
 ---
 base_damage: 3648
 character: Monoco
+image_path: _assets/Weapons/cannaro.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/cannaroweapons_clair_obscur_expedition_33_wiki_guide_70px.png
 name: Cannaro
 passives:
 - effect: Free Aim Shots move the Bestial Wheel 1 step forward.

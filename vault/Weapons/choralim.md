@@ -1,6 +1,8 @@
 ---
 base_damage: 3551
 character: Lune
+image_path: _assets/Weapons/choralim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/choralim-lune-weapon-expedition-33-wiki-guide-130px.png
 name: Choralim
 passives:
 - effect: 100% Critical Chance when 4 Stans are simultaneously active.

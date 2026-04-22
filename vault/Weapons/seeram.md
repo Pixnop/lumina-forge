@@ -1,6 +1,8 @@
 ---
 base_damage: 3713
 character: Gustave
+image_path: _assets/Weapons/seeram.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/seeram-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Seeram
 passives:
 - effect: -1 to all Perfection gain but can't reach Rank S.

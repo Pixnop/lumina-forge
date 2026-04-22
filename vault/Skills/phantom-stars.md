@@ -2,6 +2,8 @@
 ap_cost: 9
 character: Verso
 hits: 5
+image_path: _assets/Skills/phantom-stars.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/phantom-stars-verso-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Phantom Stars
 sources:
 - https://expedition33.wiki.fextralife.com/Phantom+Stars

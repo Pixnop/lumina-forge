@@ -1,6 +1,8 @@
 ---
 ap_cost: 5
 character: Lune
+image_path: _assets/Skills/terraquake.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/terraquake-lune-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Terraquake
 sources:
 - https://expedition33.wiki.fextralife.com/Terraquake

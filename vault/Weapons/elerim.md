@@ -1,6 +1,8 @@
 ---
 base_damage: 3551
 character: Lune
+image_path: _assets/Weapons/elerim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/elerim-lune-weapon-expedition-33-wiki-guide-130px.png
 name: Elerim
 passives:
 - effect: Consuming an Earth Stain applies 1 Shield to self.

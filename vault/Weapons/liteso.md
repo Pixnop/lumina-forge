@@ -1,6 +1,8 @@
 ---
 base_damage: 3551
 character: Gustave
+image_path: _assets/Weapons/liteso.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/liteso-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Liteso
 passives:
 - effect: Base Attack consumes all Shields to deal 100% increased damage per Shield.

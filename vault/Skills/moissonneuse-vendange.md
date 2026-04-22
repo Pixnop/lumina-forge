@@ -2,6 +2,8 @@
 ap_cost: 5
 character: Monoco
 hits: 3
+image_path: _assets/Skills/moissonneuse-vendange.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/moissonneuse-vendange-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Moissonneuse Vendange
 sources:
 - https://expedition33.wiki.fextralife.com/Moissonneuse+Vendange

@@ -1,6 +1,8 @@
 ---
 base_damage: 3551
 character: Lune
+image_path: _assets/Weapons/cleim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/cleimweapons_clair_obscur_expedition_33_wiki_guide_137px.png
 name: Cleim
 passives:
 - effect: Damage can't be reduced, blocked, or absorbed by Elemental Affinities.

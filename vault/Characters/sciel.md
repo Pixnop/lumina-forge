@@ -1,6 +1,8 @@
 ---
 archetypes:
 - Scythe
+image_path: _assets/Characters/sciel.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/sciel-character-portrait-clair-obscur-expedition-33-wiki-guide-250px.png
 name: Sciel
 signature_skills:
 - Focused Foretell

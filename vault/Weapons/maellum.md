@@ -1,6 +1,8 @@
 ---
 base_damage: 3228
 character: Maelle
+image_path: _assets/Weapons/maellum.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/maellum-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Maellum
 passives:
 - effect: N/A

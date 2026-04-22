@@ -1,6 +1,8 @@
 ---
 archetypes:
 - Sword & Dagger
+image_path: _assets/Characters/verso.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/verso-character-portrait-clair-obscur-expedition-33-wiki-guide-250px.png
 name: Verso
 signature_skills:
 - Assault Zero

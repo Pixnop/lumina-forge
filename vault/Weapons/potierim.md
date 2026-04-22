@@ -1,6 +1,8 @@
 ---
 base_damage: 2906
 character: Lune
+image_path: _assets/Weapons/potierim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/potierim-lune-weapon-expedition-33-wiki-guide-130px.png
 name: Potierim
 passives:
 - effect: Healing Skills generate one additional 1 Light stain.
@@ -10,6 +12,11 @@ passives:
 - effect: 'Consuming a Light Stain applies Slow to a random enemy. Lvl: 20 : Base
     Attack generates a Light Stain.'
   effect_structured: {}
+  name: Lvl. 10
+- effect: 'Consuming a Light Stain applies Slow to a random enemy. Lvl: 20 : Base
+    Attack generates a Light Stain.'
+  effect_structured:
+    applies_buff: slow
   name: Lvl. 10
 scaling_stat: Agility
 sources:

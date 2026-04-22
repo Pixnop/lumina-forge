@@ -1,6 +1,8 @@
 ---
 archetypes:
 - Elemental Magic
+image_path: _assets/Characters/lune.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/lune-character-portrait-clair-obscur-expedition-33-wiki-guide-250px.png
 name: Lune
 signature_skills:
 - Immolation

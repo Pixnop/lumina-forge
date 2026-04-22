@@ -1,6 +1,8 @@
 ---
 base_damage: 3519
 character: Maelle
+image_path: _assets/Weapons/facesum.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/facesum-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Facesum
 passives:
 - effect: In Offensive Stance, double the amount of Burn applied.

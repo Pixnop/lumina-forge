@@ -1,6 +1,8 @@
 ---
 base_damage: 3713
 character: Monoco
+image_path: _assets/Weapons/joyaro.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/joyaro-monoco-weapon-expedition-33-wiki-guide-130px.png
 name: Joyaro
 passives:
 - effect: Start battle in Almighty Mask.

@@ -2,6 +2,8 @@
 ap_cost: 2
 character: Monoco
 hits: 1
+image_path: _assets/Skills/demineur-thunder.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/demineur-thunder-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Demineur Thunder
 sources:
 - https://expedition33.wiki.fextralife.com/Demineur+Thunder

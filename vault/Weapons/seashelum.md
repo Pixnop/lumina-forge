@@ -1,6 +1,8 @@
 ---
 base_damage: 3003
 character: Maelle
+image_path: _assets/Weapons/seashelum.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/seashellum-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Seashelum
 passives:
 - effect: +1 Shield on switching to Offesnive Stance.

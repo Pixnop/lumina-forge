@@ -2,6 +2,8 @@
 ap_cost: 3
 character: Sciel
 hits: 1
+image_path: _assets/Skills/end-slice.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/end-slice-sciel-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: End Slice
 sources:
 - https://expedition33.wiki.fextralife.com/End+Slice

@@ -1,6 +1,8 @@
 ---
 base_damage: 3067
 character: Lune
+image_path: _assets/Weapons/saperim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/saperim-lune-weapon-expedition-33-wiki-guide-130px.png
 name: Saperim
 passives:
 - effect: Using a Gradient Attack generates 1 additional Light Stain.

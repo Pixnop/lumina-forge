@@ -1,6 +1,8 @@
 ---
 base_damage: 2583
 character: Lune
+image_path: _assets/Weapons/redalim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/redalim-lune-weapon-expedition-33-wiki-guide-130px.png
 name: Redalim
 passives:
 - effect: Healing Skills generate one additional Light stain.

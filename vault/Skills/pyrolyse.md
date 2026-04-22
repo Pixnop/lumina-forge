@@ -2,6 +2,8 @@
 ap_cost: 9
 character: Maelle
 hits: 3
+image_path: _assets/Skills/pyrolyse.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/pyrolyse-maelle-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Pyrolyse
 sources:
 - https://expedition33.wiki.fextralife.com/Pyrolyse

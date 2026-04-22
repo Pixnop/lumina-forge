@@ -1,6 +1,8 @@
 ---
 base_damage: 4197
 character: Sciel
+image_path: _assets/Weapons/blizzon.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/blizzon-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Blizzon
 passives:
 - effect: While having at least 1 active Moon charge, Moon Skills are always Critical

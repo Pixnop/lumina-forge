@@ -1,6 +1,8 @@
 ---
 base_damage: 3874
 character: Lune
+image_path: _assets/Weapons/snowim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/snowim-lune-weapon-expedition-33-wiki-guide-130px.png
 name: Snowim
 passives:
 - effect: Freeze self when falling below 30% health. Prevent the next instance of
@@ -11,6 +13,13 @@ passives:
 - effect: 'On turn start, if Frozen, remove Freeze and recover 60% Health. Lvl: 20
     : Gain 2 Ice Stains and 3 AP when Frozen.'
   effect_structured:
+    has_heal: true
+  name: Lvl. 10
+- effect: 'On turn start, if Frozen, remove Freeze and recover 60% Health. Lvl: 20
+    : Gain 2 Ice Stains and 3 AP when Frozen.'
+  effect_structured:
+    ap_bonus: 3
+    ap_trigger: turn_start
     has_heal: true
   name: Lvl. 10
 scaling_stat: Agility

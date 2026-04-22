@@ -1,6 +1,8 @@
 ---
 base_damage: 3067
 character: Lune
+image_path: _assets/Weapons/trebuchim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/trebuchim-lune-weapon-expedition-33-wiki-guide-130px.png
 name: Trebuchim
 passives:
 - effect: Generate a random Stain on Free Aim shot.
@@ -9,6 +11,11 @@ passives:
 - effect: '+1 AP when Stains are consumed. Lvl: 20 : Base Attack generates 2 random
     Stains.'
   effect_structured: {}
+  name: Lvl. 10
+- effect: '+1 AP when Stains are consumed. Lvl: 20 : Base Attack generates 2 random
+    Stains.'
+  effect_structured:
+    ap_bonus: 1
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

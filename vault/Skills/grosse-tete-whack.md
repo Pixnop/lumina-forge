@@ -2,6 +2,8 @@
 ap_cost: 6
 character: Monoco
 hits: 5
+image_path: _assets/Skills/grosse-tete-whack.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/grosse-tete-whack-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Grosse Tete Whack
 sources:
 - https://expedition33.wiki.fextralife.com/Grosse+Tete+Whack

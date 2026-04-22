@@ -1,6 +1,8 @@
 ---
 archetypes:
 - Rapier
+image_path: _assets/Characters/maelle.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/maelle-character-portrait-clair-obscur-expedition-33-wiki-guide-250px.png
 name: Maelle
 signature_skills:
 - Offensive Switch

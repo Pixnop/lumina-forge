@@ -1,6 +1,8 @@
 ---
 base_damage: 3551
 character: Gustave
+image_path: _assets/Weapons/nosaram.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/nosaram-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Nosaram
 passives:
 - effect: Double Perfection gained on Free Aim shots.

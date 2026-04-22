@@ -2,6 +2,8 @@
 ap_cost: 6
 character: Monoco
 hits: 3
+image_path: _assets/Skills/sapling-absorption.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/sapling-absorption-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Sapling Absorption
 sources:
 - https://expedition33.wiki.fextralife.com/Sapling+Absorption

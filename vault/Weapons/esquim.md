@@ -1,6 +1,8 @@
 ---
 base_damage: 3616
 character: Lune
+image_path: _assets/Weapons/esquim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/esquimweapons_clair_obscur_expedition_33_wiki_guide_137px.png
 name: Esquim
 passives:
 - effect: Using a Skill that doesn't consume Stains increases damage by 20%. Resets
@@ -12,6 +14,11 @@ passives:
   effect_structured:
     damage_bonus: 3.0
   name: Lvl. 10
+- effect: Using a Skill that doesn't consume Stains increases damage by 20%. Resets
+    on using a Skill that consumes Stains
+  effect_structured:
+    damage_bonus: 0.2
+  name: Lvl. 4
 scaling_stat: Agility
 sources:
 - https://expedition33.wiki.fextralife.com/Esquim

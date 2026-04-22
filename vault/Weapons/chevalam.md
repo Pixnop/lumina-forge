@@ -1,6 +1,8 @@
 ---
 base_damage: 3067
 character: Gustave
+image_path: _assets/Weapons/chevalam.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/chevalam-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Chevalam
 passives:
 - effect: Start battle at Rank S, but can't be Healed or gain Shields.

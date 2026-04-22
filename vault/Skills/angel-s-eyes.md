@@ -2,6 +2,8 @@
 ap_cost: 3
 character: Verso
 hits: 8
+image_path: _assets/Skills/angel-s-eyes.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/angels-eyes-verso-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Angel's Eyes
 sources:
 - https://expedition33.wiki.fextralife.com/Angel's+Eyes

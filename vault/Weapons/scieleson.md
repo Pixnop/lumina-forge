@@ -1,6 +1,8 @@
 ---
 base_damage: 3454
 character: Sciel
+image_path: _assets/Weapons/scieleson.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/scieleson-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Scieleson
 passives:
 - effect: N/A

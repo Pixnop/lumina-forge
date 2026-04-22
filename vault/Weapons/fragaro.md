@@ -1,6 +1,8 @@
 ---
 base_damage: 4197
 character: Monoco
+image_path: _assets/Weapons/fragaro.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/fragaro-monoco-weapon-expedition-33-wiki-guide-130px.png
 name: Fragaro
 passives:
 - effect: Free Aim shots spin the Bestial Wheel to a random value.

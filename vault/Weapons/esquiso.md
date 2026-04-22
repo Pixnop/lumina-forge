@@ -1,5 +1,7 @@
 ---
 character: Gustave
+image_path: _assets/Weapons/esquiso.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/esquisoweapons_clair_obscur_expedition_33_wiki_guide_70px.png
 name: Esquiso
 passives:
 - effect: Gain Aureole on Rank S, but drop to Rank D

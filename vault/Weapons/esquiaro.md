@@ -1,6 +1,8 @@
 ---
 base_damage: 3745
 character: Monoco
+image_path: _assets/Weapons/esquiaro.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/esquiaroweapons_clair_obscur_expedition_33_wiki_guide_70px.png
 name: Esquiaro
 passives:
 - effect: Base Attack moves the Bestial Wheel to Heavy Mask.

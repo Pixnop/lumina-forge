@@ -1,6 +1,8 @@
 ---
 base_damage: 2906
 character: Maelle
+image_path: _assets/Weapons/medalum.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/medalum-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Medalum
 passives:
 - effect: Start in Virtuose Stance.

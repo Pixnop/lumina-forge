@@ -4,6 +4,8 @@ effect: 30% increased damage while having Shields, but receiving any damage alwa
 effect_structured:
   damage_bonus: 0.3
   has_defense_buff: 1.0
+image_path: _assets/Pictos/shield-affinity.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/4-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 lumina_points_cost: 15
 name: Shield Affinity
 sources:

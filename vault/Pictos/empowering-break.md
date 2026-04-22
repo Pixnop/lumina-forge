@@ -2,6 +2,8 @@
 effect: Gain Powerful on Breaking a target.
 effect_structured:
   damage_bonus: 0.5
+image_path: _assets/Pictos/empowering-break.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/8-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 lumina_points_cost: 3
 name: Empowering Break
 sources:

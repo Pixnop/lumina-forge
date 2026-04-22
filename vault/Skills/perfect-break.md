@@ -2,6 +2,8 @@
 ap_cost: 7
 character: Verso
 hits: 1
+image_path: _assets/Skills/perfect-break.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/perfect-break-verso-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Perfect Break
 sources:
 - https://expedition33.wiki.fextralife.com/Perfect+Break

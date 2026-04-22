@@ -1,6 +1,8 @@
 ---
 base_damage: 3713
 character: Gustave
+image_path: _assets/Weapons/lanceram.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/lanceram-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Lanceram
 passives:
 - effect: Rank can't be lower than C.

@@ -1,5 +1,7 @@
 ---
 character: Sciel
+image_path: _assets/Weapons/duollison.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/duollisonweapons_clair_obscur_expedition_33_wiki_guide_130px.png
 name: Duollison
 passives:
 - effect: Each successive base attack hit on the same turn deals 100% more damage.

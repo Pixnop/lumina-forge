@@ -1,6 +1,8 @@
 ---
 ap_cost: 6
 character: Lune
+image_path: _assets/Skills/storm-caller.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/storm-caller-lune-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Storm Caller
 sources:
 - https://expedition33.wiki.fextralife.com/Storm+Caller

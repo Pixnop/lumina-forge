@@ -1,6 +1,8 @@
 ---
 base_damage: 2744
 character: Sciel
+image_path: _assets/Weapons/corderon.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/corderon-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Corderon
 passives:
 - effect: Curse self on battle start. Deal 50% more damage while Cursed.

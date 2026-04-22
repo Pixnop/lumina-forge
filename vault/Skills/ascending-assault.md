@@ -2,6 +2,8 @@
 ap_cost: 5
 character: Verso
 hits: 1
+image_path: _assets/Skills/ascending-assault.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/ascending-assault-verso-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Ascending Assault
 sources:
 - https://expedition33.wiki.fextralife.com/Ascending+Assault

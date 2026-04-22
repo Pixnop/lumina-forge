@@ -1,6 +1,8 @@
 ---
 archetypes:
 - Staff
+image_path: _assets/Characters/monoco.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/monoco-character-portrait-clair-obscur-expedition-33-wiki-guide-250px.png
 name: Monoco
 signature_skills:
 - Chalier Combo

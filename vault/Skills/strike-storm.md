@@ -12,7 +12,14 @@ conflicts:
     value: 6
   - source: https://expedition33.wiki.fextralife.com/Strike+Storm+(Verso)
     value: 5
+  image_url:
+  - source: https://expedition33.wiki.fextralife.com/Strike+Storm
+    value: https://expedition33.wiki.fextralife.com/file/Expedition-33/strike-storm-gustave-skill-clair-obscur-expedition-33-wiki-guide-100px-min.png
+  - source: https://expedition33.wiki.fextralife.com/Strike+Storm+(Verso)
+    value: https://expedition33.wiki.fextralife.com/file/Expedition-33/strike-storm-verso-clair-obscur-expedition-33-wiki-guide-200px-min.png
 hits: 6
+image_path: _assets/Skills/strike-storm.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/strike-storm-gustave-skill-clair-obscur-expedition-33-wiki-guide-100px-min.png
 name: Strike Storm
 sources:
 - https://expedition33.wiki.fextralife.com/Strike+Storm

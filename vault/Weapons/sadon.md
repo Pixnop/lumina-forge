@@ -1,6 +1,8 @@
 ---
 base_damage: 2583
 character: Sciel
+image_path: _assets/Weapons/sadon.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/sadon-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Sadon
 passives:
 - effect: On turn start, gain 1 Shield if at least 1 Sun charge is active.

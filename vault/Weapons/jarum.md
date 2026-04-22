@@ -1,6 +1,8 @@
 ---
 base_damage: 2583
 character: Maelle
+image_path: _assets/Weapons/jarum.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/jarum-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Jarum
 passives:
 - effect: Switch to Virtuose Stance on Counterattack.

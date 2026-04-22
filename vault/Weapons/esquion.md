@@ -1,6 +1,8 @@
 ---
 base_damage: 3842
 character: Sciel
+image_path: _assets/Weapons/esquion.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/esquionweapons_clair_obscur_expedition_33_wiki_guide_130px.png
 name: Esquion
 passives:
 - effect: Can't enter Twilight. On turn start, if Moon and Sun charges are balanced,

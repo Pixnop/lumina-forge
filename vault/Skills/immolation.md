@@ -2,6 +2,8 @@
 ap_cost: 2
 character: Lune
 hits: 1
+image_path: _assets/Skills/immolation.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/immolation-lune-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Immolation
 sources:
 - https://expedition33.wiki.fextralife.com/Immolation

@@ -1,6 +1,8 @@
 ---
 base_damage: 3745
 character: Monoco
+image_path: _assets/Weapons/baguettaro.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/baguettaroweapons_clair_obscur_expedition_33_wiki_guide_70px.png
 name: Baguettaro
 passives:
 - effect: Critical hits apply Burn.
@@ -12,6 +14,10 @@ passives:
   effect_structured:
     damage_bonus: 0.5
   name: Lvl. 10
+- effect: Critical hits apply Burn.
+  effect_structured:
+    applies_buff: burn
+  name: Lvl. 4
 scaling_stat: Luck
 sources:
 - https://expedition33.wiki.fextralife.com/Baguettaro

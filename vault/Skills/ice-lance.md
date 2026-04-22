@@ -2,6 +2,8 @@
 ap_cost: 4
 character: Lune
 hits: 1
+image_path: _assets/Skills/ice-lance.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/ice-lance-lune-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Ice Lance
 sources:
 - https://expedition33.wiki.fextralife.com/Ice+Lance

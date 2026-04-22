@@ -2,6 +2,8 @@
 ap_cost: 4
 character: Monoco
 hits: 3
+image_path: _assets/Skills/glaise-earthquakes.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/glaise-earthquakes-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Glaise Earthquakes
 sources:
 - https://expedition33.wiki.fextralife.com/Glaise+Earthquakes

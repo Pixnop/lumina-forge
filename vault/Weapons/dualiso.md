@@ -1,6 +1,8 @@
 ---
 base_damage: 1776
 character: Gustave
+image_path: _assets/Weapons/dualiso.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/dualiso-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Dualiso
 passives:
 - effect: Play again after a Base Attack.

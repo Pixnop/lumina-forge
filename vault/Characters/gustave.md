@@ -1,6 +1,8 @@
 ---
 archetypes:
 - Sword & Pistol
+image_path: _assets/Characters/gustave.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/gustave-character-portrait-clair-obscur-expedition-33-wiki-guide-250px.png
 name: Gustave
 signature_skills:
 - Lumiere Assault

@@ -11,6 +11,8 @@ effect: 10% increased damage while all allies are alive (the term 'increased' im
   extra hidden 1.1x damage buff when equipped).
 effect_structured:
   damage_bonus: 0.1
+image_path: _assets/Pictos/teamwork.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/3-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 lumina_points_cost: 5
 name: Teamwork
 sources:

@@ -2,6 +2,8 @@
 ap_cost: 9
 character: Maelle
 hits: 1
+image_path: _assets/Skills/payback.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/payback-maelle-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Payback
 sources:
 - https://expedition33.wiki.fextralife.com/Payback

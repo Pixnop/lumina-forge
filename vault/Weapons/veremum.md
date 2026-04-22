@@ -1,6 +1,8 @@
 ---
 base_damage: 3293
 character: Maelle
+image_path: _assets/Weapons/veremum.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/veremum-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Veremum
 passives:
 - effect: If Stanceless, Base Attack switches to Offensive Stance.
@@ -9,6 +11,12 @@ passives:
 - effect: 'Counterattacks apply Defenceless. Lvl: 20 : +50% Critical Chance while
     in Offensive Stance.'
   effect_structured:
+    crit_rate_bonus: 0.5
+  name: Lvl. 10
+- effect: 'Counterattacks apply Defenceless. Lvl: 20 : +50% Critical Chance while
+    in Offensive Stance.'
+  effect_structured:
+    applies_buff: defenceless
     crit_rate_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Luck

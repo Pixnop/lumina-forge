@@ -2,6 +2,8 @@
 ap_cost: 5
 character: Monoco
 hits: 4
+image_path: _assets/Skills/jar-lampstorm.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/jar-lampstorm-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Jar Lampstorm
 sources:
 - https://expedition33.wiki.fextralife.com/Jar+Lampstorm

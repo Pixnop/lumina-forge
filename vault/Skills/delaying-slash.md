@@ -2,6 +2,8 @@
 ap_cost: 5
 character: Sciel
 hits: 2
+image_path: _assets/Skills/delaying-slash.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/delyaing-slash-sciel-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Delaying Slash
 sources:
 - https://expedition33.wiki.fextralife.com/Delaying+Slash

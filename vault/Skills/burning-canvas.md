@@ -2,6 +2,8 @@
 ap_cost: 5
 character: Maelle
 hits: 5
+image_path: _assets/Skills/burning-canvas.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/burning-canvas-maelle-skill-clair-obscur-expedition-33-wiki-guide-100px-min.png
 name: Burning Canvas
 sources:
 - https://expedition33.wiki.fextralife.com/Burning+Canvas

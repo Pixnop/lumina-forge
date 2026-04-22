@@ -1,6 +1,8 @@
 ---
 base_damage: 3067
 character: Lune
+image_path: _assets/Weapons/troubadim.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/troubadim-lune-weapon-expedition-33-wiki-guide-130px.png
 name: Troubadim
 passives:
 - effect: Free Aim Shots deal damage to an additional random target.

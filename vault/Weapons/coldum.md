@@ -1,6 +1,8 @@
 ---
 base_damage: 2583
 character: Maelle
+image_path: _assets/Weapons/coldum.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/codlum-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Coldum
 passives:
 - effect: Self-Heal by 2% Health on dealing a Critical hit.

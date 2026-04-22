@@ -2,6 +2,8 @@
 ap_cost: 3
 character: Lune
 hits: 1
+image_path: _assets/Skills/sky-break.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/sky-break-lune-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Sky Break
 sources:
 - https://expedition33.wiki.fextralife.com/Sky+Break

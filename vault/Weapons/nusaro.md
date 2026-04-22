@@ -1,6 +1,8 @@
 ---
 base_damage: 4197
 character: Monoco
+image_path: _assets/Weapons/nusaro.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/nusaro-monoco-weapon-expedition-33-wiki-guide-130px.png
 name: Nusaro
 passives:
 - effect: Parries increase the Bestial Wheel by 1. Taking damage resets the Bestial
@@ -9,6 +11,11 @@ passives:
   name: Lvl. 4
 - effect: 'Upgraded Skills deal 30% more damage. Lvl: 20 : +1 AP on Mask change.'
   effect_structured:
+    damage_bonus: 0.3
+  name: Lvl. 10
+- effect: 'Upgraded Skills deal 30% more damage. Lvl: 20 : +1 AP on Mask change.'
+  effect_structured:
+    ap_bonus: 1
     damage_bonus: 0.3
   name: Lvl. 10
 scaling_stat: Agility

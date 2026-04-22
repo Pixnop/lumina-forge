@@ -4,6 +4,8 @@ effect_structured:
   damage_bonus: 0.5
   has_heal: 1.0
   trigger_uptime: 0.4
+image_path: _assets/Pictos/empowered-healer.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/9-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 lumina_points_cost: 10
 name: Empowered Healer
 sources:

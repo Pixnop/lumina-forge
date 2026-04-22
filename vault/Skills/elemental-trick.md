@@ -2,6 +2,8 @@
 ap_cost: 3
 character: Lune
 hits: 4
+image_path: _assets/Skills/elemental-trick.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/elemental-trick-lune-skill-clair-obscur-expedition-33-wiki-guide-100px-min.png
 name: Elemental Trick
 sources:
 - https://expedition33.wiki.fextralife.com/Elemental+Trick

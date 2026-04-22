@@ -2,6 +2,8 @@
 ap_cost: 9
 character: Monoco
 hits: 3
+image_path: _assets/Skills/sakapatate-fire.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/sakapatate-fire-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Sakapatate Fire
 sources:
 - https://expedition33.wiki.fextralife.com/Sakapatate+Fire

@@ -1,6 +1,8 @@
 ---
 base_damage: 3228
 character: Gustave
+image_path: _assets/Weapons/abysseram.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/abysseram-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Abysseram
 passives:
 - effect: 50% increased damage on Rank D. No damage increase on other ranks.

@@ -2,6 +2,8 @@
 effect: On turn start, if no damage taken since last turn, recover 100% Health.
 effect_structured:
   has_heal: 1.0
+image_path: _assets/Pictos/clea-s-life.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/1-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 lumina_points_cost: 30
 name: Clea's Life
 sources:

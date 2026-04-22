@@ -3,6 +3,8 @@ effect: +1 AP on Base Attack.
 effect_structured:
   ap_bonus: 1
   ap_trigger: base_attack
+image_path: _assets/Pictos/energising-attack-i.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/3-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 lumina_points_cost: 10
 name: Energising Attack I
 sources:

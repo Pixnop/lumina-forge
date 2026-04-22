@@ -1,6 +1,8 @@
 ---
 base_damage: 2260
 character: Gustave
+image_path: _assets/Weapons/noahram.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/noahram-verleso-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Noahram
 passives:
 - effect: N/A

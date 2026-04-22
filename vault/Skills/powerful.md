@@ -7,6 +7,13 @@ conflicts:
     value: Gustave
   - source: https://expedition33.wiki.fextralife.com/Powerful+(Verso)
     value: Verso
+  image_url:
+  - source: https://expedition33.wiki.fextralife.com/Powerful+(Skill)
+    value: https://expedition33.wiki.fextralife.com/file/Expedition-33/powerful-gustave-skill-clair-obscur-expedition-33-wiki-guide-100px-min.png
+  - source: https://expedition33.wiki.fextralife.com/Powerful+(Verso)
+    value: https://expedition33.wiki.fextralife.com/file/Expedition-33/powerful-verso-clair-obscur-expedition-33-wiki-guide-200px-min.png
+image_path: _assets/Skills/powerful.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/powerful-gustave-skill-clair-obscur-expedition-33-wiki-guide-100px-min.png
 name: Powerful
 sources:
 - https://expedition33.wiki.fextralife.com/Powerful+(Skill)

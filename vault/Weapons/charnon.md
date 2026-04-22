@@ -1,6 +1,8 @@
 ---
 base_damage: 2970
 character: Sciel
+image_path: _assets/Weapons/charnon.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/charnon-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Charnon
 passives:
 - effect: 100% Critical Chance during Twilight.

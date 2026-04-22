@@ -2,6 +2,8 @@
 ap_cost: 6
 character: Monoco
 hits: 1
+image_path: _assets/Skills/eveque-spear.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/eveque-spear-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Eveque Spear
 sources:
 - https://expedition33.wiki.fextralife.com/Eveque+Spear

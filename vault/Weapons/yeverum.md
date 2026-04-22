@@ -1,6 +1,8 @@
 ---
 base_damage: 3358
 character: Maelle
+image_path: _assets/Weapons/yeverum.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/chainebum-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Yeverum
 passives:
 - effect: Applying Shell also applies 1 Shield.
@@ -10,6 +12,12 @@ passives:
 - effect: 'On applying Shields, also give 1 AP. Lvl: 20 : On switching to Virtuose
     Stance, double all Shields on allies.'
   effect_structured:
+    has_defense_buff: true
+  name: Lvl. 10
+- effect: 'On applying Shields, also give 1 AP. Lvl: 20 : On switching to Virtuose
+    Stance, double all Shields on allies.'
+  effect_structured:
+    ap_bonus: 1
     has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Defense

@@ -1,6 +1,8 @@
 ---
 base_damage: 3228
 character: Sciel
+image_path: _assets/Weapons/algueron.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/algueron-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Algueron
 passives:
 - effect: Free Aim shots can consume 1 Foretell to deal 100% more damage.

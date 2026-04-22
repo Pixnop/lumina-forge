@@ -1,6 +1,8 @@
 ---
 base_damage: 3325
 character: Sciel
+image_path: _assets/Weapons/moisson.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/moisson-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Moisson
 passives:
 - effect: During Twilight, all damage dealt is converted to Dark damage.

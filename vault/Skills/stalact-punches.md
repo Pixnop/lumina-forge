@@ -2,6 +2,8 @@
 ap_cost: 4
 character: Monoco
 hits: 4
+image_path: _assets/Skills/stalact-punches.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/stalact-punches-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Stalact Punches
 sources:
 - https://expedition33.wiki.fextralife.com/Stalact+Punches

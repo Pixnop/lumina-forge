@@ -2,6 +2,8 @@
 ap_cost: 9
 character: Maelle
 hits: 5
+image_path: _assets/Skills/sword-ballet.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/sword-ballet-maelle-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Sword Ballet
 sources:
 - https://expedition33.wiki.fextralife.com/Sword+Ballet

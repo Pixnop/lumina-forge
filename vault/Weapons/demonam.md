@@ -1,6 +1,8 @@
 ---
 base_damage: 2809
 character: Gustave
+image_path: _assets/Weapons/demonam.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/demonam-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Demonam
 passives:
 - effect: Casting a Light Skill increases damage of next Physical Skill cast by 50%

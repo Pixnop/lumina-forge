@@ -2,6 +2,8 @@
 effect: 50% increased Breaking damage with Gradient Attacks.
 effect_structured:
   break_damage_bonus: 0.5
+image_path: _assets/Pictos/gradient-breaker.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/3-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 lumina_points_cost: 5
 name: Gradient Breaker
 sources:

@@ -4,6 +4,8 @@ effect_structured:
   damage_taken_random:
   - 0.5
   - 2.0
+image_path: _assets/Luminas/random-defense.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/2-pictos-equipment-clair-obscur-expedition-33-wiki-guide75px.png
 name: Random Defense
 pp_cost: 5
 source_picto: random-defense

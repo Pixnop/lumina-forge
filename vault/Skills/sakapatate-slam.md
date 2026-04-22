@@ -2,6 +2,8 @@
 ap_cost: 7
 character: Monoco
 hits: 1
+image_path: _assets/Skills/sakapatate-slam.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/sakapatate-slam-monoco-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Sakapatate Slam
 sources:
 - https://expedition33.wiki.fextralife.com/Sakapatate+Slam

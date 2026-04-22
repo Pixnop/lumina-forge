@@ -1,6 +1,8 @@
 ---
 base_damage: 3551
 character: Sciel
+image_path: _assets/Weapons/chation.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/chation-sciel-weapon-expedition-33-wiki-guide-130px.png
 name: Chation
 passives:
 - effect: Sun Skills always apply 10 Foretell, but all damage taken is doubled

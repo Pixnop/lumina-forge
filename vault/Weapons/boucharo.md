@@ -1,6 +1,8 @@
 ---
 base_damage: 3228
 character: Monoco
+image_path: _assets/Weapons/boucharo.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/boucharo-monoco-weapon-expedition-33-wiki-guide-130px.png
 name: Boucharo
 passives:
 - effect: Start battle in Agile Mask.
@@ -9,6 +11,12 @@ passives:
 - effect: 'Agile Mask applies Rush for 3 turns. Lvl: 20 : +50% Critical Chance while
     in Agile Mask.'
   effect_structured:
+    crit_rate_bonus: 0.5
+  name: Lvl. 10
+- effect: 'Agile Mask applies Rush for 3 turns. Lvl: 20 : +50% Critical Chance while
+    in Agile Mask.'
+  effect_structured:
+    applies_buff: rush
     crit_rate_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Luck

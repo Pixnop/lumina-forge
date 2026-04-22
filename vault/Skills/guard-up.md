@@ -1,6 +1,8 @@
 ---
 ap_cost: 3
 character: Maelle
+image_path: _assets/Skills/guard-up.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/guard-up-maelle-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Guard Up
 sources:
 - https://expedition33.wiki.fextralife.com/Guard+Up

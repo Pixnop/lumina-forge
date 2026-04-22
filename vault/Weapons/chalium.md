@@ -1,6 +1,8 @@
 ---
 base_damage: 3422
 character: Maelle
+image_path: _assets/Weapons/chalium.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/chalium-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Chalium
 passives:
 - effect: On Defensive Stance, gain 1 Shield per Parry. Lose all Shields on turn start.

@@ -1,6 +1,8 @@
 ---
 base_damage: 3616
 character: Maelle
+image_path: _assets/Weapons/barrier-breaker.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/barrier-breaker-maelle-weapon-expedition-33-wiki-guide-130px.png
 name: Barrier Breaker
 passives:
 - effect: Steal Shields removed by hitting enemies.

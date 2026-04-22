@@ -1,6 +1,8 @@
 ---
 base_damage: 3422
 character: Monoco
+image_path: _assets/Weapons/urnaro.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/urnaro-monoco-weapon-expedition-33-wiki-guide-min-130px.png
 name: Urnaro
 passives:
 - effect: Switch to Almighty Mask on Breaking an enemy.
@@ -8,6 +10,11 @@ passives:
   name: Lvl. 4
 - effect: 'Almighty Mask gives 2 AP to all Allies. Lvl: 20 : 50% increased Break damage.'
   effect_structured:
+    break_damage_bonus: 0.5
+  name: Lvl. 10
+- effect: 'Almighty Mask gives 2 AP to all Allies. Lvl: 20 : 50% increased Break damage.'
+  effect_structured:
+    ap_bonus: 2
     break_damage_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Vitality

@@ -1,6 +1,8 @@
 ---
 base_damage: 2938
 character: Gustave
+image_path: _assets/Weapons/sakaram.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/sakaram-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Sakaram
 passives:
 - effect: Can't lose Perfection. No damage increase from Rank.

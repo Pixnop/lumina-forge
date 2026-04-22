@@ -2,6 +2,8 @@
 ap_cost: 4
 character: Maelle
 hits: 2
+image_path: _assets/Skills/combustion.png
+image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/combustion-maelle-skill-clair-obscur-expedition-33-wiki-guide-200px-min.png
 name: Combustion
 sources:
 - https://expedition33.wiki.fextralife.com/Combustion

@@ -1,5 +1,7 @@
 ---
 effect: Immune to Charm .
+effect_structured:
+  immunity: charm
 lumina_points_cost: 10
 name: Anti-Charm
 sources:

@@ -1,6 +1,7 @@
 ---
 effect: Healing Tints also apply Rush
 effect_structured:
+  applies_buff: rush
   has_heal: true
 name: Accelerating Tint
 pp_cost: 5

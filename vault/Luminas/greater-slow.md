@@ -1,5 +1,7 @@
 ---
 effect: +15% to Slow Speed reduction.
+effect_structured:
+  slow_speed_bonus: 0.15
 name: Greater Slow
 pp_cost: 15
 source_picto: greater-slow

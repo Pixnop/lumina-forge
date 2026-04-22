@@ -1,5 +1,7 @@
 ---
 effect: Allows Flee to be instantaneous.
+effect_structured:
+  flee_instant: true
 lumina_points_cost: 40
 name: Pro Retreat
 sources:

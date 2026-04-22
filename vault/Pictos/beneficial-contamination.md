@@ -1,5 +1,8 @@
 ---
 effect: +2 AP on applying a Status Effect. Once per turn.
+effect_structured:
+  ap_bonus: 2
+  ap_trigger: on_status_applied
 lumina_points_cost: 15
 name: Beneficial Contamination
 sources:

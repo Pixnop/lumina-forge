@@ -1,5 +1,7 @@
 ---
 effect: Energy Tints also apply Rush.
+effect_structured:
+  applies_buff: rush
 lumina_points_cost: 5
 name: Time Tint
 sources:

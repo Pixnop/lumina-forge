@@ -1,6 +1,7 @@
 ---
 effect: On receiving damage, consume 1 AP to take 30% less damage, if possible.
 effect_structured:
+  ap_bonus: 1
   damage_bonus: 0.3
 name: Defensive Mode
 pp_cost: 1

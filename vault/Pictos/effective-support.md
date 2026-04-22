@@ -1,5 +1,7 @@
 ---
 effect: +2 AP on using an item.
+effect_structured:
+  ap_bonus: 2
 lumina_points_cost: 5
 name: Effective Support
 sources:

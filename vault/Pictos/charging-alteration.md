@@ -1,5 +1,7 @@
 ---
 effect: +10% of a Gradient Charge on applying a Buff. Once per turn.
+effect_structured:
+  gradient_bonus: 0.1
 lumina_points_cost: 10
 name: Charging Alteration
 sources:

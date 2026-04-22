@@ -1,5 +1,7 @@
 ---
 effect: Immune to Freeze.
+effect_structured:
+  immunity: freeze
 name: Anti-Freeze
 pp_cost: 15
 source_picto: anti-freeze

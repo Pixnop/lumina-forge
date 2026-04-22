@@ -1,5 +1,7 @@
 ---
 effect: Immune to Freeze.
+effect_structured:
+  immunity: freeze
 lumina_points_cost: 15
 name: Anti-Freeze
 sources:

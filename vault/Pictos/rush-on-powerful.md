@@ -1,5 +1,7 @@
 ---
 effect: Apply Rush on applying Powerful.
+effect_structured:
+  applies_buff: rush
 lumina_points_cost: 10
 name: Rush on Powerful
 sources:

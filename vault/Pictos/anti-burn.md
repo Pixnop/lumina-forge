@@ -1,5 +1,7 @@
 ---
 effect: Immune to Burn.
+effect_structured:
+  immunity: burn
 lumina_points_cost: 15
 name: Anti-Burn
 sources:

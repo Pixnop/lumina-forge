@@ -1,6 +1,7 @@
 ---
 effect: Healing Tints also give 1 AP.
 effect_structured:
+  ap_bonus: 1
   has_heal: true
 name: Healing Tint Energy
 pp_cost: 1

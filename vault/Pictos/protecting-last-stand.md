@@ -1,5 +1,7 @@
 ---
 effect: Gain Shell if fighting alone.
+effect_structured:
+  applies_buff: shell
 lumina_points_cost: 3
 name: Protecting Last Stand
 sources:

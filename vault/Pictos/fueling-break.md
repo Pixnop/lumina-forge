@@ -1,5 +1,7 @@
 ---
 effect: Breaking a target doubles its Burn amount.
+effect_structured:
+  on_break_doubles: burn
 lumina_points_cost: 5
 name: Fueling Break
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: On Death, deal damage to all enemies.
+effect_structured:
+  on_death_aoe_damage: true
 lumina_points_cost: 5
 name: Death Bomb
 sources:

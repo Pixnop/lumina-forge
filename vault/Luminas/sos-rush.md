@@ -1,6 +1,7 @@
 ---
 effect: Apply Rush when falling below 50% Health.
 effect_structured:
+  applies_buff: rush
   has_heal: true
 name: SOS Rush
 pp_cost: 5

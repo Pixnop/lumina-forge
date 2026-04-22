@@ -1,5 +1,7 @@
 ---
 effect: Dispel the first negative Status Effect received an gain 2 AP.
+effect_structured:
+  ap_bonus: 2
 lumina_points_cost: 10
 name: Energising Cleanse
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: On death, allies gain Shell.
+effect_structured:
+  applies_buff: shell
 lumina_points_cost: 5
 name: Protecting Death
 sources:

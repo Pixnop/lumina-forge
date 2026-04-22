@@ -1,5 +1,8 @@
 ---
 effect: +1 AP on turn start.
+effect_structured:
+  ap_bonus: 1
+  ap_trigger: turn_start
 lumina_points_cost: 20
 name: Energising Turn
 sources:

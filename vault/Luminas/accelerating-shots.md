@@ -1,5 +1,7 @@
 ---
 effect: 20% change to gain Rush on Free Aim shot.
+effect_structured:
+  applies_buff: rush
 name: Accelerating Shots
 pp_cost: 3
 source_picto: accelerating-shots

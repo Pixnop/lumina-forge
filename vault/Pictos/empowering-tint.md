@@ -1,6 +1,7 @@
 ---
 effect: Healing Tints also apply Powerful.
 effect_structured:
+  applies_buff: powerful
   has_heal: 1.0
 lumina_points_cost: 5
 name: Empowering Tint

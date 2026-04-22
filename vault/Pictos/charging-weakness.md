@@ -1,5 +1,8 @@
 ---
 effect: +15% of a Gradient Charge on hitting a Weakness. Once per turn.
+effect_structured:
+  gradient_bonus: 0.15
+  gradient_trigger: vs_weakness
 lumina_points_cost: 5
 name: Charging Weakness
 sources:

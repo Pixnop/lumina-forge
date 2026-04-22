@@ -1,5 +1,7 @@
 ---
 effect: Immune to Stun .
+effect_structured:
+  immunity: stun
 lumina_points_cost: 5
 name: Anti-Stun
 sources:

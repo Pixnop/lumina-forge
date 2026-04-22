@@ -1,5 +1,7 @@
 ---
 effect: Apply Rush for 3 turns on battle start.
+effect_structured:
+  applies_buff: rush
 lumina_points_cost: 10
 name: Auto Rush
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: Immune to Blight .
+effect_structured:
+  immunity: blight
 lumina_points_cost: 10
 name: Anti-Blight
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: Breaking a target doubles its Burn amount.
+effect_structured:
+  on_break_doubles: burn
 name: Fueling Break
 pp_cost: 5
 source_picto: fueling-break

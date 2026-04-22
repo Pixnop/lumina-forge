@@ -1,5 +1,8 @@
 ---
 effect: +1 AP on Jump Counterattack.
+effect_structured:
+  ap_bonus: 1
+  ap_trigger: counter
 lumina_points_cost: 5
 name: Energising Jump
 sources:

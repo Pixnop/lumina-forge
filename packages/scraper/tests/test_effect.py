@@ -37,9 +37,11 @@ class TestExistingPatterns:
     def test_empty_text(self) -> None:
         assert parse_effect_structured("") == {}
 
-    def test_immunity_yields_nothing(self) -> None:
-        """Status immunities don't affect damage — empty result is correct."""
-        assert parse_effect_structured("Immune to Burn.") == {}
+    def test_immunity_yields_no_damage_bonus(self) -> None:
+        """Status immunities don't affect damage output. An ``immunity``
+        field is populated (v0.5 taxonomy) but no damage_bonus."""
+        result = parse_effect_structured("Immune to Burn.")
+        assert "damage_bonus" not in result
 
 
 # --- new patterns for v0.5.0 ------------------------------------------------
@@ -136,3 +138,73 @@ class TestConditionalDamageIncrease:
             "Each successful Parry increases damage by 5% until end of the following turn."
         )
         assert result.get("damage_bonus") == pytest.approx(0.05)
+
+
+class TestNonDamageFields:
+    """Every picto/lumina should land with SOME structured data so the
+    vault browser can show it — even when damage_bonus stays zero."""
+
+    def test_ap_on_kill(self) -> None:
+        result = parse_effect_structured("+3 AP on killing an enemy.")
+        assert result.get("ap_bonus") == 3
+        assert result.get("ap_trigger") == "on_kill"
+
+    def test_ap_on_battle_start(self) -> None:
+        result = parse_effect_structured("+1 AP on battle start.")
+        assert result.get("ap_bonus") == 1
+        assert result.get("ap_trigger") == "battle_start"
+
+    def test_ap_on_parry(self) -> None:
+        result = parse_effect_structured("+1 AP on successful Parry.")
+        assert result.get("ap_bonus") == 1
+        assert result.get("ap_trigger") == "parry"
+
+    def test_gradient_charge_on_break(self) -> None:
+        result = parse_effect_structured("+50% of a Gradient Charge on Breaking a target.")
+        assert result.get("gradient_bonus") == pytest.approx(0.5)
+        assert result.get("gradient_trigger") == "on_break"
+
+    def test_gradient_charge_on_crit(self) -> None:
+        result = parse_effect_structured(
+            "+20% of a Gradient Charge on Critical Hit. Once per turn."
+        )
+        assert result.get("gradient_bonus") == pytest.approx(0.2)
+        assert result.get("gradient_trigger") == "critical_hit"
+
+    def test_immunity_burn(self) -> None:
+        result = parse_effect_structured("Immune to Burn.")
+        assert result.get("immunity") == "burn"
+
+    def test_immunity_stun(self) -> None:
+        result = parse_effect_structured("Immune to Stun .")
+        assert result.get("immunity") == "stun"
+
+    def test_applies_rush_on_battle_start(self) -> None:
+        result = parse_effect_structured("Apply Rush for 3 turns on battle start.")
+        # Rush isn't offensive — no damage_bonus — but we still want the
+        # buff name captured.
+        assert "damage_bonus" not in result
+        assert result.get("applies_buff") == "rush"
+
+    def test_applies_shell(self) -> None:
+        result = parse_effect_structured("Apply Shell for 3 turns on battle start.")
+        assert result.get("applies_buff") == "shell"
+
+    def test_extends_burn_duration(self) -> None:
+        result = parse_effect_structured("Burn duration is increased by 2.")
+        assert result.get("extends_status") == "burn"
+        assert result.get("extends_status_turns") == 2
+
+    def test_extends_powerful_duration(self) -> None:
+        result = parse_effect_structured(
+            "On applying Powerful, its duration is increased by 2."
+        )
+        assert result.get("extends_status") == "powerful"
+        assert result.get("extends_status_turns") == 2
+
+    def test_extends_break_duration(self) -> None:
+        result = parse_effect_structured(
+            "Breaks last 1 more turn but the target can't be Broken twice."
+        )
+        assert result.get("extends_status") == "break"
+        assert result.get("extends_status_turns") == 1

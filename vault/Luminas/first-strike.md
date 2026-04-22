@@ -1,5 +1,7 @@
 ---
 effect: Play first.
+effect_structured:
+  play_first: true
 name: First Strike
 pp_cost: 10
 source_picto: first-strike

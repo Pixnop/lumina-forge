@@ -1,5 +1,7 @@
 ---
 effect: Gain Rush if fighting alone.
+effect_structured:
+  applies_buff: rush
 name: Accelerating Last Stand
 pp_cost: 3
 source_picto: accelerating-last-stand

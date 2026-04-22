@@ -1,5 +1,7 @@
 ---
 effect: Kill self on battle start.
+effect_structured:
+  kills_self_at_start: true
 lumina_points_cost: 1
 name: Auto Death
 sources:

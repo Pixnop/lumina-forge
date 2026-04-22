@@ -1,5 +1,8 @@
 ---
 effect: +1AP on hitting an enemy's Weakness. Once per turn.
+effect_structured:
+  ap_bonus: 1
+  ap_trigger: vs_weakness
 lumina_points_cost: 3
 name: Weakness Gain
 sources:

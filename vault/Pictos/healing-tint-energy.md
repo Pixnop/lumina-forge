@@ -1,6 +1,7 @@
 ---
 effect: Healing Tints also give 1 AP.
 effect_structured:
+  ap_bonus: 1
   has_heal: 1.0
 lumina_points_cost: 1
 name: Healing Tint Energy

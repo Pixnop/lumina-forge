@@ -1,6 +1,8 @@
 ---
 effect: +3 AP on killing an enemy (Also gives a hidden 1.1x damage buff when equipped).
 effect_structured:
+  ap_bonus: 3
+  ap_trigger: on_kill
   damage_bonus: 0.10000000000000009
 lumina_points_cost: 2
 name: Dead Energy II

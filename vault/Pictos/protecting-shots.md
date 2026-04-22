@@ -1,5 +1,7 @@
 ---
 effect: 20% chance to gain Shell on Free Aim shot.
+effect_structured:
+  applies_buff: shell
 lumina_points_cost: 3
 name: Protecting Shots
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: +25% Rush Speed increase.
+effect_structured:
+  rush_speed_bonus: 0.25
 name: Greater Rush
 pp_cost: 10
 source_picto: greater-rush

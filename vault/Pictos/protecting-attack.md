@@ -1,5 +1,7 @@
 ---
 effect: Gain Shell for 1 turn on Base Attack.
+effect_structured:
+  applies_buff: shell
 lumina_points_cost: 10
 name: Protecting Attack
 sources:

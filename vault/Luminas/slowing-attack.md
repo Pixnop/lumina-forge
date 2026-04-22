@@ -1,5 +1,7 @@
 ---
 effect: Base attack applies Slow for 1 turn.
+effect_structured:
+  applies_buff: slow
 name: Slowing Attack
 pp_cost: 10
 source_picto: slowing-attack

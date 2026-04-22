@@ -1,6 +1,7 @@
 ---
 effect: +3 AP to all allies when revived.
 effect_structured:
+  ap_bonus: 3
   has_revive: true
 name: Energising Revive
 pp_cost: 5

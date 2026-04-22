@@ -1,5 +1,7 @@
 ---
 effect: +1 AP per Gradient Charge consumed.
+effect_structured:
+  ap_bonus: 1
 name: Energising Gradient
 pp_cost: 10
 source_picto: energising-gradient

@@ -1,5 +1,8 @@
 ---
 effect: Gain 1 AP on Perfect Dodge. Once per turn.
+effect_structured:
+  ap_bonus: 1
+  ap_trigger: perfect_dodge
 lumina_points_cost: 1
 name: Dodger
 sources:

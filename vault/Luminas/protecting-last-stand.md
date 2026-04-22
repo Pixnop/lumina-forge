@@ -1,5 +1,7 @@
 ---
 effect: Gain Shell if fighting alone.
+effect_structured:
+  applies_buff: shell
 name: Protecting Last Stand
 pp_cost: 3
 source_picto: protecting-last-stand

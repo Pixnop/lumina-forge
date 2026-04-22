@@ -1,6 +1,7 @@
 ---
 effect: On Healing an ally, also give 2 AP.
 effect_structured:
+  ap_bonus: 2
   has_heal: true
 name: Energising Heal
 pp_cost: 10

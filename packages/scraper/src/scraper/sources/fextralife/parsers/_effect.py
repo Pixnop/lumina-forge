@@ -101,6 +101,183 @@ _EXTRA_HITS_RE = re.compile(
 )
 _BASE_ATTACK_HITS = 3
 
+# --- non-damage structured fields ------------------------------------------
+#
+# These patterns fill effect_structured for pictos/luminas that don't
+# contribute to damage. The optimizer doesn't consume them yet, but the
+# vault browser + future rotation simulator rely on this data.
+
+# "+1 AP on Base Attack", "+3 AP on killing an enemy", "+2 AP on applying
+# a Status Effect. Once per turn." — captures the amount plus a
+# normalised trigger phrase.
+_AP_BONUS_RE = re.compile(
+    r"(?:^|\b)\+?(?P<amount>\d+)\s*AP\b",
+    re.I,
+)
+
+# "+20% of a Gradient Charge on applying Burn", "+5% of a gradient charge
+# on Parry", "+50% of a Gradient Charge on Breaking a target".
+_GRADIENT_BONUS_RE = re.compile(
+    r"\+?(?P<pct>\d+(?:\.\d+)?)\s*%\s+of\s+(?:a\s+)?gradient\s+charge",
+    re.I,
+)
+
+# "Immune to Burn.", "Immune to Stun."
+_IMMUNITY_RE = re.compile(
+    r"immune\s+to\s+(?P<status>burn|blight|charm|freeze|stun|mark|stain|sleep|slow|powerless|defenceless|shell)",
+    re.I,
+)
+
+# "Apply X on Y", "Applies X", "Gain X on Y" for any status — not just
+# damage buffs. This generalises the earlier _BUFF_APPLY_RE to include
+# defensive buffs (Shell, Rush) and the "applies" / "gains" verb forms
+# that the earlier regex missed.
+_APPLIES_STATUS_RE = re.compile(
+    r"(?:apply|applies|gain|gains|trigger|triggers)\s+"
+    r"(?:\d+\s+)?"  # optional stack count ("Apply 3 Burn stacks…")
+    # Accept both British ("defenceless") and American ("defenseless") spellings —
+    # Fextralife pages mix them.
+    r"(?P<status>powerful|rush|shell|mark|burn|stain|slow|powerless|defen[sc]eless|stun|charm|sleep)",
+    re.I,
+)
+
+# "Skills cost N less AP"
+_AP_COST_REDUCTION_RE = re.compile(
+    r"skills?\s+cost\s+(?P<amount>\d+)\s+less\s+AP",
+    re.I,
+)
+
+# "+25% Rush Speed increase", "+15% to Slow Speed reduction"
+_SPEED_MODIFIER_RE = re.compile(
+    r"\+?(?P<pct>\d+(?:\.\d+)?)\s*%\s+(?:to\s+)?(?P<status>rush|slow)\s+speed",
+    re.I,
+)
+
+# "Base Attack can Break"
+_BASE_ATTACK_CAN_BREAK_RE = re.compile(
+    r"base\s+attack\s+can\s+break",
+    re.I,
+)
+
+# --- gimmick / one-off pictos ----------------------------------------------
+#
+# A handful of pictos carry mechanics that don't generalise — each gets a
+# specific field so the vault browser can show SOMETHING structured rather
+# than an empty dict.
+
+_GIMMICK_PATTERNS: list[tuple[re.Pattern[str], dict[str, Any]]] = [
+    (
+        re.compile(r"always\s+play\s+twice", re.I),
+        {"play_twice": True},
+    ),
+    (
+        re.compile(r"^play\s+first\.?\s*$", re.I),
+        {"play_first": True},
+    ),
+    (
+        re.compile(r"kill\s+self\s+on\s+battle\s+start", re.I),
+        {"kills_self_at_start": True},
+    ),
+    (
+        re.compile(r"play\s+again\s+on\s+break", re.I),
+        {"on_break_extra_action": True},
+    ),
+    (
+        re.compile(r"on\s+death,?\s+deal\s+damage\s+to\s+all", re.I),
+        {"on_death_aoe_damage": True},
+    ),
+    (
+        re.compile(r"fully\s+charge\s+enemy'?s?\s+break\s+bar\s+on\s+death", re.I),
+        {"on_death_fills_break": True},
+    ),
+    (
+        re.compile(r"allows?\s+flee\s+to\s+be\s+instantaneous", re.I),
+        {"flee_instant": True},
+    ),
+    (
+        re.compile(r"on\s+applying\s+a\s+burn\s+stack,?\s+apply\s+a\s+second", re.I),
+        {"doubles_applied": ["burn"]},
+    ),
+    (
+        re.compile(r"mark\s+requires\s+(?P<n>\d+)\s+more\s+hits?\s+to\s+be\s+removed", re.I),
+        {"strengthens_status": "mark"},
+    ),
+    (
+        re.compile(r"breaking\s+a\s+target\s+doubles\s+its\s+burn", re.I),
+        {"on_break_doubles": "burn"},
+    ),
+    (
+        re.compile(r"every\s+ap\s+gain\s+is\s+increased\s+by\s+(?P<n>\d+)", re.I),
+        {"ap_gain_bonus_flat": 1},
+    ),
+    (
+        re.compile(
+            r"convert\s+all\s+(?P<from>\w+)\s+damage\s+to\s+(?P<to>\w+)\s+damage",
+            re.I,
+        ),
+        {},  # populated dynamically from the match groups
+    ),
+    (
+        re.compile(
+            r"damage\s+taken\s+is\s+randomly\s+multiplied\s+by\s+a\s+value\s+"
+            r"between\s+(?P<lo>\d+)\s*%\s+and\s+(?P<hi>\d+)\s*%",
+            re.I,
+        ),
+        {},  # populated dynamically
+    ),
+]
+
+# "Burn duration is increased by 2", "On applying Powerful, its duration
+# is increased by 2"
+_EXTENDS_DURATION_RE = re.compile(
+    r"(?P<status>burn|powerful|rush|shell|mark|stain|slow)\s+duration\s+(?:is\s+)?increased\s+by\s+(?P<turns>\d+)",
+    re.I,
+)
+_EXTENDS_DURATION_ALT_RE = re.compile(
+    r"(?:on\s+applying\s+)?(?P<status>burn|powerful|rush|shell|mark|stain)[^.]*?"
+    r"duration\s+is\s+increased\s+by\s+(?P<turns>\d+)",
+    re.I,
+)
+
+# Breaks last 1 more turn — similar, different phrasing
+_EXTENDS_BREAK_RE = re.compile(
+    r"breaks?\s+last\s+(?P<turns>\d+)\s+more\s+turn",
+    re.I,
+)
+
+# Match known trigger phrases → canonical event names. Used to attach a
+# symbolic ``*_trigger`` field next to numeric ``*_bonus`` fields so
+# downstream code can reason about when each effect fires.
+_TRIGGER_PHRASES: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"battle\s+start", re.I), "battle_start"),
+    (re.compile(r"turn\s+start", re.I), "turn_start"),
+    (re.compile(r"on\s+killing|kill(?:ing)?\s+an?\s+enemy", re.I), "on_kill"),
+    (re.compile(r"on\s+breaking|break(?:ing)?\s+a\s+target", re.I), "on_break"),
+    (re.compile(r"on\s+death", re.I), "on_death"),
+    (re.compile(r"on\s+base\s+attack", re.I), "base_attack"),
+    (re.compile(r"free\s+aim\s+shot", re.I), "free_aim"),
+    (re.compile(r"(?:on|after)\s+(?:a\s+|successful\s+)?parry", re.I), "parry"),
+    (re.compile(r"perfect\s+dodge", re.I), "perfect_dodge"),
+    (re.compile(r"counter(?:attack)?", re.I), "counter"),
+    (re.compile(r"critical\s+hit", re.I), "critical_hit"),
+    (re.compile(r"applying\s+a\s+status\s+effect", re.I), "on_status_applied"),
+    (re.compile(r"applying\s+(?:burn|mark|stain)", re.I), "on_dot_applied"),
+    (re.compile(r"applying\s+(?:powerful|rush|shell)", re.I), "on_buff_applied"),
+    (re.compile(r"marked\s+(?:enemy|target)", re.I), "vs_marked"),
+    (re.compile(r"stunned\s+(?:enemy|target)", re.I), "vs_stunned"),
+    (re.compile(r"burning\s+(?:enemy|target|enemies)", re.I), "vs_burning"),
+    (re.compile(r"weakness", re.I), "vs_weakness"),
+    (re.compile(r"fighting\s+alone", re.I), "solo"),
+    (re.compile(r"low\s+hp|hp\s+below", re.I), "low_hp"),
+]
+
+
+def _classify_trigger(text: str) -> str | None:
+    for pattern, name in _TRIGGER_PHRASES:
+        if pattern.search(text):
+            return name
+    return None
+
 # Damage impact of each named buff while active. Only buffs that actually
 # raise outgoing damage go here; Rush/Shell affect turn order / incoming
 # damage respectively and contribute nothing to damage_bonus.
@@ -228,7 +405,87 @@ def parse_effect_structured(text: str) -> dict[str, Any]:
     if uptime < 1.0 and "damage_bonus" in result:
         result["trigger_uptime"] = uptime
 
+    _apply_non_damage_fields(text, result)
+
     return result
+
+
+def _apply_non_damage_fields(text: str, result: dict[str, Any]) -> None:
+    """Capture non-damage effects — AP, gradient, immunities, status
+    applications, duration extenders. Fills effect_structured for pictos
+    the optimizer doesn't currently score but the vault browser will."""
+    # AP bonus
+    if (match := _AP_BONUS_RE.search(text)) is not None:
+        amount = int(match.group("amount"))
+        # Skip when the % sign follows (e.g. "20% AP" would be noise) —
+        # the lookahead was easier as a post-check than in the regex itself.
+        pos = match.end()
+        if pos < len(text) and text[pos] == "%":
+            pass
+        else:
+            result.setdefault("ap_bonus", amount)
+            if (trigger := _classify_trigger(text)) is not None:
+                result.setdefault("ap_trigger", trigger)
+
+    # Gradient bonus (fraction of a gradient charge)
+    if (match := _GRADIENT_BONUS_RE.search(text)) is not None:
+        pct = float(match.group("pct")) / 100.0
+        result.setdefault("gradient_bonus", pct)
+        if (trigger := _classify_trigger(text)) is not None:
+            result.setdefault("gradient_trigger", trigger)
+
+    # Status immunity (single status; pictos are 1:1 here)
+    if (match := _IMMUNITY_RE.search(text)) is not None:
+        result.setdefault("immunity", match.group("status").lower())
+
+    # Applies / grants a status to self or target
+    if "damage_bonus" not in result and "applies_buff" not in result:
+        match = _APPLIES_STATUS_RE.search(text)
+        if match is not None:
+            result.setdefault("applies_buff", match.group("status").lower())
+
+    # Duration extender
+    for pattern in (_EXTENDS_DURATION_RE, _EXTENDS_DURATION_ALT_RE):
+        match = pattern.search(text)
+        if match is None:
+            continue
+        result.setdefault("extends_status", match.group("status").lower())
+        result.setdefault("extends_status_turns", int(match.group("turns")))
+        break
+    if "extends_status" not in result and (match := _EXTENDS_BREAK_RE.search(text)) is not None:
+        result.setdefault("extends_status", "break")
+        result.setdefault("extends_status_turns", int(match.group("turns")))
+
+    # AP cost reduction (ap-discount)
+    if (match := _AP_COST_REDUCTION_RE.search(text)) is not None:
+        result.setdefault("ap_cost_reduction", int(match.group("amount")))
+
+    # Speed modifiers (greater-rush, greater-slow)
+    if (match := _SPEED_MODIFIER_RE.search(text)) is not None:
+        pct = float(match.group("pct")) / 100.0
+        status = match.group("status").lower()
+        result.setdefault(f"{status}_speed_bonus", pct)
+
+    # Base Attack gaining Break capability
+    if _BASE_ATTACK_CAN_BREAK_RE.search(text):
+        result.setdefault("base_attack_can_break", True)
+
+    # One-off gimmick pictos
+    for pattern, defaults in _GIMMICK_PATTERNS:
+        match = pattern.search(text)
+        if match is None:
+            continue
+        for key, value in defaults.items():
+            result.setdefault(key, value)
+        groups = match.groupdict()
+        if "from" in groups and "to" in groups and groups["from"] and groups["to"]:
+            result.setdefault("damage_type_convert_from", groups["from"].lower())
+            result.setdefault("damage_type_convert_to", groups["to"].lower())
+        if "lo" in groups and "hi" in groups and groups["lo"] and groups["hi"]:
+            result.setdefault("damage_taken_random", [
+                float(groups["lo"]) / 100.0,
+                float(groups["hi"]) / 100.0,
+            ])
 
 
 def _apply_context_matches(text: str, result: dict[str, Any]) -> None:

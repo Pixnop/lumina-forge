@@ -1,5 +1,7 @@
 ---
 effect: Apply 3 Burn to all enemies on Death.
+effect_structured:
+  applies_buff: burn
 lumina_points_cost: 5
 name: Burning Death
 sources:

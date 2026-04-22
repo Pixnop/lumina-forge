@@ -1,5 +1,7 @@
 ---
 effect: Mark requires 1 more hit to be removed.
+effect_structured:
+  strengthens_status: mark
 name: Double Mark
 pp_cost: 20
 source_picto: double-mark

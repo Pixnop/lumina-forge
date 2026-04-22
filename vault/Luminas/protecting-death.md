@@ -1,5 +1,7 @@
 ---
 effect: On death, allies gain Shell.
+effect_structured:
+  applies_buff: shell
 name: Protecting Death
 pp_cost: 5
 source_picto: protecting-death

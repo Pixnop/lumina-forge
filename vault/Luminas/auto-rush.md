@@ -1,5 +1,7 @@
 ---
 effect: Apply Rush for 3 turns on battle start.
+effect_structured:
+  applies_buff: rush
 name: Auto Rush
 pp_cost: 10
 source_picto: auto-rush

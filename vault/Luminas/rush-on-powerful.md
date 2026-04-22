@@ -1,5 +1,7 @@
 ---
 effect: Apply Rush on applying Powerful.
+effect_structured:
+  applies_buff: rush
 name: Rush on Powerful
 pp_cost: 10
 source_picto: rush-on-powerful

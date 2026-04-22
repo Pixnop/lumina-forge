@@ -1,5 +1,8 @@
 ---
 effect: +1 AP on Base Attack.
+effect_structured:
+  ap_bonus: 1
+  ap_trigger: base_attack
 lumina_points_cost: 15
 name: Energising Attack II
 sources:

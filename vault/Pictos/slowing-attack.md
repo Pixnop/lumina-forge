@@ -1,5 +1,7 @@
 ---
 effect: Base attack applies Slow for 1 turn.
+effect_structured:
+  applies_buff: slow
 lumina_points_cost: 10
 name: Slowing Attack
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: Fully charge enemy's Break Bar on death.
+effect_structured:
+  on_death_fills_break: true
 lumina_points_cost: 5
 name: Breaking Death
 sources:

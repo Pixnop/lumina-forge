@@ -1,5 +1,7 @@
 ---
 effect: Apply Defenceless on Break.
+effect_structured:
+  applies_buff: defenceless
 name: Exposing Break
 pp_cost: 5
 source_picto: exposing-break

@@ -1,5 +1,7 @@
 ---
 effect: +2 AP on using an item.
+effect_structured:
+  ap_bonus: 2
 name: Effective Support
 pp_cost: 5
 source_picto: effective-support

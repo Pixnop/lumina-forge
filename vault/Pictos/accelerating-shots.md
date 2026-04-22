@@ -1,5 +1,7 @@
 ---
 effect: 20% chance to gain Rush on Free Aim shot.
+effect_structured:
+  applies_buff: rush
 lumina_points_cost: 3
 name: Accelerating Shots
 sources:

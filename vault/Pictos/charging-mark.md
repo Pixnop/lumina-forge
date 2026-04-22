@@ -1,5 +1,8 @@
 ---
 effect: +20% of a Gradient Charge on hitting a Marked target. Once per turn.
+effect_structured:
+  gradient_bonus: 0.2
+  gradient_trigger: vs_marked
 lumina_points_cost: 10
 name: Charging Mark
 sources:

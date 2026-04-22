@@ -1,6 +1,7 @@
 ---
 effect: Healing an ally also applies Powerful for 1 turn.
 effect_structured:
+  applies_buff: powerful
   has_heal: true
 name: Powerful Heal
 pp_cost: 5

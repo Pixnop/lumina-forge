@@ -1,5 +1,7 @@
 ---
 effect: Apply Slow on Break.
+effect_structured:
+  applies_buff: slow
 name: Slowing Break
 pp_cost: 5
 source_picto: slowing-break

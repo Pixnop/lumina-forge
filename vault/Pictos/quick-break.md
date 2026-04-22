@@ -1,5 +1,7 @@
 ---
 effect: Play again on Breaking a target.
+effect_structured:
+  on_break_extra_action: true
 lumina_points_cost: 3
 name: Quick Break
 sources:

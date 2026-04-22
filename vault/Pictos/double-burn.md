@@ -1,5 +1,8 @@
 ---
 effect: On applying a Burn stack, apply a second one.
+effect_structured:
+  doubles_applied:
+  - burn
 lumina_points_cost: 30
 name: Double Burn
 sources:

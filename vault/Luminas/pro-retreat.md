@@ -1,5 +1,7 @@
 ---
 effect: Allows Flee to be instantaneous.
+effect_structured:
+  flee_instant: true
 name: Pro Retreat
 pp_cost: 40
 source_picto: pro-retreat

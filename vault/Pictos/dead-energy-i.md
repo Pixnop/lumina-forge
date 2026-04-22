@@ -1,5 +1,8 @@
 ---
 effect: +3 AP on killing an enemy.
+effect_structured:
+  ap_bonus: 3
+  ap_trigger: on_kill
 lumina_points_cost: 2
 name: Dead Energy I
 sources:

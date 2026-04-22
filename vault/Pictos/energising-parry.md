@@ -1,5 +1,8 @@
 ---
 effect: +1 AP on successful Parry.
+effect_structured:
+  ap_bonus: 1
+  ap_trigger: parry
 lumina_points_cost: 15
 name: Energising Parry
 sources:

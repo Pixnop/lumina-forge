@@ -1,5 +1,7 @@
 ---
 effect: Consume 1 AP to prevent Status Effects application, if possible.
+effect_structured:
+  ap_bonus: 1
 lumina_points_cost: 15
 name: Draining Cleanse
 sources:

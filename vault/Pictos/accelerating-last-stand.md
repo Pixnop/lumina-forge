@@ -1,5 +1,7 @@
 ---
 effect: Gain Rush if fighting alone.
+effect_structured:
+  applies_buff: rush
 lumina_points_cost: 3
 name: Accelerating Last Stand
 sources:

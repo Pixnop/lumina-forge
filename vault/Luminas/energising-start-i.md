@@ -1,5 +1,8 @@
 ---
 effect: +1 AP on battle start.
+effect_structured:
+  ap_bonus: 1
+  ap_trigger: battle_start
 name: Energising Start I
 pp_cost: 5
 source_picto: energising-start-i

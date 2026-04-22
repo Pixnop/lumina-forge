@@ -1,6 +1,7 @@
 ---
 effect: Healing an ally also applies Rush for 1 turn
 effect_structured:
+  applies_buff: rush
   has_heal: true
 name: Accelerating Heal
 pp_cost: 5

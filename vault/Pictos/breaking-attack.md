@@ -1,5 +1,7 @@
 ---
 effect: Base Attack can Break.
+effect_structured:
+  base_attack_can_break: true
 lumina_points_cost: 10
 name: Breaking Attack
 sources:

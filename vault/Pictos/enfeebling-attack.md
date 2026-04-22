@@ -1,5 +1,7 @@
 ---
 effect: Base Attack applies Powerless for 1 turn.
+effect_structured:
+  applies_buff: powerless
 lumina_points_cost: 10
 name: Enfeebling Attack
 sources:

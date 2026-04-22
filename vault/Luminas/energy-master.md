@@ -1,5 +1,7 @@
 ---
 effect: Every AP gain is increased by 1.
+effect_structured:
+  ap_gain_bonus_flat: 1
 name: Energy Master
 pp_cost: 40
 source_picto: energy-master

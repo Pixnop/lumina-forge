@@ -1,5 +1,7 @@
 ---
 effect: Every AP gain is increased by 1.
+effect_structured:
+  ap_gain_bonus_flat: 1
 lumina_points_cost: 40
 name: Energy Master
 sources:

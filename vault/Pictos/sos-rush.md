@@ -1,6 +1,7 @@
 ---
 effect: Apply Rush when falling below 50% Health.
 effect_structured:
+  applies_buff: rush
   has_heal: 1.0
 lumina_points_cost: 5
 name: SOS Rush

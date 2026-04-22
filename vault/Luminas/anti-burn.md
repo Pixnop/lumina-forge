@@ -1,5 +1,7 @@
 ---
 effect: Immune to Burn.
+effect_structured:
+  immunity: burn
 name: Anti-Burn
 pp_cost: 15
 source_picto: anti-burn

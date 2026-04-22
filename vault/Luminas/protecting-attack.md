@@ -1,5 +1,7 @@
 ---
 effect: Gain Shell for 1 turn on Base Attack.
+effect_structured:
+  applies_buff: shell
 name: Protecting Attack
 pp_cost: 10
 source_picto: protecting-attack

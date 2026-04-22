@@ -1,5 +1,7 @@
 ---
 effect: Play again on Breaking a target.
+effect_structured:
+  on_break_extra_action: true
 name: Quick Break
 pp_cost: 3
 source_picto: quick-break

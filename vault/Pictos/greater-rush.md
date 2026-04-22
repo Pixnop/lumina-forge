@@ -1,5 +1,7 @@
 ---
 effect: +25% Rush Speed increase.
+effect_structured:
+  rush_speed_bonus: 0.25
 lumina_points_cost: 10
 name: Greater Rush
 sources:

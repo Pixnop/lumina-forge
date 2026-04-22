@@ -1,5 +1,7 @@
 ---
 effect: +1 AP per Gradient Charge consumed.
+effect_structured:
+  ap_bonus: 1
 lumina_points_cost: 10
 name: Energising Gradient
 sources:

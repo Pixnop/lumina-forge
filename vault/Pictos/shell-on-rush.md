@@ -1,5 +1,7 @@
 ---
 effect: Apply Shell on applying Rush.
+effect_structured:
+  applies_buff: shell
 lumina_points_cost: 10
 name: Shell On Rush
 sources:

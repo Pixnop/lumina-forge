@@ -1,6 +1,7 @@
 ---
 effect: Revive Tints also give 3 AP.
 effect_structured:
+  ap_bonus: 3
   has_revive: 1.0
 lumina_points_cost: 10
 name: Revive Tint Energy

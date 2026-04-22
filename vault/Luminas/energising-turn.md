@@ -1,5 +1,8 @@
 ---
 effect: +1 AP on turn start.
+effect_structured:
+  ap_bonus: 1
+  ap_trigger: turn_start
 name: Energising Turn
 pp_cost: 20
 source_picto: energising-turn

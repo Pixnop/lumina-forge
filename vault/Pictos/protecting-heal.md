@@ -1,6 +1,7 @@
 ---
 effect: Healing an ally also applies Shell for 1 turn.
 effect_structured:
+  applies_buff: shell
   has_heal: 1.0
 lumina_points_cost: 5
 name: Protecting Heal

@@ -1,5 +1,7 @@
 ---
 effect: Apply Shell for 3 turns on battle start.
+effect_structured:
+  applies_buff: shell
 lumina_points_cost: 10
 name: Auto Shell
 sources:

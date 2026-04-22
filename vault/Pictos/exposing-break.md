@@ -1,5 +1,7 @@
 ---
 effect: Apply Defenceless on Break.
+effect_structured:
+  applies_buff: defenceless
 lumina_points_cost: 5
 name: Exposing Break
 sources:

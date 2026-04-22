@@ -1,5 +1,7 @@
 ---
 effect: Always play twice in a row.
+effect_structured:
+  play_twice: true
 lumina_points_cost: 40
 name: Cheater
 sources:

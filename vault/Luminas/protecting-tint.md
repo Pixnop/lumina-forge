@@ -1,6 +1,7 @@
 ---
 effect: Healing Tints also apply Shell.
 effect_structured:
+  applies_buff: shell
   has_heal: true
 name: Protecting Tint
 pp_cost: 5

@@ -1,6 +1,6 @@
 [project]
 name = "lumina-forge"
-version = "0.4.0"
+version = "0.4.1"
 description = "Obsidian knowledge base + scraper + build optimizer for Clair Obscur: Expedition 33 randomizer runs."
 readme = "README.md"
 requires-python = ">=3.13"

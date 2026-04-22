@@ -19,7 +19,10 @@ class Picto(VaultEntry):
     category: PictoCategory | None = None
     tier: PictoTier | None = None
     effect: str = ""
-    effect_structured: dict[str, float] = Field(default_factory=dict)
+    # Any because values are a mix of floats (damage_bonus, trigger_uptime, …)
+    # and booleans (damage_cap_bypass, has_revive). Keep it permissive so new
+    # keys can land without a schema change.
+    effect_structured: dict[str, object] = Field(default_factory=dict)
     stats_granted: dict[str, int] = Field(default_factory=dict)
     lumina_after_mastery: str | None = None
     lumina_points_cost: int | None = None

@@ -1,5 +1,7 @@
 ---
 effect: Apply Burn on hitting a Marked enemy.
+effect_structured:
+  damage_bonus: 0.5
 lumina_points_cost: 15
 name: Burning Mark
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: Gain Powerful on Breaking a target.
+effect_structured:
+  damage_bonus: 0.5
 lumina_points_cost: 3
 name: Empowering Break
 sources:

@@ -1,5 +1,7 @@
 ---
 effect: Apply Mark on Break.
+effect_structured:
+  damage_bonus: 0.3
 lumina_points_cost: 5
 name: Marking Break
 sources:

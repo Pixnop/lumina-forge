@@ -25,6 +25,95 @@ _CONTEXT_RE = re.compile(
     re.I,
 )
 
+# "Break damage is increased by 50%", "base damage is reduced by 20%" —
+# the % comes *after* "damage" so _CONTEXT_RE (which is anchored on %-first)
+# doesn't see it. Captures the modifier kind, direction and magnitude.
+_DAMAGE_DELTA_RE = re.compile(
+    r"(?P<kind>base|break|burn|critical|void|fire|earth|lightning|ice)?\s*"
+    r"damage\s+(?:is\s+|are\s+)?"
+    r"(?P<direction>increased|multiplied|boosted|amplified|reduced|decreased)"
+    r"\s+by\s+(?P<pct>\d+(?:\.\d+)?)\s*%",
+    re.I,
+)
+
+# "increase damage by 20%", "increases damage by 5%" — same as above but
+# verb-first ordering, used in conditional phrasings ("…if successful,
+# increase damage by 20%").
+_DAMAGE_DELTA_VERB_FIRST_RE = re.compile(
+    r"(?P<direction>increase|boost|amplify|multiply|reduce|decrease)s?\s+"
+    r"(?:(?P<kind>base|break|burn|critical|void|fire|earth|lightning|ice)\s+)?"
+    r"damage\s+by\s+(?P<pct>\d+(?:\.\d+)?)\s*%",
+    re.I,
+)
+
+# "gives a hidden 1.1x damage buff", "hidden 2x damage".
+_HIDDEN_MULTIPLIER_RE = re.compile(
+    r"hidden\s+(?P<mult>\d+(?:\.\d+)?)\s*[x×]\s*damage",
+    re.I,
+)
+
+# "Damage can exceed 9,999" — Painted Power's cap-bypass flag.
+_CAP_BYPASS_RE = re.compile(
+    r"damage\s+can\s+exceed\s+9[,]?999",
+    re.I,
+)
+
+# "Apply Powerful for 3 turns on battle start" → always-on damage buff
+# for the first N turns. Powerful = +50 % damage in-game.
+_BATTLE_START_BUFF_RE = re.compile(
+    r"apply\s+(?P<buff>powerful|rush|shell|mark|burn|stain)\s+"
+    r"for\s+(?P<turns>\d+)\s+turns?\s+on\s+battle\s+start",
+    re.I,
+)
+
+# "Gain Powerful for 1 turn on Base Attack", "Apply Powerful on Breaking",
+# "Gain Powerful if fighting alone" — conditional buff gains. Uptime
+# depends on the trigger, captured separately by _estimate_trigger_uptime
+# from the text around the match.
+_BUFF_APPLY_RE = re.compile(
+    r"(?:apply|gain)\s+(?P<buff>powerful|mark|burn|stain)"
+    r"(?:\s+for\s+\d+\s+turns?)?"
+    r"\s+(?:on|when|if|upon|after|per)\b",
+    re.I,
+)
+
+# "20 % chance to gain Powerful on Free Aim shot" — same buffs but gated
+# on a probability. Multiply the buff bonus by the stated chance.
+_CHANCE_BUFF_RE = re.compile(
+    r"(?P<pct>\d+(?:\.\d+)?)\s*%\s*chance\s+to\s+"
+    r"(?:apply|gain|cause|trigger)\s+"
+    r"(?P<buff>powerful|mark|burn|stain|rush|shell)",
+    re.I,
+)
+
+# Chance-to-status shorthand — "20% chance to Burn on Free Aim shot".
+# The verb "burn" doubles as the buff name.
+_CHANCE_STATUS_VERB_RE = re.compile(
+    r"(?P<pct>\d+(?:\.\d+)?)\s*%\s*chance\s+to\s+(?P<buff>burn|mark|stain)\b",
+    re.I,
+)
+
+# "Base Attack has N extra hit(s)" — each extra hit is a fractional damage
+# bonus over the baseline. Base Attack in E33 is typically 3 hits.
+_EXTRA_HITS_RE = re.compile(
+    r"base\s+attack\s+has\s+(?P<extra>\d+)\s+extra\s+hits?",
+    re.I,
+)
+_BASE_ATTACK_HITS = 3
+
+# Damage impact of each named buff while active. Only buffs that actually
+# raise outgoing damage go here; Rush/Shell affect turn order / incoming
+# damage respectively and contribute nothing to damage_bonus.
+_BUFF_DAMAGE_BONUS: dict[str, float] = {
+    "powerful": 0.50,
+    "mark": 0.30,
+    "burn": 0.50,
+    "stain": 0.50,
+}
+
+# Rotation assumed by the scorer. Matches ``DefaultDamageModel.rotation_turns``.
+_ROTATION_TURNS = 3
+
 _UTILITY_KEYWORDS: dict[str, tuple[str, bool]] = {
     "revive": ("has_revive", True),
     "resurrect": ("has_revive", True),
@@ -65,16 +154,67 @@ def parse_effect_structured(text: str) -> dict[str, Any]:
     elif re.search(r"double\s+damage", text, re.I):
         result["damage_bonus"] = 0.50
 
-    for match in _CONTEXT_RE.finditer(text):
-        pct = float(match.group("pct")) / 100.0
-        kind = match.group("kind").strip().lower()
-        tail = match.group("tail").lower()
+    # Cap-bypass flag (Painted Power).
+    if _CAP_BYPASS_RE.search(text):
+        result["damage_cap_bypass"] = True
 
-        key = _classify(kind, tail)
-        if key is None:
-            continue
-        # First hit wins — keep the most specific bucket we see per key.
-        result.setdefault(key, pct)
+    # Hidden multipliers like "1.1x damage" → damage_bonus = 0.1.
+    if (match := _HIDDEN_MULTIPLIER_RE.search(text)) is not None:
+        mult = float(match.group("mult"))
+        if mult > 0:
+            result.setdefault("damage_bonus", mult - 1.0)
+
+    # Battle-start buffs. Powerful for N turns on a 3-turn rotation scales
+    # its always-on damage bonus by N/3 (clamped).
+    if (match := _BATTLE_START_BUFF_RE.search(text)) is not None:
+        buff = match.group("buff").lower()
+        turns = int(match.group("turns"))
+        buff_bonus = _BUFF_DAMAGE_BONUS.get(buff, 0.0)
+        if buff_bonus > 0:
+            uptime_fraction = min(turns / _ROTATION_TURNS, 1.0)
+            result.setdefault("damage_bonus", buff_bonus * uptime_fraction)
+
+    # Chance-gated buff application. The chance replaces the default
+    # trigger_uptime for this clause.
+    if "damage_bonus" not in result:
+        for chance_re in (_CHANCE_BUFF_RE, _CHANCE_STATUS_VERB_RE):
+            match = chance_re.search(text)
+            if match is None:
+                continue
+            buff = match.group("buff").lower()
+            buff_bonus = _BUFF_DAMAGE_BONUS.get(buff, 0.0)
+            if buff_bonus <= 0:
+                break
+            chance = float(match.group("pct")) / 100.0
+            # Tuck the buff's damage bonus behind the chance. The scorer
+            # multiplies damage_bonus × trigger_uptime downstream, so we
+            # keep the damage_bonus whole and stash the chance as uptime.
+            result.setdefault("damage_bonus", buff_bonus)
+            result.setdefault("trigger_uptime", chance)
+            break
+
+    # Non-chance buff applications: "Gain Powerful on <condition>".
+    # The conditional trigger_uptime is filled in by _estimate_trigger_uptime
+    # further down, so we only set damage_bonus here.
+    if "damage_bonus" not in result and (match := _BUFF_APPLY_RE.search(text)) is not None:
+        buff = match.group("buff").lower()
+        buff_bonus = _BUFF_DAMAGE_BONUS.get(buff, 0.0)
+        if buff_bonus > 0:
+            result["damage_bonus"] = buff_bonus
+
+    # Extra hits on Base Attack — each extra hit adds ~1/3 of base damage.
+    if (match := _EXTRA_HITS_RE.search(text)) is not None:
+        extra = int(match.group("extra"))
+        result.setdefault("damage_bonus", extra / _BASE_ATTACK_HITS)
+
+    _apply_context_matches(text, result)
+
+    # Verb-first and verb-middle "damage increased/reduced by N%" clauses
+    # that _CONTEXT_RE can't catch because the % sits after "damage".
+    for match in _DAMAGE_DELTA_RE.finditer(text):
+        _absorb_damage_delta(match, result)
+    for match in _DAMAGE_DELTA_VERB_FIRST_RE.finditer(text):
+        _absorb_damage_delta(match, result)
 
     low = text.lower()
     for keyword, (key, flag) in _UTILITY_KEYWORDS.items():
@@ -89,6 +229,45 @@ def parse_effect_structured(text: str) -> dict[str, Any]:
         result["trigger_uptime"] = uptime
 
     return result
+
+
+def _apply_context_matches(text: str, result: dict[str, Any]) -> None:
+    """Kept separate so the main function reads cleanly."""
+    for match in _CONTEXT_RE.finditer(text):
+        pct = float(match.group("pct")) / 100.0
+        kind = match.group("kind").strip().lower()
+        tail = match.group("tail").lower()
+
+        key = _classify(kind, tail)
+        if key is None:
+            continue
+        # First hit wins — keep the most specific bucket we see per key.
+        result.setdefault(key, pct)
+
+
+def _absorb_damage_delta(match: re.Match[str], result: dict[str, Any]) -> None:
+    pct = float(match.group("pct")) / 100.0
+    direction = match.group("direction").lower()
+    # Reductions map to a negative damage_bonus so the scorer subtracts
+    # the penalty side of trade-off pictos (e.g. break-specialist).
+    if direction.startswith(("reduc", "decrease")):
+        pct = -pct
+    kind = (match.group("kind") or "").lower()
+
+    if "break" in kind:
+        key = "break_damage_bonus"
+    elif "critical" in kind:
+        key = "crit_damage_bonus"
+    else:
+        key = "damage_bonus"
+
+    # For damage_bonus we *overwrite* a previous non-penalty match with a
+    # penalty one (so "+50% break, -20% base" keeps the -20% on damage_bonus
+    # rather than dropping it because an earlier match set the key).
+    if key == "damage_bonus" and pct < 0:
+        result[key] = pct
+    else:
+        result.setdefault(key, pct)
 
 
 # Common trigger phrasings → how often they're up in a typical rotation.
@@ -116,6 +295,10 @@ _UPTIME_PATTERNS: list[tuple[re.Pattern[str], float]] = [
     (re.compile(r"first\s+(?:hit|attack|turn)", re.I), 0.20),
     (re.compile(r"when\s+shield(?:ed)?", re.I), 0.35),
     (re.compile(r"once\s+per\s+(?:battle|turn)", re.I), 0.15),
+    (re.compile(r"after\s+(?:a\s+)?(?:free\s+aim|base\s+attack)", re.I), 0.30),
+    (re.compile(r"(?:on|after)\s+(?:successful\s+|a\s+)?parry", re.I), 0.35),
+    (re.compile(r"if\s+fighting\s+alone", re.I), 0.50),
+    (re.compile(r"for\s+\d+\s+turn", re.I), 0.40),
 ]
 
 

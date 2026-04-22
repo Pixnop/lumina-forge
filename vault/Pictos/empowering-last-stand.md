@@ -1,5 +1,8 @@
 ---
 effect: Gain Powerful if fighting alone.
+effect_structured:
+  damage_bonus: 0.5
+  trigger_uptime: 0.5
 lumina_points_cost: 3
 name: Empowering Last Stand
 sources:

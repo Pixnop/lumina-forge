@@ -1,5 +1,7 @@
 ---
 effect: Damage can exceed 9,999.
+effect_structured:
+  damage_cap_bypass: true
 name: Painted Power
 pp_cost: 5
 source_picto: painted-power

@@ -1,5 +1,7 @@
 ---
 effect: Play first (Also gives a hidden 1.1x damage buff when equipped).
+effect_structured:
+  damage_bonus: 0.10000000000000009
 lumina_points_cost: 10
 name: First Strike
 sources:

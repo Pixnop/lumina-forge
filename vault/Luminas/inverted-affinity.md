@@ -3,6 +3,7 @@ effect: Apply Inverted on self for 3 turns on battle start. 50% increased damage
   Inverted.
 effect_structured:
   damage_bonus: 0.5
+  trigger_uptime: 0.4
 name: Inverted Affinity
 pp_cost: 5
 source_picto: inverted-affinity

@@ -1,5 +1,7 @@
 ---
 effect: Apply Powerful on applying Shell.
+effect_structured:
+  damage_bonus: 0.5
 lumina_points_cost: 10
 name: Powerful on Shell
 sources:

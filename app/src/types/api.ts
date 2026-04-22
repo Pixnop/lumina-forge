@@ -29,6 +29,7 @@ export interface DamageEstimate {
   lumina_mult: number;
   crit_mult: number;
   synergy_mult: number;
+  ap_mult: number;
   est_dps: number;
   raw_dps: number;
 }

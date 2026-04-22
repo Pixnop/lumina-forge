@@ -77,9 +77,10 @@ class DefaultDamageModel:
         )
         crit_mult = 1.0 + crit_rate * (self.base_crit_damage - 1.0)
         synergy_mult = self.synergy_multiplier
+        ap_mult = _ap_economy_multiplier(build, self.rotation_turns)
         # Compute raw — the engine clamps to `rotation_ceiling()` after
         # folding in any additional multipliers (synergy bonuses, etc.).
-        raw = base * might_mult * picto_mult * lumina_mult * crit_mult * synergy_mult
+        raw = base * might_mult * picto_mult * lumina_mult * crit_mult * synergy_mult * ap_mult
         return DamageEstimate(
             base=base,
             might_mult=might_mult,
@@ -87,6 +88,7 @@ class DefaultDamageModel:
             lumina_mult=lumina_mult,
             crit_mult=crit_mult,
             synergy_mult=synergy_mult,
+            ap_mult=ap_mult,
             est_dps=raw,
             raw_dps=raw,
         )
@@ -195,6 +197,78 @@ def _weapon_passive_contribution(weapon: object) -> float:
         effect_text = passive.get("effect", "") or ""
         total += _picto_contribution(effect_struct, effect_text)
     return min(total, 1.0)
+
+
+# AP economy — how often each ap_trigger actually fires in a rotation.
+# Pragmatic numbers: the point is to separate builds that spam AP sources
+# from builds that don't, not to be cycle-accurate.
+_AP_TRIGGER_FREQ_PER_TURN: dict[str, float] = {
+    "battle_start": 0.0,  # fires once per battle — accounted separately
+    "turn_start": 1.0,
+    "base_attack": 1.0,
+    "on_kill": 0.4,
+    "on_break": 0.3,
+    "on_death": 0.1,
+    "parry": 0.4,
+    "perfect_dodge": 0.2,
+    "counter": 0.3,
+    "critical_hit": 0.3,
+    "free_aim": 0.3,
+    "on_status_applied": 0.3,
+    "on_dot_applied": 0.3,
+    "on_buff_applied": 0.2,
+    "vs_marked": 0.4,
+    "vs_stunned": 0.3,
+    "vs_burning": 0.5,
+    "vs_weakness": 0.3,
+    "solo": 0.0,  # conditional on team state
+    "low_hp": 0.1,
+}
+
+# Each extra AP per rotation buys a fraction of an extra skill — cap the
+# multiplier so runaway-AP builds don't eclipse raw-damage builds by 10×.
+_AP_PER_EXTRA_SKILL: float = 3.0  # average skill AP cost
+_BASELINE_SKILLS_PER_ROTATION: float = 2.0  # what the flat formula assumes
+_AP_MULT_CAP: float = 1.50  # hard ceiling: +50 % from AP economy alone
+
+
+def _ap_economy_multiplier(build: Build, rotation_turns: int) -> float:
+    """Turn AP bonuses on pictos + luminas + weapon passives into a damage
+    multiplier. The idea: every AP generated beyond the baseline is a
+    fraction of an extra skill cast, which multiplies damage roughly
+    linearly until the 9999 cap kicks in (that clamp is applied later)."""
+    total_extra_ap = 0.0
+    for container in (*build.pictos, *build.luminas):
+        total_extra_ap += _ap_from_effect(
+            getattr(container, "effect_structured", {}) or {}, rotation_turns
+        )
+    for passive in getattr(build.weapon, "passives", []) or []:
+        if isinstance(passive, dict):
+            total_extra_ap += _ap_from_effect(
+                passive.get("effect_structured", {}) or {}, rotation_turns
+            )
+
+    if total_extra_ap <= 0:
+        return 1.0
+    extra_skills = total_extra_ap / _AP_PER_EXTRA_SKILL
+    # Each extra skill relative to the baseline adds ~50 % damage.
+    gain = 0.5 * extra_skills / _BASELINE_SKILLS_PER_ROTATION
+    return min(1.0 + gain, _AP_MULT_CAP)
+
+
+def _ap_from_effect(effect_structured: dict[str, object], rotation_turns: int) -> float:
+    """AP generated per rotation from a single picto/lumina/passive."""
+    bonus_raw = effect_structured.get("ap_bonus")
+    if not isinstance(bonus_raw, int | float):
+        return 0.0
+    bonus = float(bonus_raw)
+    trigger_raw = effect_structured.get("ap_trigger")
+    trigger = trigger_raw.lower() if isinstance(trigger_raw, str) else ""
+
+    if trigger == "battle_start":
+        return bonus  # fires once per fight, so once per rotation
+    freq_per_turn = _AP_TRIGGER_FREQ_PER_TURN.get(trigger, 0.2)
+    return bonus * freq_per_turn * rotation_turns
 
 
 def _picto_contribution(effect_structured: dict[str, object], effect_text: str) -> float:

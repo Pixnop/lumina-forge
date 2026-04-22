@@ -199,6 +199,10 @@ class DamageEstimate(BaseModel):
     lumina_mult: float
     crit_mult: float
     synergy_mult: float
+    # AP economy multiplier — a build that generates lots of AP can fire
+    # more skills per rotation, so its effective DPS is higher. Defaults
+    # to 1.0 so older callers unaffected.
+    ap_mult: float = 1.0
     # Post-cap DPS — what the player sees, clamped by the engine at the
     # in-game 9999-per-hit ceiling.
     est_dps: float
@@ -216,6 +220,7 @@ class DamageEstimate(BaseModel):
             "lumina_mult": self.lumina_mult,
             "crit_mult": self.crit_mult,
             "synergy_mult": self.synergy_mult,
+            "ap_mult": self.ap_mult,
             "est_dps": self.est_dps,
             "raw_dps": self.raw_dps,
         }

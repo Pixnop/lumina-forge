@@ -17,6 +17,7 @@ export function BuildDetail({ build }: Props) {
     ["× Lumina", d.lumina_mult],
     ["× Crit", d.crit_mult],
     ["× Synergy", d.synergy_mult],
+    ["× AP", d.ap_mult],
   ];
 
   return (
@@ -57,7 +58,7 @@ export function BuildDetail({ build }: Props) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-6 gap-2 text-sm">
+          <div className="grid grid-cols-7 gap-2 text-sm">
             {factors.map(([label, value]) => (
               <div key={label} className="flex flex-col rounded-md border border-border bg-secondary/50 p-2">
                 <span className="text-xs text-muted-foreground">{label}</span>

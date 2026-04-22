@@ -71,6 +71,7 @@ def test_full_formula_is_product_of_factors() -> None:
         * est.lumina_mult
         * est.crit_mult
         * est.synergy_mult
+        * est.ap_mult
     )
     assert abs(est.est_dps - expected) < 1e-6
 
@@ -80,3 +81,47 @@ def test_zero_damage_weapon_returns_zero_dps() -> None:
     est = DefaultDamageModel().estimate(b)
     assert est.base == 0.0
     assert est.est_dps == 0.0
+
+
+# --- AP economy -------------------------------------------------------------
+
+
+def test_ap_mult_is_one_without_ap_pictos() -> None:
+    b = _build()
+    est = DefaultDamageModel().estimate(b)
+    assert est.ap_mult == 1.0
+
+
+def test_ap_mult_rises_with_turn_start_ap() -> None:
+    """+1 AP on turn start fires every turn — 3 AP/rotation across 3 turns."""
+    ap_picto = PictoItem(
+        slug="energising-turn",
+        name="E",
+        effect="+1 AP on turn start.",
+        effect_structured={"ap_bonus": 1, "ap_trigger": "turn_start"},
+    )
+    b = _build(pictos=(ap_picto, ap_picto, ap_picto))
+    est = DefaultDamageModel().estimate(b)
+    assert est.ap_mult > 1.0
+
+
+def test_ap_mult_ignores_non_ap_fields() -> None:
+    damage_picto = PictoItem(
+        slug="d", name="D", effect="dmg", effect_structured={"damage_bonus": 0.5}
+    )
+    b = _build(pictos=(damage_picto, damage_picto, damage_picto))
+    est = DefaultDamageModel().estimate(b)
+    assert est.ap_mult == 1.0  # no ap_bonus on these pictos
+
+
+def test_ap_mult_is_capped() -> None:
+    """Stacking every AP picto in the vault shouldn't send ap_mult to 10×."""
+    huge_ap = PictoItem(
+        slug="huge",
+        name="H",
+        effect="+100 AP on turn start.",
+        effect_structured={"ap_bonus": 100, "ap_trigger": "turn_start"},
+    )
+    b = _build(pictos=(huge_ap, huge_ap, huge_ap))
+    est = DefaultDamageModel().estimate(b)
+    assert est.ap_mult <= 1.50  # the explicit cap

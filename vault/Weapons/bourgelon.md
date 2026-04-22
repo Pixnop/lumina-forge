@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: '100% increased Burn damage in Twilight state. Lvl: 20 : Sun Skills give
     one more charge.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 1.0
   name: Lvl. 10
 scaling_stat: Agility
 sources:

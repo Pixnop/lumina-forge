@@ -4,7 +4,8 @@ character: Sciel
 name: Ramasson
 passives:
 - effect: Can consume 1 Moon charge on turn start to recover 20% of each ally's Health.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: 'Base Attack gives 1 Moon charge. Lvl: 20 : Moon Skills give one more charge.'
   effect_structured: {}

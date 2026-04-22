@@ -8,7 +8,9 @@ passives:
   name: Lvl. 4
 - effect: '+3 AP when in Almighty Mask. Lvl: 20 : Revive instantly with full Health
     if dead while in Almighty Mask. Once per Battle.'
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
+    has_revive: true
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

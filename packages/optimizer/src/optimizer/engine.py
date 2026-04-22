@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import heapq
 import logging
 from dataclasses import dataclass
 
@@ -16,6 +15,7 @@ from optimizer.models import (
     RankedBuild,
     SynergyItem,
     UtilityScore,
+    WeaponAlternative,
 )
 from optimizer.rotation import suggest as suggest_rotation
 from optimizer.synergies import SynergyMatcher
@@ -44,12 +44,18 @@ def optimize(
     *,
     damage_model: DamageModel | None = None,
 ) -> list[RankedBuild]:
-    """Enumerate valid builds for ``inventory`` and return the top ``options.top_k``."""
+    """Enumerate valid builds for ``inventory`` and return the top ``options.top_k``.
+
+    Builds are deduplicated by their (pictos, luminas) signature — for
+    each distinct combo, the best-scoring weapon wins and the runners-up
+    land in ``RankedBuild.weapon_alternatives``. This stops the top-K
+    from being five copies of the same loadout with only the weapon slot
+    changing.
+    """
     opts = options or EngineOptions()
     utility_weight = opts.resolved_utility_weight()
 
-    # Prefer the vault-driven model when Formulas/damage-formula.md exists,
-    # so editing that note changes the math without touching Python.
+    # Prefer the vault-driven model when Formulas/damage-formula.md exists.
     if damage_model is not None:
         model: DamageModel = damage_model
     elif (formula := index.formulas.get("damage-formula")) is not None:
@@ -61,25 +67,50 @@ def optimize(
 
     ctx = build_context(inventory, index)
 
-    # Heap of (total_score, counter, RankedBuild). The counter disambiguates
-    # equal scores so heapq never needs to compare RankedBuild objects.
-    heap: list[tuple[float, int, RankedBuild]] = []
-    counter = 0
+    # Stage 1 — score every candidate and bucket them by loadout signature.
+    groups: dict[tuple[str, ...], list[RankedBuild]] = {}
     for candidate in enumerate_builds(ctx):
         ranked = _score(candidate, model, matcher, util_scorer, utility_weight)
-        counter += 1
-        if len(heap) < opts.top_k:
-            heapq.heappush(heap, (ranked.total_score, counter, ranked))
-            continue
-        worst_score = heap[0][0]
-        if ranked.total_score > worst_score:
-            heapq.heappushpop(heap, (ranked.total_score, counter, ranked))
+        groups.setdefault(_signature(candidate), []).append(ranked)
 
-    heap.sort(key=lambda triple: triple[0], reverse=True)
-    return [ranked for _, _, ranked in heap]
+    # Stage 2 — per signature, promote the best weapon; keep the rest as alts.
+    winners: list[RankedBuild] = []
+    for group in groups.values():
+        group.sort(key=_ranking_key, reverse=True)
+        best = group[0]
+        alternatives = [
+            WeaponAlternative(
+                weapon=r.build.weapon.slug,
+                est_dps=r.damage.est_dps,
+                raw_dps=r.damage.raw_dps,
+            )
+            for r in group[1:6]  # up to 5 alternative weapons
+        ]
+        winners.append(best.model_copy(update={"weapon_alternatives": alternatives}))
+
+    winners.sort(key=_ranking_key, reverse=True)
+    return winners[: opts.top_k]
 
 
 # --- internals --------------------------------------------------------------
+
+
+def _signature(build: Build) -> tuple[str, ...]:
+    """Identify a build by its picto + lumina loadout.
+
+    Skills are inventory-wide (same list for every candidate in a run), so
+    excluding them keeps the key short without losing uniqueness.
+    Weapons are intentionally excluded — the whole point is to dedup them.
+    """
+    pictos = tuple(sorted(p.slug for p in build.pictos))
+    luminas = tuple(sorted(lu.slug for lu in build.luminas))
+    return (*pictos, "/", *luminas)
+
+
+def _ranking_key(ranked: RankedBuild) -> tuple[float, float]:
+    """Order by est_dps, break ties on raw_dps — so when several builds cap
+    at the same ceiling the one with the most headroom comes first."""
+    return (ranked.damage.est_dps, ranked.damage.raw_dps)
 
 
 def _score(
@@ -107,14 +138,6 @@ def _score(
 
 
 def _build_ceiling(build: Build, model: DamageModel) -> float:
-    """Use the real hit counts of the build's skills when they're known.
-
-    A 3-turn rotation that fires skills with 4-hit / 5-hit / 3-hit profiles
-    can legitimately output more total damage than the conservative 3-hit
-    baseline, because each hit is capped at 9999 independently. We take
-    the top-3 skills by hits, sum them, and only fall back to the model's
-    default ceiling when nothing's known.
-    """
     ceiling = model.rotation_ceiling()
     default_rotation_turns = 3
     hit_counts = sorted(
@@ -128,7 +151,8 @@ def _build_ceiling(build: Build, model: DamageModel) -> float:
 
 
 def _apply_ceiling(damage: DamageEstimate, ceiling: float) -> DamageEstimate:
-    """Clamp the final est_dps to the model's rotation ceiling (in-game cap)."""
+    """Clamp est_dps to the build's rotation ceiling — keeping raw_dps intact
+    so the ranking tie-break can still tell the candidates apart."""
     if damage.est_dps <= ceiling:
         return damage
     return DamageEstimate(
@@ -139,12 +163,14 @@ def _apply_ceiling(damage: DamageEstimate, ceiling: float) -> DamageEstimate:
         crit_mult=damage.crit_mult,
         synergy_mult=damage.synergy_mult,
         est_dps=ceiling,
+        raw_dps=damage.raw_dps,
     )
 
 
 def _apply_synergy(damage: DamageEstimate, multiplier: float) -> DamageEstimate:
     if multiplier == 1.0:
         return damage
+    ratio = multiplier / damage.synergy_mult
     return DamageEstimate(
         base=damage.base,
         might_mult=damage.might_mult,
@@ -152,7 +178,8 @@ def _apply_synergy(damage: DamageEstimate, multiplier: float) -> DamageEstimate:
         lumina_mult=damage.lumina_mult,
         crit_mult=damage.crit_mult,
         synergy_mult=multiplier,
-        est_dps=damage.est_dps / damage.synergy_mult * multiplier,
+        est_dps=damage.est_dps * ratio,
+        raw_dps=damage.raw_dps * ratio,
     )
 
 
@@ -176,6 +203,11 @@ def _explain(
         reasons.append(
             f"Synergy bonus ×{damage.synergy_mult:.2f} from: "
             f"{', '.join(s.name for s in matched_synergies)}."
+        )
+    if damage.is_capped:
+        reasons.append(
+            f"Cap hit — raw {damage.raw_dps:.0f} clamped to {damage.est_dps:.0f} "
+            f"(9999 per hit)."
         )
     if utility.score_0_1 > 0:
         bits = []

@@ -9,7 +9,8 @@ passives:
   name: Lvl. 4
 - effect: '25% increased damage per Moon charge. Lvl: 20 : Base Attack gives 1 Moon
     charge.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.25
   name: Lvl. 10
 scaling_stat: Luck
 sources:

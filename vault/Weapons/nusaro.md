@@ -8,7 +8,8 @@ passives:
   effect_structured: {}
   name: Lvl. 4
 - effect: 'Upgraded Skills deal 30% more damage. Lvl: 20 : +1 AP on Mask change.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.3
   name: Lvl. 10
 scaling_stat: Agility
 sources:

@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'Self-Heal by 2% Health on dealing a Critical hit. Lvl: 20 : Countemttack
     is always a Critical hit.'
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Luck
 sources:

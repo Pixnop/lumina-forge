@@ -5,7 +5,8 @@ name: Hevasson
 passives:
 - effect: Free Aim shots can consume a Sun charge to apply 5 Foretell and consume
     a Moon charge to deal 400% more damage.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 4.0
   name: Lvl. 4
 - effect: 'Consuming a Sun or Moon charge gives 1 AP. Lvl: 20 : Baser Attack gives
     1 Moon charge.'

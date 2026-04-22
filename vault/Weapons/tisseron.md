@@ -5,7 +5,8 @@ name: Tisseron
 passives:
 - effect: Extend Twilight by one turn on using a Moon Skill. +50% Twilight damage
     increase on using a Sun Skill.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 4
 - effect: 'Twilight duration is increased by l. Lvl: 20 : Play again when entering
     Twilight state.'

@@ -9,7 +9,8 @@ passives:
 - effect: 'Almighty Mask gives 50% increased damage (cumulative) and doubles enemies''
     Burn Lvl: 20 : Almighty Mask Skills consume up to 100 Burn to deal 2% more damage
     per Burn consumed.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Luck
 sources:

@@ -4,7 +4,8 @@ character: Maelle
 name: Glaisum
 passives:
 - effect: Allies recover 20% Health on switching to Virtuose Stance.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: 'Gain Shell when switching out of Virtuose Stance. Lvl: 20 : Cleanse self
     Status Effects when switching to Virtuose Stance.'

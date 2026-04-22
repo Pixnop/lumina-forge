@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: '20% increased Dark damage with Skills. Lvl: 20 : Apply Shell during Moon,
     Powerful during Sun, and Rush during Twilight.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Agility
 sources:

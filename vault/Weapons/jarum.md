@@ -8,7 +8,9 @@ passives:
   name: Lvl. 4
 - effect: 'Apply 5 Burn on Counterattack. Lvl: 20 : 50% increased Counter damage per
     Shield.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
+    has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Defense
 sources:

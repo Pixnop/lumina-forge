@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: '50% increased Free Aim damage. Lvl: 20 : Generate a random Stain on Free
     Aim shot.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Defense
 sources:

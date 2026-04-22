@@ -5,7 +5,8 @@ name: Esquion
 passives:
 - effect: Can't enter Twilight. On turn start, if Moon and Sun charges are balanced,
     deal 100% more damage and apply double Foretell.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 1.0
   name: Lvl. 4
 - effect: 'On turn start, remove all Sun and Moon charges. Then, randomly gain 1 Sun
     or 1 Moon charge. Lvl: 20 : Base attack adds 1 Sun charge. Using a Tint adds 1

@@ -4,11 +4,13 @@ character: Maelle
 name: Melarum
 passives:
 - effect: Allies recover 20% Health on switching to Virtuose Stance.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: 'Applies Shell when Health is above 80%. Lvl: 20 : Switch to Virtuose Stance
     when Health falls below 50%.'
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

@@ -5,7 +5,8 @@ name: Cultam
 passives:
 - effect: No Perfection loss on damage taken. Perfection is instead lost on being
     Healed.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: 'Gain 2 AP on Counterattack. Lvl: 20 : Gain 1 Rank on Counterattack.'
   effect_structured: {}

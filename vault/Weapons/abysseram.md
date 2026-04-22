@@ -4,11 +4,14 @@ character: Gustave
 name: Abysseram
 passives:
 - effect: 50% increased damage on Rank D. No damage increase on other ranks.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 4
 - effect: '50% increased Base Attack damage. Lvl: 20 : On Rank D, recover 20% Health
     with Base Attack.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

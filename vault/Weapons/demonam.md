@@ -9,7 +9,9 @@ passives:
   name: Lvl. 4
 - effect: '20% increased Physical damage with Skills. Lvl: 20 : Dealing Light damage
     with a Skill recovers 3% Health.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Agility
 sources:

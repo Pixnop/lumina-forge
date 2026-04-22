@@ -4,10 +4,12 @@ character: Gustave
 name: Delaram
 passives:
 - effect: Start battle on Rank B, but 50% Health.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: 'Recover 15% Health on Base Attack. Lvl: 20 : Apply Powerful on Rank B.'
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Luck
 sources:

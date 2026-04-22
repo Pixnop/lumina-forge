@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'Fire Skills cost 1 less AP. Lvl: 20 : +1 Shield on switching to Offensive
     Stance.'
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Luck
 sources:

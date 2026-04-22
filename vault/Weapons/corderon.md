@@ -4,7 +4,8 @@ character: Sciel
 name: Corderon
 passives:
 - effect: Curse self on battle start. Deal 50% more damage while Cursed.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 4
 - effect: 'Reset Curse duration when entering Twilight state. Lvl: 20 : Play again
     when entering Twilight state.'

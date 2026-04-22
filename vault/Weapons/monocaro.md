@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'Balanced Mask applies Powerful for 3 turns. Lvl: 20 : Critical hits deal
     30% more damage while in Balanced Mask.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.3
   name: Lvl. 10
 scaling_stat: Agility
 sources:

@@ -8,7 +8,9 @@ passives:
   name: Lvl. 4
 - effect: 'Free Aim shots deal 100% more damage with all Masks except Almighty. Lvl:
     20 : 100% Critical Chance while in Almighty Mask.'
-  effect_structured: {}
+  effect_structured:
+    crit_rate_bonus: 1.0
+    damage_bonus: 1.0
   name: Lvl. 10
 scaling_stat: Luck
 sources:

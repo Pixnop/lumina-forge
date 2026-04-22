@@ -4,11 +4,13 @@ character: Maelle
 name: Barrier Breaker
 passives:
 - effect: Steal Shields removed by hitting enemies.
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 4
 - effect: 'Switch to Virtuose Stance on breaking any Shield. Lvl: 20 : Hitting a Marked
     enemy breaks all its Shields.'
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Defense
 sources:

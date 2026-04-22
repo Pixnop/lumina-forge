@@ -9,7 +9,8 @@ passives:
   name: Lvl. 4
 - effect: 'Base attack changes all current Stains into Dark Stains. Lvl: 20 : With
     4 active Dark Stains, any Skill can consume them to deal 300% more damage.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 3.0
   name: Lvl. 10
 scaling_stat: Agility
 sources:

@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: '25% increased damage per Mask change this turn. Lvl: 20 : Free Aim shoots
     deal double damage while in Almighty Mask.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Agility
 sources:

@@ -4,11 +4,13 @@ character: Maelle
 name: Sekarum
 passives:
 - effect: Switch to Virtuose Stance on breaking any Shield.
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 4
 - effect: 'Free Aim shots break 2 shields. Lvl: 20 : In Virtuose Stance, all damage
     pierce Shields.'
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

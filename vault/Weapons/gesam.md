@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: '20% increased Physical damage with Skills. Lvl: 20 : -1 AP cost for Physical
     Skills.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 sources:
 - https://expedition33.wiki.fextralife.com/Gesam

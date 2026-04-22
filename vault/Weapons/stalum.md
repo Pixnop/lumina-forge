@@ -5,11 +5,13 @@ name: Stalum
 passives:
 - effect: Apply Burn on self on turn start. 10% increased damage for each self Burn
     stack.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.1
   name: Lvl. 4
 - effect: 'Base Attack applies 2 Burn. Lvl: 20 : While in Defensive Stance, receive
     Heal instead of Burn damage.'
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Defense
 sources:

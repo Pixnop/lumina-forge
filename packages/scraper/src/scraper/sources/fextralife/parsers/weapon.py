@@ -121,7 +121,14 @@ def _best_scaling(attrs: dict[str, str]) -> ScalingStat | None:
 
 
 def _parse_passives(text: str) -> list[Passive]:
-    """Turn ``"Lvl. 4 : ... Lvl. 10 : ..."`` into a list of named Passive entries."""
+    """Turn ``"Lvl. 4 : ... Lvl. 10 : ..."`` into a list of named Passive entries.
+
+    Each passive's effect text is also fed through ``parse_effect_structured``
+    so the optimizer sees weapon-level damage bonuses the same way it sees
+    picto bonuses.
+    """
+    from scraper.sources.fextralife.parsers._effect import parse_effect_structured
+
     parts = re.split(r"(Lvl\.?\s*\d+\s*:)", text)
     passives: list[Passive] = []
     current_name = ""
@@ -132,7 +139,14 @@ def _parse_passives(text: str) -> list[Passive]:
         if re.match(r"Lvl\.?\s*\d+\s*:", chunk):
             current_name = chunk.rstrip(":").strip()
         elif current_name:
-            passives.append(Passive(name=current_name, effect=clean_text(chunk)))
+            effect = clean_text(chunk)
+            passives.append(
+                Passive(
+                    name=current_name,
+                    effect=effect,
+                    effect_structured=parse_effect_structured(effect),
+                )
+            )
             current_name = ""
     return passives
 

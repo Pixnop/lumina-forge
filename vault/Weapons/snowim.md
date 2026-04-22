@@ -5,11 +5,13 @@ name: Snowim
 passives:
 - effect: Freeze self when falling below 30% health. Prevent the next instance of
     damage while Frozen.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: 'On turn start, if Frozen, remove Freeze and recover 60% Health. Lvl: 20
     : Gain 2 Ice Stains and 3 AP when Frozen.'
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Agility
 sources:

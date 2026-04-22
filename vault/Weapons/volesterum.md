@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'If Stanceless, Bast Attack switches to Defensive Stance. Lvl: 20 : Recover
     5% Health on Stance switch.'
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Agility
 sources:

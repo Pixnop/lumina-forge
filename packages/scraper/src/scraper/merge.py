@@ -188,10 +188,12 @@ def _union_preserving_order(old: list[Any], new: list[Any]) -> list[Any]:
 
 
 def _hashable(value: Any) -> Any:
-    """Best-effort hash key for dedupe purposes."""
+    """Best-effort hash key for dedupe purposes — recurses into nested
+    dicts/lists so dict-of-dict values (e.g. a parsed picto passive with
+    its own effect_structured) don't raise TypeError."""
     if isinstance(value, dict):
-        return tuple(sorted(value.items()))
-    if isinstance(value, list):
+        return tuple(sorted((k, _hashable(v)) for k, v in value.items()))
+    if isinstance(value, (list, tuple)):
         return tuple(_hashable(v) for v in value)
     return value
 

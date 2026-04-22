@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'Base Attack gives 1 Moon charge and consumes all Foretell to apply Burn.
     Lvl: 20 : 100% increased Burn damage in Twilight state.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 1.0
   name: Lvl. 10
 scaling_stat: Luck
 sources:

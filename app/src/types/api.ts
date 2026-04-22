@@ -30,6 +30,13 @@ export interface DamageEstimate {
   crit_mult: number;
   synergy_mult: number;
   est_dps: number;
+  raw_dps: number;
+}
+
+export interface WeaponAlternative {
+  weapon: string;
+  est_dps: number;
+  raw_dps: number;
 }
 
 export interface UtilityScore {
@@ -56,6 +63,7 @@ export interface RankedBuildResponse {
   synergies_matched: string[];
   rotation_hint: string[];
   why: string[];
+  weapon_alternatives: WeaponAlternative[];
 }
 
 export interface OptimizeRequest {

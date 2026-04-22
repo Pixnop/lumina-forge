@@ -4,11 +4,13 @@ character: Lune
 name: Bonbim
 passives:
 - effect: +5% Critical chance per Burn on the target.
-  effect_structured: {}
+  effect_structured:
+    crit_rate_bonus: 0.05
   name: Lvl. 4
 - effect: 'Critical hits apply Burn. Lvl: 20 : Lightning Skills consume up to 100
     Burn to deal 2% more damage per Burn consumed.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.02
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

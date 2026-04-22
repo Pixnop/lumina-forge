@@ -4,11 +4,13 @@ character: Sciel
 name: Algueron
 passives:
 - effect: Free Aim shots can consume 1 Foretell to deal 100% more damage.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 1.0
   name: Lvl. 4
 - effect: 'Base Attack applies 3 Foretell. Lvl: 20 : During Twilight, Free Aim shots
     deal double damage.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

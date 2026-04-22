@@ -4,7 +4,8 @@ character: Maelle
 name: Esqium
 passives:
 - effect: On turn start, consume each AP above 4 to gain 50% more damage per AP consumed.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 4
 - effect: 'On Virtuose, all hits apply Burn Lvl: 20 : Using a Skill that costs less
     than 4 AP applies Mark to all enemies.'

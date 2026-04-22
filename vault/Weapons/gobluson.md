@@ -9,7 +9,8 @@ passives:
   name: Lvl. 4
 - effect: 'Apply 1 Burn every 3 Foretell applied with Skills. Lvl: 20 : 20% increased
     Fire damage with Skills.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Defense
 sources:

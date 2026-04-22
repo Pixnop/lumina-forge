@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'Generate one Fire Stain at the beginning of each turn. Lvl: 20 : 30% increased
     Burn damage per Fire Stain.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.3
   name: Lvl. 10
 scaling_stat: Luck
 sources:

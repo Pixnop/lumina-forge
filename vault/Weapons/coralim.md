@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: '20% increased Ice damage with Skills. Lvl: 20 : Start battle with 1 Earth
     Stain.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Defense
 sources:

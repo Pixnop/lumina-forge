@@ -157,7 +157,14 @@ class DamageEstimate(BaseModel):
     lumina_mult: float
     crit_mult: float
     synergy_mult: float
+    # Post-cap DPS — what the player sees, clamped by the engine at the
+    # in-game 9999-per-hit ceiling.
     est_dps: float
+    # Pre-cap DPS — what the multipliers produce without the clamp. Used
+    # as a secondary ranking key: when several builds cap at the same
+    # est_dps, the one with the highest raw_dps wins because it has the
+    # most margin and will still cap once conditional triggers miss.
+    raw_dps: float = 0.0
 
     def breakdown(self) -> dict[str, float]:
         return {
@@ -168,7 +175,22 @@ class DamageEstimate(BaseModel):
             "crit_mult": self.crit_mult,
             "synergy_mult": self.synergy_mult,
             "est_dps": self.est_dps,
+            "raw_dps": self.raw_dps,
         }
+
+    @property
+    def is_capped(self) -> bool:
+        return self.raw_dps > self.est_dps + 1e-6
+
+
+class WeaponAlternative(BaseModel):
+    """Secondary weapon choice for the same picto/lumina/skill loadout."""
+
+    model_config = ConfigDict(frozen=True)
+
+    weapon: str
+    est_dps: float
+    raw_dps: float
 
 
 class UtilityScore(BaseModel):
@@ -203,3 +225,7 @@ class RankedBuild(BaseModel):
     total_score: float
     rotation_hint: list[str] = Field(default_factory=list)
     why: list[str] = Field(default_factory=list)
+    # Weapons with the same picto/lumina/skill loadout, ranked by raw DPS
+    # descending. ``build.weapon`` is the primary pick; this list holds
+    # the runners-up so the UI can show "also works with…".
+    weapon_alternatives: list[WeaponAlternative] = Field(default_factory=list)

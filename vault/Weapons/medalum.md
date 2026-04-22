@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'In Virtuose Stance, every Burn applied is doubled. Lvl: 20 : In Virtuose
     Stance, Burn deals double damage.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Defense
 sources:

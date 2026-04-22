@@ -7,7 +7,9 @@ passives:
   name: Lvl. 4
 - effect: '30% increased damage when revived. Lvl: 20 : Gradient attacks deal 100%
     more damage'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.3
+    has_revive: true
   name: Lvl. 10
 scaling_stat: Luck
 sources:

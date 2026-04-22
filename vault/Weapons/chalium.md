@@ -4,11 +4,14 @@ character: Maelle
 name: Chalium
 passives:
 - effect: On Defensive Stance, gain 1 Shield per Parry. Lose all Shields on turn start.
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 4
 - effect: '20% increased Light damage with Skills. Lvl: 20 : 50% increased Counter
     damage per Shield.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
+    has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Agility
 sources:

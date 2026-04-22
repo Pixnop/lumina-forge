@@ -51,9 +51,47 @@ export function BuildDetail({ build }: Props) {
           </div>
           <div className="mt-3 text-sm">
             est. DPS — <span className="font-bold">{d.est_dps.toFixed(0)}</span>
+            {d.raw_dps > d.est_dps + 1 && (
+              <span className="ml-2 text-xs text-muted-foreground">
+                (capped — raw {d.raw_dps.toFixed(0)})
+              </span>
+            )}
           </div>
         </CardContent>
       </Card>
+
+      {build.weapon_alternatives.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Also works with</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="divide-y divide-border text-sm">
+              {build.weapon_alternatives.map((alt, idx) => (
+                <li
+                  key={alt.weapon}
+                  className="flex items-center justify-between py-2"
+                >
+                  <span className="flex items-center gap-2">
+                    <Badge variant="outline" className="tabular-nums">
+                      #{idx + 2}
+                    </Badge>
+                    <span className="font-medium">{alt.weapon}</span>
+                  </span>
+                  <span className="text-muted-foreground tabular-nums">
+                    est. {alt.est_dps.toFixed(0)}
+                    {alt.raw_dps > alt.est_dps + 1 && (
+                      <span className="ml-2 text-xs">
+                        (capped, raw {alt.raw_dps.toFixed(0)})
+                      </span>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>

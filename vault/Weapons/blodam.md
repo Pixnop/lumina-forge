@@ -5,10 +5,12 @@ name: Blodam
 passives:
 - effect: Perfection is now based on current Health. Gain 1 Rank every 20% missing
     Health.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: '20% increased Light damage with Skills. Lvl: 20 : +1 AP on Rank Up.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Agility
 sources:

@@ -4,7 +4,8 @@ character: Lune
 name: Potierim
 passives:
 - effect: Healing Skills generate one additional 1 Light stain.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: 'Consuming a Light Stain applies Slow to a random enemy. Lvl: 20 : Base
     Attack generates a Light Stain.'

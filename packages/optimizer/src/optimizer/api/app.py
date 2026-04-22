@@ -26,6 +26,7 @@ from optimizer.api.schemas import (
     VaultInfoResponse,
     VaultItem,
     VaultItemsResponse,
+    WeaponAlternativeResponse,
 )
 from optimizer.engine import EngineOptions, optimize
 from optimizer.models import RankedBuild
@@ -235,4 +236,10 @@ def _to_response(rank: int, r: RankedBuild) -> RankedBuildResponse:
         synergies_matched=[s.slug for s in r.synergies_matched],
         rotation_hint=r.rotation_hint,
         why=r.why,
+        weapon_alternatives=[
+            WeaponAlternativeResponse(
+                weapon=a.weapon, est_dps=a.est_dps, raw_dps=a.raw_dps
+            )
+            for a in r.weapon_alternatives
+        ],
     )

@@ -5,7 +5,8 @@ name: Sidaro
 passives:
 - effect: 30% increased damage per Upgraded Skill used. Resets upon using a non-Upgraded
     Skill.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.3
   name: Lvl. 4
 - effect: 'Base Attack spins the Bestial Wheel to a random value. Lvl: 20 : Using
     an Upgraded Skill gives 1 AP to all other allies.'

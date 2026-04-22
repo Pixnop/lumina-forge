@@ -4,11 +4,13 @@ character: Sciel
 name: Sadon
 passives:
 - effect: On turn start, gain 1 Shield if at least 1 Sun charge is active.
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 4
 - effect: 'Apply 5 Foretell on enemies that break Shields. Lvl: 20 : +2 Sun charges
     on Counterattack.'
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Agility
 sources:

@@ -8,7 +8,9 @@ passives:
   name: Lvl. 4
 - effect: '20% increased Lightning damage with Skills. Lvl: 20 : +50% Critical Chance
     while in Offensive Stance.'
-  effect_structured: {}
+  effect_structured:
+    crit_rate_bonus: 0.5
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Agility
 sources:

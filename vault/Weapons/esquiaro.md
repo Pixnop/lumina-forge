@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'Heavy Mask gives 1 Shield to all allies. Lvl: 20 : Damage taken are reduced
     by 50% while in Heavy Mask.'
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

@@ -4,7 +4,8 @@ character: Maelle
 name: Licorum
 passives:
 - effect: Each successive Skill hit deals 10% more damage.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.1
   name: Lvl. 4
 - effect: 'First hit of a Skill applies Mark. Lvl: 20 : Second hit of a Skill and
     following hits don''t consume Mark'

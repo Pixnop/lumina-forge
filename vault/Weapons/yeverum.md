@@ -4,11 +4,13 @@ character: Maelle
 name: Yeverum
 passives:
 - effect: Applying Shell also applies 1 Shield.
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 4
 - effect: 'On applying Shields, also give 1 AP. Lvl: 20 : On switching to Virtuose
     Stance, double all Shields on allies.'
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Defense
 sources:

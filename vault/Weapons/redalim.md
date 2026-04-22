@@ -4,11 +4,13 @@ character: Lune
 name: Redalim
 passives:
 - effect: Healing Skills generate one additional Light stain.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: 'Generate one Ice Stain at the beginning of each turn. Lvl: 20 : Replay
     instantly on consuming Stains with a Healing Skill.'
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Defense
 sources:

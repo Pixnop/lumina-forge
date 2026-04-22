@@ -4,11 +4,13 @@ character: Sciel
 name: Rangeson
 passives:
 - effect: Recover 5% Health per Foretell applied.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: 'Healing Skills cost 1 less AP. Lvl: 20 : 30% increased Heal efficiency
     per Moon charge. Base Attack gives 1 Moon charge'
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 10
 scaling_stat: Agility
 sources:

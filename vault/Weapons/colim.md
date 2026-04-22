@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: '+1 AP on consuming a Light Stain. Lvl: 20 : 20% increased damage with Skills
     per active Light Stain.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Defense
 sources:

@@ -4,7 +4,8 @@ character: Lune
 name: Chapelim
 passives:
 - effect: 30% increased Break damage per Earth Stain.
-  effect_structured: {}
+  effect_structured:
+    break_damage_bonus: 0.3
   name: Lvl. 4
 - effect: 'Gain 9 AP on Breaking an enemy. Lvl: 20 : Generate one Earth Stain at the
     beginning of each turn.'

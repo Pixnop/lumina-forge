@@ -7,7 +7,8 @@ passives:
   name: Lvl. 4
 - effect: '+20% increased damage per Sun charge. Lvl: 20 : Sun Skills cost 1 less
     AP.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Luck
 sources:

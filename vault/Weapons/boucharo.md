@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'Agile Mask applies Rush for 3 turns. Lvl: 20 : +50% Critical Chance while
     in Agile Mask.'
-  effect_structured: {}
+  effect_structured:
+    crit_rate_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Luck
 sources:

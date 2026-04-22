@@ -4,11 +4,13 @@ character: Lune
 name: Elerim
 passives:
 - effect: Consuming an Earth Stain applies 1 Shield to self.
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
   name: Lvl. 4
 - effect: '20% increased Earth damage with Skills. Lvl: 20 : Base Attack generates
     an Earth Stain.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

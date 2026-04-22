@@ -4,11 +4,14 @@ character: Gustave
 name: Chevalam
 passives:
 - effect: Start battle at Rank S, but can't be Healed or gain Shields.
-  effect_structured: {}
+  effect_structured:
+    has_defense_buff: true
+    has_heal: true
   name: Lvl. 4
 - effect: '20% increased damage for each consecutive turn without taking damage. Can
     stack up to 5 times. Lvl: 20 : Apply Rush on Rank S.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Agility
 sources:

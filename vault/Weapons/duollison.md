@@ -3,12 +3,14 @@ character: Sciel
 name: Duollison
 passives:
 - effect: Each successive base attack hit on the same turn deals 100% more damage.
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 1.0
   name: Lvl. 4
 - effect: 'Free Aim shots apply 1 Foretell. Base attack consumes all Foretell to deal
     50% more damage per Foretell consumed. Lvl: 20 : During Twilight, any Foretell
     consumed is not removed.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Agility
 sources:

@@ -125,9 +125,17 @@ def _render(ranked: list[RankedBuild], inventory: Inventory, options: EngineOpti
     for idx, r in enumerate(ranked, start=1):
         reasons = "\n".join(f"• {line}" for line in r.why)
         rotation = "\n".join(f"  {line}" for line in r.rotation_hint)
+        alt_block = ""
+        if r.weapon_alternatives:
+            alts = "\n".join(
+                f"  • [cyan]{a.weapon}[/] — raw {a.raw_dps:.0f}"
+                + (" [yellow](capped)[/]" if a.est_dps < a.raw_dps else "")
+                for a in r.weapon_alternatives
+            )
+            alt_block = f"\n\n[bold]Also works with:[/]\n{alts}"
         console.print(
             Panel(
-                f"{reasons}\n\n[bold]Rotation:[/]\n{rotation}",
+                f"{reasons}\n\n[bold]Rotation:[/]\n{rotation}{alt_block}",
                 title=f"#{idx} — {r.build.weapon.name}",
                 border_style="cyan",
             )

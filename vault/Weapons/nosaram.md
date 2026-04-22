@@ -7,7 +7,9 @@ passives:
   effect_structured: {}
   name: Lvl. 4
 - effect: 'Free Aim shots break 2 Shields. Lvl: 20 : 50% increased Free Aim damage.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.5
+    has_defense_buff: true
   name: Lvl. 10
 scaling_stat: Agility
 sources:

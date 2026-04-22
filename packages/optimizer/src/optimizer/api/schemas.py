@@ -37,6 +37,14 @@ class BuildLoadout(BaseModel):
     skills_used: list[str]
 
 
+class WeaponAlternativeResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    weapon: str
+    est_dps: float
+    raw_dps: float
+
+
 class RankedBuildResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -48,6 +56,7 @@ class RankedBuildResponse(BaseModel):
     synergies_matched: list[str]
     rotation_hint: list[str]
     why: list[str]
+    weapon_alternatives: list[WeaponAlternativeResponse] = []
 
 
 class OptimizeResponse(BaseModel):

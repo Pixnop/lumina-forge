@@ -4,11 +4,13 @@ character: Maelle
 name: Coldum
 passives:
 - effect: Self-Heal by 2% Health on dealing a Critical hit.
-  effect_structured: {}
+  effect_structured:
+    has_heal: true
   name: Lvl. 4
 - effect: '+50% Critical Chance while in Defensive Stance. Lvl: 20 : If Stanceless,
     Base Attack switches to Defensive Stance.'
-  effect_structured: {}
+  effect_structured:
+    crit_rate_bonus: 0.5
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

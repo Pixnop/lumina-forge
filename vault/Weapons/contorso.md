@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: '100% Critical Chance on Rank S. Lvl: 20 : Triggers a lightning strike on
     Critical hits.'
-  effect_structured: {}
+  effect_structured:
+    crit_rate_bonus: 1.0
   name: Lvl. 10
 scaling_stat: Agility
 sources:

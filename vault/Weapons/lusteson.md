@@ -8,7 +8,8 @@ passives:
   name: Lvl. 4
 - effect: 'Apply Mark on consuming Foretell. Lvl: 20 : 20% increased Dark damage with
     Skills.'
-  effect_structured: {}
+  effect_structured:
+    damage_bonus: 0.2
   name: Lvl. 10
 scaling_stat: Vitality
 sources:

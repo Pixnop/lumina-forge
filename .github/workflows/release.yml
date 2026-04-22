@@ -24,15 +24,12 @@ jobs:
       - name: Sync workspace
         run: uv sync --all-packages
       - name: Build PyInstaller sidecar
-        shell: pwsh
-        run: |
-          $env:PATH = (Resolve-Path .venv\Scripts) + ";$env:PATH"
-          uv run python scripts/build_api_exe.py
+        # uv run activates the venv for the child process, which puts
+        # pyinstaller on PATH — no manual PATH fiddling needed.
+        run: uv run python scripts/build_api_exe.py
 
       # --- Node / Tauri ---------------------------------------------------
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
+      - uses: pnpm/action-setup@v4  # reads "packageManager" from package.json
       - uses: actions/setup-node@v4
         with:
           node-version: "20"

@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write  # gh release upload
+
+jobs:
+  windows-build:
+    name: Build MSI + NSIS on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # --- Python sidecar -------------------------------------------------
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - name: Sync workspace
+        run: uv sync --all-packages
+      - name: Build PyInstaller sidecar
+        shell: pwsh
+        run: |
+          $env:PATH = (Resolve-Path .venv\Scripts) + ";$env:PATH"
+          uv run python scripts/build_api_exe.py
+
+      # --- Node / Tauri ---------------------------------------------------
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+      - name: Install workspace
+        run: pnpm install --frozen-lockfile
+
+      # MSVC toolchain — CI-friendly default on windows-latest.
+      # Local builds use the GNU toolchain; the MSI ends up bit-for-bit
+      # different but functionally identical.
+      - name: Install Rust (MSVC)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          targets: x86_64-pc-windows-msvc
+
+      - name: Build Tauri bundles
+        working-directory: app
+        run: pnpm tauri build
+
+      # --- Attach installers to the release -------------------------------
+      - name: Upload to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $msi = Get-ChildItem app\src-tauri\target\release\bundle\msi\*.msi | Select-Object -First 1
+          $nsis = Get-ChildItem app\src-tauri\target\release\bundle\nsis\*-setup.exe | Select-Object -First 1
+          if (-not (gh release view $tag 2>$null)) {
+            gh release create $tag --title "$tag" --generate-notes
+          }
+          gh release upload $tag $msi.FullName $nsis.FullName --clobber

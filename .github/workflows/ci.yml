@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Python — lint, types, tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - name: Sync workspace
+        run: uv sync --all-packages
+      - name: Ruff
+        run: uv run ruff check packages/
+      - name: Mypy (optimizer + scraper)
+        run: uv run mypy packages/optimizer/src packages/scraper/src
+      - name: Pytest
+        run: uv run pytest packages/ -q
+
+  web:
+    name: Web — tsc + vite build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+      - name: Install workspace
+        run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        working-directory: app
+        run: pnpm exec tsc --noEmit
+      - name: Build
+        working-directory: app
+        run: pnpm build

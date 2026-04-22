@@ -17,6 +17,7 @@ from scraper.sources.fextralife.parsers._common import (
     data_rows,
     first_link,
     parse_html,
+    row_image_url,
     slugify,
     wiki_tables,
 )
@@ -53,5 +54,6 @@ def parse_luminas(page: RawPage) -> Iterator[Lumina]:
             effect_structured=parse_effect_structured(effect),
             pp_cost=pp_cost,
             source_picto=slug,
+            image_url=row_image_url(row),  # type: ignore[arg-type]
             sources=sources,  # type: ignore[arg-type]
         )

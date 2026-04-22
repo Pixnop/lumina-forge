@@ -23,6 +23,7 @@ from scraper.sources.fextralife.parsers._common import (
     data_rows,
     first_link,
     parse_html,
+    row_image_url,
     slugify,
     wiki_tables,
 )
@@ -65,6 +66,7 @@ def parse_weapons(page: RawPage) -> Iterator[Weapon]:
                 scaling_stat=_best_scaling(attrs),
                 passives=passives,
                 body=_build_body(element, attrs, passives),
+                image_url=row_image_url(row),  # type: ignore[arg-type]
                 sources=sources,  # type: ignore[arg-type]
             )
 

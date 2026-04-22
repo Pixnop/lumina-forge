@@ -17,6 +17,7 @@ from bs4 import Tag
 
 from scraper.models import Character, RawPage
 from scraper.sources.fextralife.parsers._common import (
+    absolute_url,
     clean_text,
     parse_html,
     slugify,
@@ -49,8 +50,24 @@ def parse_characters(page: RawPage) -> Iterator[Character]:
             signature_skills=bullets.starting_skills,
             archetypes=[bullets.weapon_type] if bullets.weapon_type else [],
             body=body,
+            image_url=_first_portrait(section),  # type: ignore[arg-type]
             sources=[page.url],
         )
+
+
+def _first_portrait(section: list[Tag]) -> str | None:
+    """Pick the nearest character-portrait image from the section nodes."""
+    for node in section:
+        for img in node.find_all("img"):
+            raw = img.get("data-src") or img.get("src")
+            if not isinstance(raw, str):
+                continue
+            if "mhws.png" in raw or "logo" in raw.lower():
+                continue
+            if "Expedition-33" not in raw and "expedition-33" not in raw:
+                continue
+            return absolute_url(raw)
+    return None
 
 
 def _collect_until_next_h3(start: Tag) -> list[Tag]:

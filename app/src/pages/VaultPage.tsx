@@ -5,7 +5,13 @@ import { useVaultItems } from "@/api/hooks";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { getApiBaseUrl } from "@/lib/config";
 import type { VaultItem, VaultItemType } from "@/types/api";
+
+function imageSrc(image_path: string | null | undefined): string | null {
+  if (!image_path) return null;
+  return `${getApiBaseUrl()}/assets/${image_path}`;
+}
 
 type TypeOption = { value: VaultItemType; label: string };
 
@@ -104,13 +110,24 @@ export function VaultPage() {
 }
 
 function VaultItemCard({ item, type }: { item: VaultItem; type: VaultItemType }) {
+  const src = imageSrc(item.image_path);
   return (
     <Card>
       <CardContent className="space-y-2 py-3">
         <div className="flex items-start justify-between gap-2">
-          <div>
-            <div className="font-semibold">{item.name}</div>
-            <div className="text-xs text-muted-foreground">{item.slug}</div>
+          <div className="flex items-start gap-3">
+            {src && (
+              <img
+                src={src}
+                alt=""
+                className="h-12 w-12 shrink-0 rounded-sm border border-border object-contain bg-secondary/30"
+                loading="lazy"
+              />
+            )}
+            <div>
+              <div className="font-semibold">{item.name}</div>
+              <div className="text-xs text-muted-foreground">{item.slug}</div>
+            </div>
           </div>
           <div className="flex flex-wrap justify-end gap-1">
             {item.category && (

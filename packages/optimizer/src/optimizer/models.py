@@ -32,6 +32,9 @@ class _VaultItem(BaseModel):
     name: str
     sources: list[str] = Field(default_factory=list)
     body: str = ""
+    # Path to the scraped image, relative to the vault root
+    # (e.g. ``_assets/Pictos/augmented-critical.png``).
+    image_path: str | None = None
 
 
 class PictoItem(_VaultItem):

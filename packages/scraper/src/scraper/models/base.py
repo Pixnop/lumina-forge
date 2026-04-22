@@ -39,6 +39,11 @@ class VaultEntry(BaseModel):
     name: str
     sources: list[HttpUrl] = Field(default_factory=list)
     body: str = ""
+    # Remote image URL scraped from the source. The asset downloader turns
+    # this into a local file under ``vault/_assets/<folder>/<slug>.<ext>``
+    # and records the relative path on ``image_path``.
+    image_url: HttpUrl | None = None
+    image_path: str | None = None
 
     def frontmatter(self) -> dict[str, object]:
         """Serialise typed fields to a YAML-serialisable dict.

@@ -117,6 +117,7 @@ export interface VaultItem {
   stats_granted?: Record<string, number> | null;
   scaling_stat?: string | null;
   passives?: Array<Record<string, unknown>> | null;
+  image_path?: string | null;
 }
 
 export interface VaultItemsResponse {

@@ -15,6 +15,7 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from optimizer import __version__
 from optimizer.api.schemas import (
@@ -82,6 +83,13 @@ def create_app(
         allow_headers=["*"],
     )
     _register_routes(app)
+
+    # Mount vault/_assets at /assets so the UI can pull item images by
+    # relative path. Guarded because the tests spin up an app without an
+    # on-disk vault.
+    assets_dir = effective_vault / "_assets"
+    if assets_dir.is_dir():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
     return app
 
 
@@ -170,6 +178,17 @@ def _register_routes(app: FastAPI) -> None:
 _KNOWN_TYPES: frozenset[str] = frozenset({"character", "picto", "weapon", "lumina", "skill"})
 
 
+def _api_asset_path(vault_relative: str | None) -> str | None:
+    """Turn ``_assets/Pictos/foo.png`` (as stored on the entry) into
+    ``Pictos/foo.png`` (as served under ``/assets``)."""
+    if not vault_relative:
+        return None
+    prefix = "_assets/"
+    if vault_relative.startswith(prefix):
+        return vault_relative[len(prefix) :]
+    return vault_relative
+
+
 def _project_items(index: VaultIndex, type: str, character: str | None) -> list[VaultItem]:
     type_low = type.lower()
     if type_low not in _KNOWN_TYPES:
@@ -180,7 +199,8 @@ def _project_items(index: VaultIndex, type: str, character: str | None) -> list[
 
     if type_low == "character":
         entries: list[VaultItem] = [
-            VaultItem(slug=c.slug, name=c.name) for c in index.characters.values()
+            VaultItem(slug=c.slug, name=c.name, image_path=_api_asset_path(c.image_path))
+            for c in index.characters.values()
         ]
     elif type_low == "picto":
         entries = [
@@ -192,6 +212,7 @@ def _project_items(index: VaultIndex, type: str, character: str | None) -> list[
                 effect=p.effect,
                 effect_structured=p.effect_structured,
                 stats_granted=p.stats_granted,
+                image_path=_api_asset_path(p.image_path),
             )
             for p in index.pictos.values()
         ]
@@ -204,6 +225,7 @@ def _project_items(index: VaultIndex, type: str, character: str | None) -> list[
                 pp_cost=lu.pp_cost,
                 effect=lu.effect,
                 effect_structured=lu.effect_structured,
+                image_path=_api_asset_path(lu.image_path),
             )
             for lu in index.luminas.values()
         ]
@@ -216,6 +238,7 @@ def _project_items(index: VaultIndex, type: str, character: str | None) -> list[
                 base_damage=w.base_damage,
                 scaling_stat=w.scaling_stat,
                 passives=w.passives,
+                image_path=_api_asset_path(w.image_path),
             )
             for w in index.weapons.values()
         ]
@@ -227,6 +250,7 @@ def _project_items(index: VaultIndex, type: str, character: str | None) -> list[
                 character=s.character,
                 category=s.category,
                 ap_cost=s.ap_cost,
+                image_path=_api_asset_path(s.image_path),
             )
             for s in index.skills.values()
         ]

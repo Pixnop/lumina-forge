@@ -16,6 +16,7 @@ from scraper.sources.fextralife.parsers._common import (
     data_rows,
     first_link,
     parse_html,
+    row_image_url,
     slugify,
     wiki_tables,
 )
@@ -52,6 +53,7 @@ def parse_pictos(page: RawPage) -> Iterator[Picto]:
             effect_structured=parse_effect_structured(effect),
             stats_granted=_parse_attributes(attrs_text),
             lumina_points_cost=pp_cost,
+            image_url=row_image_url(row),  # type: ignore[arg-type]
             sources=sources,  # type: ignore[arg-type]  # pydantic coerces str -> HttpUrl
         )
 

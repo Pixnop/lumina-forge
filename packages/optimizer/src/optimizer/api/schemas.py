@@ -109,6 +109,10 @@ class VaultItem(BaseModel):
     stats_granted: dict[str, int] | None = None
     scaling_stat: str | None = None
     passives: list[dict[str, object]] | None = None
+    # Path under ``/assets`` where the item's scraped image is served —
+    # e.g. ``Pictos/augmented-critical.png``. None when no image was
+    # scraped or downloaded yet.
+    image_path: str | None = None
 
 
 class VaultItemsResponse(BaseModel):

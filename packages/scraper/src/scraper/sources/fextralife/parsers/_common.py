@@ -76,3 +76,23 @@ def data_rows(table: Tag) -> list[Tag]:
 def cell_int(text: str) -> int | None:
     match = re.search(r"-?\d+", text)
     return int(match.group(0)) if match else None
+
+
+def row_image_url(row: Tag) -> str | None:
+    """Return the lazy-loaded image URL for this row, absolute.
+
+    Fextralife uses ``<img data-src="…">`` with a placeholder ``src`` for
+    lazy loading. We prefer ``data-src`` and fall back to ``src`` when
+    needed. Skips Fextralife's placeholder (``mhws.png``) and any logo.
+    """
+    for img in row.select("img"):
+        raw = img.get("data-src") or img.get("src")
+        if not isinstance(raw, str):
+            continue
+        if "mhws.png" in raw or "logo" in raw.lower():
+            continue
+        # Expedition-33 content lives under /file/Expedition-33/
+        if "Expedition-33" not in raw and "expedition-33" not in raw:
+            continue
+        return absolute_url(raw)
+    return None

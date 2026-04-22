@@ -11,6 +11,7 @@ from rich.console import Console
 from rich.logging import RichHandler
 from rich.table import Table
 
+from scraper.assets import AssetsReport, download_assets
 from scraper.config import Paths
 from scraper.models import ScrapeReport
 from scraper.pipeline import ScrapeOptions, scrape
@@ -48,6 +49,12 @@ def run(
     ] = None,
     vault_dir: Annotated[Path, typer.Option("--vault-dir", help="Vault root.")] = Path("vault"),
     cache_dir: Annotated[Path, typer.Option("--cache-dir", help="Cache root.")] = Path("cache"),
+    skip_assets: Annotated[
+        bool,
+        typer.Option(
+            "--skip-assets", help="Don't download images referenced by vault entries."
+        ),
+    ] = False,
     verbose: Annotated[bool, typer.Option("--verbose", "-v", help="DEBUG logging.")] = False,
 ) -> None:
     _configure_logging(verbose)
@@ -70,6 +77,11 @@ def run(
     console.rule(f"[bold]scraper[/] — source=[cyan]{source}[/] dry_run=[yellow]{dry_run}[/]")
     report = scrape(paths, options)
     _print_report(report)
+
+    if not dry_run and not skip_assets:
+        console.rule("[bold]assets[/]")
+        assets_report = download_assets(paths.vault)
+        _print_assets_report(assets_report)
 
     if report.errors:
         raise typer.Exit(code=1)
@@ -117,6 +129,23 @@ def _print_report(report: ScrapeReport) -> None:
             console.print(f"  - {err}")
         if len(report.errors) > 10:
             console.print(f"  … {len(report.errors) - 10} more")
+
+
+def _print_assets_report(report: AssetsReport) -> None:
+    table = Table(title="Asset download", show_header=False)
+    table.add_column(style="bold cyan")
+    table.add_column()
+    table.add_row("downloaded", str(report.downloaded))
+    table.add_row("already cached", str(report.already_cached))
+    table.add_row("no image_url", str(report.missing_url))
+    table.add_row("errors", str(len(report.errors)))
+    console.print(table)
+    if report.errors:
+        console.print("[bold yellow]Asset errors:[/]")
+        for err in report.errors[:5]:
+            console.print(f"  - {err}")
+        if len(report.errors) > 5:
+            console.print(f"  … {len(report.errors) - 5} more")
 
 
 def main() -> None:  # pragma: no cover - thin shim for entry point

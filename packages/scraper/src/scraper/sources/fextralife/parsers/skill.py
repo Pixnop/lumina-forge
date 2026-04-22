@@ -16,6 +16,7 @@ from scraper.sources.fextralife.parsers._common import (
     data_rows,
     first_link,
     parse_html,
+    row_image_url,
     slugify,
     wiki_tables,
 )
@@ -56,6 +57,7 @@ def parse_skills(page: RawPage) -> Iterator[Skill]:
             ap_cost=ap_cost,
             hits=hits,
             body=body,
+            image_url=row_image_url(row),  # type: ignore[arg-type]
             sources=sources,  # type: ignore[arg-type]
         )
 

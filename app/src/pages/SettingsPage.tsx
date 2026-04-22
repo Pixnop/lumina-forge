@@ -1,5 +1,6 @@
 import { RefreshCw, Save } from "lucide-react";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 import { useVaultInfo, useVaultReload } from "@/api/hooks";
 import { ApiStatusBadge } from "@/components/ApiStatusBadge";
@@ -9,6 +10,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AVAILABLE_LOCALES,
+  getStoredLocale,
+  type Locale,
+  setStoredLocale,
+} from "@/i18n";
+import {
   DEFAULT_API_BASE_URL,
   getApiBaseUrl,
   resetApiBaseUrl,
@@ -16,13 +30,14 @@ import {
 } from "@/lib/config";
 
 export function SettingsPage() {
+  const { t } = useTranslation();
   const [url, setUrl] = React.useState(getApiBaseUrl());
+  const [locale, setLocale] = React.useState<Locale>(getStoredLocale());
   const info = useVaultInfo();
   const reload = useVaultReload();
 
   function save() {
     setApiBaseUrl(url);
-    // Force reload so TanStack Query swaps its base URL.
     window.location.reload();
   }
 
@@ -31,41 +46,62 @@ export function SettingsPage() {
     setUrl(DEFAULT_API_BASE_URL);
   }
 
+  function changeLocale(next: Locale) {
+    setLocale(next);
+    setStoredLocale(next);
+  }
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="text-sm text-muted-foreground">
-          Point the app at a different API and inspect what the vault currently
-          holds.
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight">{t("settings.title")}</h1>
       </div>
 
       <Card>
+        <CardHeader>
+          <CardTitle>{t("settings.language")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Select value={locale} onValueChange={(v) => changeLocale(v as Locale)}>
+            <SelectTrigger className="w-40">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {AVAILABLE_LOCALES.map((l) => (
+                <SelectItem key={l} value={l}>
+                  {l === "fr" ? "Français" : "English"}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </CardContent>
+      </Card>
+
+      <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle>API endpoint</CardTitle>
+          <CardTitle>{t("settings.api_url")}</CardTitle>
           <ApiStatusBadge />
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="space-y-2">
-            <Label htmlFor="api-url">Base URL</Label>
+            <Label htmlFor="api-url">{t("settings.api_url")}</Label>
             <Input
               id="api-url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="http://127.0.0.1:8000"
+              placeholder="http://127.0.0.1:31733"
             />
             <p className="text-xs text-muted-foreground">
-              Default: {DEFAULT_API_BASE_URL}. The app will reload to apply.
+              {t("settings.api_url_hint", { url: DEFAULT_API_BASE_URL })}
             </p>
           </div>
           <div className="flex gap-2">
             <Button onClick={save}>
               <Save className="h-4 w-4" />
-              Save & reload
+              {t("settings.save")}
             </Button>
             <Button variant="outline" onClick={reset}>
-              Reset to default
+              {t("settings.reset")}
             </Button>
           </div>
         </CardContent>

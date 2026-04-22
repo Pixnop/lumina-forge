@@ -1,5 +1,6 @@
 import { Search } from "lucide-react";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 import { useVaultItems } from "@/api/hooks";
 import { Badge } from "@/components/ui/badge";
@@ -13,20 +14,19 @@ function imageSrc(image_path: string | null | undefined): string | null {
   return `${getApiBaseUrl()}/assets/${image_path}`;
 }
 
-type TypeOption = { value: VaultItemType; label: string };
-
-const TYPE_OPTIONS: TypeOption[] = [
-  { value: "picto", label: "Pictos" },
-  { value: "lumina", label: "Luminas" },
-  { value: "weapon", label: "Weapons" },
-  { value: "skill", label: "Skills" },
-  { value: "character", label: "Characters" },
-];
-
 export function VaultPage() {
+  const { t } = useTranslation();
   const [type, setType] = React.useState<VaultItemType>("picto");
   const [query, setQuery] = React.useState("");
   const { data, isLoading, isError, error } = useVaultItems(type);
+
+  const typeOptions: { value: VaultItemType; label: string }[] = [
+    { value: "picto", label: t("vault.type.picto") },
+    { value: "lumina", label: t("vault.type.lumina") },
+    { value: "weapon", label: t("vault.type.weapon") },
+    { value: "skill", label: t("vault.type.skill") },
+    { value: "character", label: t("vault.type.character") },
+  ];
 
   const items = React.useMemo(() => {
     const list = data?.items ?? [];
@@ -43,16 +43,13 @@ export function VaultPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Vault browser</h1>
-        <p className="text-sm text-muted-foreground">
-          Every picto, lumina, weapon, skill and character the scraper has
-          loaded — with all their parsed structured data.
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight">{t("vault.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("vault.subtitle")}</p>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-1">
-          {TYPE_OPTIONS.map((opt) => (
+          {typeOptions.map((opt) => (
             <button
               key={opt.value}
               onClick={() => setType(opt.value)}
@@ -76,7 +73,7 @@ export function VaultPage() {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Filter by name, slug or effect…"
+            placeholder={t("vault.filter")}
             className="pl-8"
           />
         </div>
@@ -84,7 +81,7 @@ export function VaultPage() {
 
       {isLoading && (
         <div className="rounded-md border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          Loading…
+          {t("vault.loading")}
         </div>
       )}
 
@@ -96,7 +93,7 @@ export function VaultPage() {
 
       {!isLoading && items.length === 0 && (
         <div className="rounded-md border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          {data?.items.length === 0 ? "Vault is empty." : "No results for this query."}
+          {data?.items.length === 0 ? t("vault.empty_vault") : t("vault.no_results")}
         </div>
       )}
 

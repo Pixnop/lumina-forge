@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Settings } from "lucide-react";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 import { ApiStatusBadge } from "@/components/ApiStatusBadge";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation();
   return (
     <div className="bg-paper flex min-h-full flex-col">
       <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
@@ -30,16 +32,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </span>
           </Link>
           <nav className="flex items-center gap-4 text-sm">
-            <NavLink to="/">Inventory</NavLink>
-            <NavLink to="/optimize">Optimize</NavLink>
-            <NavLink to="/vault">Vault</NavLink>
+            <NavLink to="/">{t("nav.inventory")}</NavLink>
+            <NavLink to="/optimize">{t("nav.optimize")}</NavLink>
+            <NavLink to="/vault">{t("nav.vault")}</NavLink>
             <Link
               to="/settings"
               className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground [&.active]:text-foreground"
               activeProps={{ className: "active" }}
             >
               <Settings className="h-4 w-4" />
-              Settings
+              {t("nav.settings")}
             </Link>
             <ThemeToggle />
             <ApiStatusBadge />
@@ -50,7 +52,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <footer className="border-t border-border py-3 text-center text-xs text-muted-foreground">
-        <span>Expedition 33 randomizer helper — all local, no telemetry.</span>
+        <span>{t("footer.tagline")}</span>
       </footer>
     </div>
   );

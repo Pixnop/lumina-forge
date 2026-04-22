@@ -302,7 +302,7 @@ wheels = [
 
 [[package]]
 name = "lumina-forge"
-version = "0.5.0"
+version = "0.5.1"
 source = { virtual = "." }
 
 [package.dev-dependencies]
@@ -327,7 +327,7 @@ dev = [
 
 [[package]]
 name = "lumina-forge-optimizer"
-version = "0.5.0"
+version = "0.5.1"
 source = { editable = "packages/optimizer" }
 dependencies = [
     { name = "fastapi" },

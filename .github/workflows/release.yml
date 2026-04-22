@@ -37,6 +37,18 @@ jobs:
       - name: Install workspace
         run: pnpm install --frozen-lockfile
 
+      # tauri.conf.json declares ``resources/vault/**/*`` as a bundle
+      # resource. That directory is gitignored locally (we rsync the
+      # live vault into it before bundling) so the CI checkout misses
+      # it — sync it here to match.
+      - name: Sync vault into Tauri resources
+        shell: pwsh
+        run: |
+          $target = "app/src-tauri/resources/vault"
+          if (Test-Path $target) { Remove-Item -Recurse -Force $target }
+          New-Item -ItemType Directory -Force -Path $target | Out-Null
+          Copy-Item -Recurse -Force vault/* $target/
+
       # MSVC toolchain — CI-friendly default on windows-latest.
       # Local builds use the GNU toolchain; the MSI ends up bit-for-bit
       # different but functionally identical.

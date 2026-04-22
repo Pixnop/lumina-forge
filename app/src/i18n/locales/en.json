@@ -1,0 +1,103 @@
+{
+  "nav": {
+    "inventory": "Inventory",
+    "optimize": "Optimize",
+    "vault": "Vault",
+    "settings": "Settings"
+  },
+  "footer": {
+    "tagline": "Expedition 33 randomizer helper — all local, no telemetry."
+  },
+  "api": {
+    "online": "API online",
+    "offline": "API offline"
+  },
+  "home": {
+    "title": "Inventory",
+    "subtitle": "Feed the optimizer with the items you have on hand.",
+    "empty": "No saved inventories yet.",
+    "save": "Save",
+    "load": "Load",
+    "delete": "Delete",
+    "run_optimize": "Run optimize"
+  },
+  "optimize": {
+    "title": "Optimize",
+    "back": "Back to inventory",
+    "character": "Character",
+    "inventory_summary": "{{weapons}} weapons, {{pictos}} pictos, PP budget {{pp}}.",
+    "mode": {
+      "dps": "DPS",
+      "balanced": "Balanced",
+      "utility": "Utility"
+    },
+    "top": "Top {{count}}",
+    "run": "Run",
+    "loading": "Enumerating combinations…",
+    "empty": "No build could be assembled. Check that you have at least one compatible weapon and 3 pictos.",
+    "hint": "Click **Run** to rank builds from your inventory."
+  },
+  "build": {
+    "rank": "#{{rank}}",
+    "total_score": "Total score",
+    "est_dps": "est. DPS",
+    "raw_dps": "raw",
+    "capped": "capped",
+    "also_works": "Also works with",
+    "loadout": "Loadout",
+    "rotation": "Rotation",
+    "why": "Why this build",
+    "utility": "Utility",
+    "weapon": "Weapon",
+    "pictos": "Pictos",
+    "luminas": "Luminas",
+    "skills": "Skills",
+    "synergies": "Synergies",
+    "archetype": {
+      "exact": "exact",
+      "variant": "variant (weapon differs)",
+      "bonus": "{{pct}}% rank bonus"
+    },
+    "factor": {
+      "base": "Base",
+      "might": "× Might",
+      "picto": "× Picto",
+      "lumina": "× Lumina",
+      "crit": "× Crit",
+      "synergy": "× Synergy",
+      "ap": "× AP"
+    }
+  },
+  "aspirational": {
+    "title": "Close to: curated archetypes you can almost run",
+    "missing": "Missing:",
+    "weapon": "weapon · {{slug}}",
+    "picto": "picto · {{slug}}",
+    "lumina": "lumina · {{slug}}",
+    "skill": "skill · {{slug}}"
+  },
+  "vault": {
+    "title": "Vault browser",
+    "subtitle": "Every picto, lumina, weapon, skill and character the scraper has loaded — with all their parsed structured data.",
+    "type": {
+      "picto": "Pictos",
+      "lumina": "Luminas",
+      "weapon": "Weapons",
+      "skill": "Skills",
+      "character": "Characters"
+    },
+    "filter": "Filter by name, slug or effect…",
+    "loading": "Loading…",
+    "empty_vault": "Vault is empty.",
+    "no_results": "No results for this query."
+  },
+  "settings": {
+    "title": "Settings",
+    "api_url": "API URL",
+    "api_url_hint": "Default: {{url}}. The app will reload to apply.",
+    "language": "Language",
+    "reset": "Reset",
+    "save": "Save",
+    "logs": "Sidecar logs"
+  }
+}

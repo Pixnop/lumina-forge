@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import { App } from "@/App";
+import "@/i18n";  // side-effect init — must run before any useTranslation
 import { applyTheme, useThemeStore } from "@/stores/theme";
 import "@/styles.css";
 

@@ -1,4 +1,5 @@
 import { Award } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,15 +10,16 @@ interface Props {
 }
 
 export function BuildDetail({ build }: Props) {
+  const { t } = useTranslation();
   const d = build.damage;
   const factors: [string, number][] = [
-    ["Base", d.base],
-    ["× Might", d.might_mult],
-    ["× Picto", d.picto_mult],
-    ["× Lumina", d.lumina_mult],
-    ["× Crit", d.crit_mult],
-    ["× Synergy", d.synergy_mult],
-    ["× AP", d.ap_mult],
+    [t("build.factor.base"), d.base],
+    [t("build.factor.might"), d.might_mult],
+    [t("build.factor.picto"), d.picto_mult],
+    [t("build.factor.lumina"), d.lumina_mult],
+    [t("build.factor.crit"), d.crit_mult],
+    [t("build.factor.synergy"), d.synergy_mult],
+    [t("build.factor.ap"), d.ap_mult],
   ];
 
   return (
@@ -26,7 +28,7 @@ export function BuildDetail({ build }: Props) {
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <div>
             <CardTitle className="text-2xl">
-              #{build.rank} — {build.loadout.weapon}
+              {t("build.rank", { rank: build.rank })} — {build.loadout.weapon}
             </CardTitle>
             <div className="text-sm text-muted-foreground">
               {build.loadout.character}
@@ -39,18 +41,21 @@ export function BuildDetail({ build }: Props) {
                 </Badge>
                 <span className="text-xs text-muted-foreground">
                   {build.archetype.dps_tier}-tier
+                  {" · "}
                   {build.archetype.confidence === "variant"
-                    ? " · variant (weapon differs)"
-                    : " · exact"}
-                  {" · +"}
-                  {(build.archetype.bonus_applied * 100).toFixed(0)}% rank bonus
+                    ? t("build.archetype.variant")
+                    : t("build.archetype.exact")}
+                  {" · "}
+                  {t("build.archetype.bonus", {
+                    pct: (build.archetype.bonus_applied * 100).toFixed(0),
+                  })}
                 </span>
               </div>
             )}
           </div>
           <div className="text-right">
             <div className="text-xs uppercase tracking-wide text-muted-foreground">
-              Total score
+              {t("build.total_score")}
             </div>
             <div className="text-3xl font-bold text-primary">
               {build.total_score.toFixed(0)}
@@ -69,10 +74,10 @@ export function BuildDetail({ build }: Props) {
             ))}
           </div>
           <div className="mt-3 text-sm">
-            est. DPS — <span className="font-bold">{d.est_dps.toFixed(0)}</span>
+            {t("build.est_dps")} — <span className="font-bold">{d.est_dps.toFixed(0)}</span>
             {d.raw_dps > d.est_dps + 1 && (
               <span className="ml-2 text-xs text-muted-foreground">
-                (capped — raw {d.raw_dps.toFixed(0)})
+                ({t("build.capped")} — {t("build.raw_dps")} {d.raw_dps.toFixed(0)})
               </span>
             )}
           </div>
@@ -82,7 +87,7 @@ export function BuildDetail({ build }: Props) {
       {build.weapon_alternatives.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Also works with</CardTitle>
+            <CardTitle>{t("build.also_works")}</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="divide-y divide-border text-sm">
@@ -114,22 +119,22 @@ export function BuildDetail({ build }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Loadout</CardTitle>
+          <CardTitle>{t("build.loadout")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <Row label="Weapon" items={[build.loadout.weapon]} />
-          <Row label="Pictos" items={build.loadout.pictos} />
-          <Row label="Luminas" items={build.loadout.luminas} />
-          <Row label="Skills" items={build.loadout.skills_used} />
+          <Row label={t("build.weapon")} items={[build.loadout.weapon]} />
+          <Row label={t("build.pictos")} items={build.loadout.pictos} />
+          <Row label={t("build.luminas")} items={build.loadout.luminas} />
+          <Row label={t("build.skills")} items={build.loadout.skills_used} />
           {build.synergies_matched.length > 0 && (
-            <Row label="Synergies" items={build.synergies_matched} variant="success" />
+            <Row label={t("build.synergies")} items={build.synergies_matched} variant="success" />
           )}
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Rotation</CardTitle>
+          <CardTitle>{t("build.rotation")}</CardTitle>
         </CardHeader>
         <CardContent>
           <ol className="list-decimal space-y-2 pl-5 text-sm">
@@ -142,7 +147,7 @@ export function BuildDetail({ build }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Why this build</CardTitle>
+          <CardTitle>{t("build.why")}</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="list-disc space-y-1 pl-5 text-sm">
@@ -158,7 +163,7 @@ export function BuildDetail({ build }: Props) {
         build.utility.has_defense_buff) && (
         <Card>
           <CardHeader>
-            <CardTitle>Utility</CardTitle>
+            <CardTitle>{t("build.utility")}</CardTitle>
           </CardHeader>
           <CardContent className="flex gap-2">
             {build.utility.has_revive && <Badge variant="success">Revive</Badge>}

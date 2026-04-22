@@ -1,0 +1,103 @@
+{
+  "nav": {
+    "inventory": "Inventaire",
+    "optimize": "Optimiser",
+    "vault": "Bibliothèque",
+    "settings": "Réglages"
+  },
+  "footer": {
+    "tagline": "Compagnon du randomizer Expedition 33 — 100 % local, aucune télémétrie."
+  },
+  "api": {
+    "online": "API connectée",
+    "offline": "API hors ligne"
+  },
+  "home": {
+    "title": "Inventaire",
+    "subtitle": "Remplis l'optimiseur avec les items que tu as en main.",
+    "empty": "Aucun inventaire sauvegardé.",
+    "save": "Enregistrer",
+    "load": "Charger",
+    "delete": "Supprimer",
+    "run_optimize": "Lancer l'optimiseur"
+  },
+  "optimize": {
+    "title": "Optimiser",
+    "back": "Retour à l'inventaire",
+    "character": "Personnage",
+    "inventory_summary": "{{weapons}} armes, {{pictos}} pictos, budget PP {{pp}}.",
+    "mode": {
+      "dps": "DPS",
+      "balanced": "Équilibré",
+      "utility": "Utilitaire"
+    },
+    "top": "Top {{count}}",
+    "run": "Lancer",
+    "loading": "Énumération des combinaisons…",
+    "empty": "Aucun build n'a pu être assemblé. Vérifie que tu as au moins une arme compatible et 3 pictos.",
+    "hint": "Clique sur **Lancer** pour classer les builds depuis ton inventaire."
+  },
+  "build": {
+    "rank": "n° {{rank}}",
+    "total_score": "Score total",
+    "est_dps": "DPS est.",
+    "raw_dps": "brut",
+    "capped": "plafonné",
+    "also_works": "Fonctionne aussi avec",
+    "loadout": "Équipement",
+    "rotation": "Rotation",
+    "why": "Pourquoi ce build",
+    "utility": "Utilitaire",
+    "weapon": "Arme",
+    "pictos": "Pictos",
+    "luminas": "Luminas",
+    "skills": "Compétences",
+    "synergies": "Synergies",
+    "archetype": {
+      "exact": "exact",
+      "variant": "variante (arme différente)",
+      "bonus": "+{{pct}} % de bonus au classement"
+    },
+    "factor": {
+      "base": "Base",
+      "might": "× Puissance",
+      "picto": "× Picto",
+      "lumina": "× Lumina",
+      "crit": "× Crit",
+      "synergy": "× Synergie",
+      "ap": "× PA"
+    }
+  },
+  "aspirational": {
+    "title": "Presque à portée : archétypes curés que tu peux presque jouer",
+    "missing": "Il te manque :",
+    "weapon": "arme · {{slug}}",
+    "picto": "picto · {{slug}}",
+    "lumina": "lumina · {{slug}}",
+    "skill": "compétence · {{slug}}"
+  },
+  "vault": {
+    "title": "Bibliothèque",
+    "subtitle": "Tous les pictos, luminas, armes, compétences et personnages connus du scraper — avec leurs données structurées complètes.",
+    "type": {
+      "picto": "Pictos",
+      "lumina": "Luminas",
+      "weapon": "Armes",
+      "skill": "Compétences",
+      "character": "Personnages"
+    },
+    "filter": "Filtrer par nom, slug ou effet…",
+    "loading": "Chargement…",
+    "empty_vault": "La bibliothèque est vide.",
+    "no_results": "Aucun résultat pour cette recherche."
+  },
+  "settings": {
+    "title": "Réglages",
+    "api_url": "URL de l'API",
+    "api_url_hint": "Par défaut : {{url}}. L'app se recharge pour appliquer.",
+    "language": "Langue",
+    "reset": "Réinitialiser",
+    "save": "Enregistrer",
+    "logs": "Logs du sidecar"
+  }
+}

@@ -1,4 +1,5 @@
 import { Target } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,13 +10,14 @@ interface Props {
 }
 
 export function AspirationalList({ aspirational }: Props) {
+  const { t } = useTranslation();
   if (aspirational.length === 0) return null;
   return (
     <Card className="border-amber-500/40 bg-amber-500/5">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
           <Target className="h-4 w-4 text-amber-500" />
-          Close to: curated archetypes you can almost run
+          {t("aspirational.title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -35,23 +37,25 @@ export function AspirationalList({ aspirational }: Props) {
               </div>
             </div>
             <div className="mt-2 flex flex-wrap gap-1 text-xs text-muted-foreground">
-              <span>Missing:</span>
+              <span>{t("aspirational.missing")}</span>
               {entry.missing_weapon && (
-                <Badge variant="outline">weapon · {entry.missing_weapon}</Badge>
+                <Badge variant="outline">
+                  {t("aspirational.weapon", { slug: entry.missing_weapon })}
+                </Badge>
               )}
               {entry.missing_pictos.map((slug) => (
                 <Badge key={`p-${slug}`} variant="outline">
-                  picto · {slug}
+                  {t("aspirational.picto", { slug })}
                 </Badge>
               ))}
               {entry.missing_luminas.map((slug) => (
                 <Badge key={`lu-${slug}`} variant="outline">
-                  lumina · {slug}
+                  {t("aspirational.lumina", { slug })}
                 </Badge>
               ))}
               {entry.missing_skills.map((slug) => (
                 <Badge key={`s-${slug}`} variant="outline">
-                  skill · {slug}
+                  {t("aspirational.skill", { slug })}
                 </Badge>
               ))}
             </div>

@@ -184,12 +184,27 @@ def _project_items(index: VaultIndex, type: str, character: str | None) -> list[
         ]
     elif type_low == "picto":
         entries = [
-            VaultItem(slug=p.slug, name=p.name, category=p.category, pp_cost=p.lumina_points_cost)
+            VaultItem(
+                slug=p.slug,
+                name=p.name,
+                category=p.category,
+                pp_cost=p.lumina_points_cost,
+                effect=p.effect,
+                effect_structured=p.effect_structured,
+                stats_granted=p.stats_granted,
+            )
             for p in index.pictos.values()
         ]
     elif type_low == "lumina":
         entries = [
-            VaultItem(slug=lu.slug, name=lu.name, category=lu.category, pp_cost=lu.pp_cost)
+            VaultItem(
+                slug=lu.slug,
+                name=lu.name,
+                category=lu.category,
+                pp_cost=lu.pp_cost,
+                effect=lu.effect,
+                effect_structured=lu.effect_structured,
+            )
             for lu in index.luminas.values()
         ]
     elif type_low == "weapon":
@@ -199,6 +214,8 @@ def _project_items(index: VaultIndex, type: str, character: str | None) -> list[
                 name=w.name,
                 character=w.character,
                 base_damage=w.base_damage,
+                scaling_stat=w.scaling_stat,
+                passives=w.passives,
             )
             for w in index.weapons.values()
         ]

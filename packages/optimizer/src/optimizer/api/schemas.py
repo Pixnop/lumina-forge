@@ -93,7 +93,7 @@ class VaultInfoResponse(BaseModel):
 
 
 class VaultItem(BaseModel):
-    """Thin projection of a vault entry — enough for autocomplete UIs."""
+    """Projection of a vault entry — enough for autocomplete *and* the KB browser."""
 
     slug: str
     name: str
@@ -102,6 +102,13 @@ class VaultItem(BaseModel):
     pp_cost: int | None = None
     ap_cost: int | None = None
     base_damage: int | None = None
+    # Fuller fields for the in-app browser. Optional so autocomplete calls
+    # can skip them when they're not needed.
+    effect: str | None = None
+    effect_structured: dict[str, object] | None = None
+    stats_granted: dict[str, int] | None = None
+    scaling_stat: str | None = None
+    passives: list[dict[str, object]] | None = None
 
 
 class VaultItemsResponse(BaseModel):

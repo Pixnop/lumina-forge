@@ -32,6 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <nav className="flex items-center gap-4 text-sm">
             <NavLink to="/">Inventory</NavLink>
             <NavLink to="/optimize">Optimize</NavLink>
+            <NavLink to="/vault">Vault</NavLink>
             <Link
               to="/settings"
               className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground [&.active]:text-foreground"
@@ -59,7 +60,7 @@ function NavLink({
   to,
   children,
 }: {
-  to: "/" | "/optimize";
+  to: "/" | "/optimize" | "/vault";
   children: React.ReactNode;
 }) {
   return (

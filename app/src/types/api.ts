@@ -112,6 +112,11 @@ export interface VaultItem {
   pp_cost?: number | null;
   ap_cost?: number | null;
   base_damage?: number | null;
+  effect?: string | null;
+  effect_structured?: Record<string, unknown> | null;
+  stats_granted?: Record<string, number> | null;
+  scaling_stat?: string | null;
+  passives?: Array<Record<string, unknown>> | null;
 }
 
 export interface VaultItemsResponse {

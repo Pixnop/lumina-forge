@@ -10,6 +10,7 @@ import { BuildDetailPage } from "@/pages/BuildDetailPage";
 import { HomePage } from "@/pages/HomePage";
 import { OptimizePage } from "@/pages/OptimizePage";
 import { SettingsPage } from "@/pages/SettingsPage";
+import { VaultPage } from "@/pages/VaultPage";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -43,11 +44,18 @@ const settingsRoute = createRoute({
   component: SettingsPage,
 });
 
+const vaultRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/vault",
+  component: VaultPage,
+});
+
 const routeTree = rootRoute.addChildren([
   homeRoute,
   optimizeRoute,
   buildDetailRoute,
   settingsRoute,
+  vaultRoute,
 ]);
 
 export const router = createRouter({ routeTree });

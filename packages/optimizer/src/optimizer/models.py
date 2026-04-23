@@ -323,3 +323,7 @@ class RankedBuild(BaseModel):
     weapon_alternatives: list[WeaponAlternative] = Field(default_factory=list)
     # Set when this candidate matches a curated archetype from ``vault/Builds``.
     archetype: ArchetypeMatch | None = None
+    # Turn-by-turn simulator trace. Left optional because some callers
+    # build RankedBuild without running the sim (e.g. older tests).
+    # Typed Any to avoid a circular optimizer.rotation_sim ← models cycle.
+    rotation_trace: Any = None

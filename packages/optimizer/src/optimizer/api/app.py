@@ -285,4 +285,5 @@ def _to_response(rank: int, r: RankedBuild) -> RankedBuildResponse:
             for a in r.weapon_alternatives
         ],
         archetype=r.archetype,
+        rotation_trace=r.rotation_trace,
     )

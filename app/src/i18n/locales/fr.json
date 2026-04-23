@@ -99,6 +99,20 @@
       "crit": "× Crit",
       "synergy": "× Synergie",
       "ap": "× PA"
+    },
+    "trace": {
+      "title": "Trace de rotation",
+      "fallback": "Aucune compétence offensive — estimation de base utilisée par le scorer.",
+      "turn": "Tour {{n}}",
+      "ap": "PA {{start}} → {{end}}",
+      "hits": "{{count}} hit",
+      "hits_plural": "{{count}} hits",
+      "skipped": "— aucune compétence jouable",
+      "applied": "applique",
+      "consumed": "consomme stain-{{element}}",
+      "active": "actifs",
+      "status_mult": "×{{mult}} statut",
+      "total_damage": "Dégâts bruts totaux : {{raw}} · après plafond : {{final}} sur {{hits}} hits"
     }
   },
   "aspirational": {

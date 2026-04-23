@@ -21,6 +21,7 @@ from optimizer.models import (
     WeaponAlternative,
 )
 from optimizer.rotation import suggest as suggest_rotation
+from optimizer.rotation_sim import simulate as simulate_rotation
 from optimizer.synergies import SynergyMatcher
 from optimizer.utility import UtilityScorer
 from optimizer.vault import VaultIndex
@@ -163,6 +164,10 @@ def _score(
     total = damage.est_dps * (1.0 + utility_weight * utility.score_0_1)
     if archetype is not None:
         total *= 1.0 + archetype.bonus_applied
+
+    rotation_turns = getattr(model, "rotation_turns", 3) or 3
+    rotation_trace = simulate_rotation(build, rotation_turns)
+
     return RankedBuild(
         build=build,
         damage=damage,
@@ -172,6 +177,7 @@ def _score(
         rotation_hint=suggest_rotation(build),
         why=_explain(build, damage, utility, matched, archetype),
         archetype=archetype,
+        rotation_trace=rotation_trace,
     )
 
 

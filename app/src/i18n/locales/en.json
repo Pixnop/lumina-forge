@@ -99,6 +99,20 @@
       "crit": "× Crit",
       "synergy": "× Synergy",
       "ap": "× AP"
+    },
+    "trace": {
+      "title": "Rotation trace",
+      "fallback": "No offensive skills — the scorer used a baseline estimate.",
+      "turn": "Turn {{n}}",
+      "ap": "AP {{start}} → {{end}}",
+      "hits": "{{count}} hit",
+      "hits_plural": "{{count}} hits",
+      "skipped": "— no skill affordable",
+      "applied": "applies",
+      "consumed": "consumed stain-{{element}}",
+      "active": "active",
+      "status_mult": "×{{mult}} status",
+      "total_damage": "Total raw damage: {{raw}} · after-cap: {{final}} across {{hits}} hits"
     }
   },
   "aspirational": {

@@ -78,6 +78,31 @@ export interface AspirationalBuild {
   missing_skills: string[];
 }
 
+export interface TurnTrace {
+  turn: number;
+  ap_start: number;
+  ap_spent: number;
+  ap_end: number;
+  skill_slug?: string | null;
+  skill_name?: string | null;
+  skill_hits: number;
+  skill_element?: string | null;
+  damage_raw: number;
+  damage_final: number;
+  status_mult: number;
+  active_statuses: string[];
+  statuses_applied: string[];
+  stain_consumed?: string | null;
+}
+
+export interface RotationTrace {
+  turns: TurnTrace[];
+  total_hits: number;
+  total_damage_raw: number;
+  total_damage_final: number;
+  fallback: boolean;
+}
+
 export interface RankedBuildResponse {
   rank: number;
   total_score: number;
@@ -89,6 +114,7 @@ export interface RankedBuildResponse {
   why: string[];
   weapon_alternatives: WeaponAlternative[];
   archetype?: ArchetypeMatch | null;
+  rotation_trace?: RotationTrace | null;
 }
 
 export interface OptimizeRequest {

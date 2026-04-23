@@ -14,6 +14,7 @@ from optimizer.models import (
     Mode,
     UtilityScore,
 )
+from optimizer.rotation_sim import RotationTrace
 
 # --- request ----------------------------------------------------------------
 
@@ -65,6 +66,7 @@ class RankedBuildResponse(BaseModel):
     why: list[str]
     weapon_alternatives: list[WeaponAlternativeResponse] = []
     archetype: ArchetypeMatch | None = None
+    rotation_trace: RotationTrace | None = None
 
 
 class OptimizeResponse(BaseModel):

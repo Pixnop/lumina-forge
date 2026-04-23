@@ -145,6 +145,105 @@ export function BuildDetail({ build }: Props) {
         </CardContent>
       </Card>
 
+      {build.rotation_trace && build.rotation_trace.turns.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("build.trace.title")}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {build.rotation_trace.fallback && (
+              <p className="text-sm text-muted-foreground">{t("build.trace.fallback")}</p>
+            )}
+            <ol className="space-y-2 text-sm">
+              {build.rotation_trace.turns.map((turn) => (
+                <li
+                  key={turn.turn}
+                  className="rounded-md border border-border bg-secondary/40 p-3"
+                >
+                  <div className="flex items-center justify-between font-medium">
+                    <span>
+                      {t("build.trace.turn", { n: turn.turn })} —{" "}
+                      {turn.skill_name ?? (
+                        <span className="italic text-muted-foreground">
+                          {t("build.trace.skipped")}
+                        </span>
+                      )}
+                    </span>
+                    <span className="tabular-nums text-xs text-muted-foreground">
+                      {t("build.trace.ap", {
+                        start: turn.ap_start.toFixed(0),
+                        end: turn.ap_end.toFixed(0),
+                      })}
+                    </span>
+                  </div>
+                  {turn.skill_slug && (
+                    <div className="mt-1 flex flex-wrap items-center gap-1 text-xs">
+                      <Badge variant="outline">
+                        {t(turn.skill_hits === 1 ? "build.trace.hits" : "build.trace.hits_plural", {
+                          count: turn.skill_hits,
+                        })}
+                      </Badge>
+                      {turn.status_mult !== 1.0 && (
+                        <Badge variant="outline">
+                          {t("build.trace.status_mult", {
+                            mult: turn.status_mult.toFixed(2),
+                          })}
+                        </Badge>
+                      )}
+                      <span className="tabular-nums text-muted-foreground">
+                        {turn.damage_final.toFixed(0)}
+                        {turn.damage_raw > turn.damage_final + 1 && (
+                          <span className="ml-1 text-[0.65rem] text-muted-foreground">
+                            ({t("build.capped")} — {t("build.raw_dps")}{" "}
+                            {turn.damage_raw.toFixed(0)})
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  )}
+                  {turn.stain_consumed && (
+                    <div className="mt-1 text-xs text-amber-500">
+                      ⚡ {t("build.trace.consumed", { element: turn.stain_consumed })}
+                    </div>
+                  )}
+                  {turn.statuses_applied.length > 0 && (
+                    <div className="mt-1 flex flex-wrap gap-1 text-xs">
+                      <span className="text-muted-foreground">
+                        {t("build.trace.applied")}:
+                      </span>
+                      {turn.statuses_applied.map((s) => (
+                        <Badge key={s} variant="secondary" className="text-[0.65rem]">
+                          {s}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  {turn.active_statuses.length > 0 && (
+                    <div className="mt-1 flex flex-wrap gap-1 text-xs">
+                      <span className="text-muted-foreground">
+                        {t("build.trace.active")}:
+                      </span>
+                      {turn.active_statuses.map((s) => (
+                        <Badge key={s} variant="outline" className="text-[0.65rem]">
+                          {s}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ol>
+            <p className="text-xs text-muted-foreground">
+              {t("build.trace.total_damage", {
+                raw: build.rotation_trace.total_damage_raw.toFixed(0),
+                final: build.rotation_trace.total_damage_final.toFixed(0),
+                hits: build.rotation_trace.total_hits,
+              })}
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle>{t("build.why")}</CardTitle>

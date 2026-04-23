@@ -1,5 +1,6 @@
 import { Check, Search } from "lucide-react";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -19,11 +20,14 @@ export function MultiSelectList({
   items,
   value,
   onChange,
-  placeholder = "Search…",
-  emptyMessage = "Nothing to pick from yet.",
+  placeholder,
+  emptyMessage,
   disabled,
   renderMeta,
 }: Props) {
+  const { t } = useTranslation();
+  const effectivePlaceholder = placeholder ?? t("multi_select.default_placeholder");
+  const effectiveEmptyMessage = emptyMessage ?? t("multi_select.default_empty");
   const [query, setQuery] = React.useState("");
   const selected = React.useMemo(() => new Set(value), [value]);
 
@@ -49,18 +53,20 @@ export function MultiSelectList({
         <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
         <Input
           className="h-8 border-none px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
-          placeholder={placeholder}
+          placeholder={effectivePlaceholder}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
         <div className="text-xs text-muted-foreground">
-          {selected.size} selected
+          {t("multi_select.selected", { count: selected.size })}
         </div>
       </div>
       <div className="max-h-64 overflow-y-auto">
         {filtered.length === 0 ? (
           <div className="px-3 py-6 text-center text-sm text-muted-foreground">
-            {items.length === 0 ? emptyMessage : `No match for “${query}”`}
+            {items.length === 0
+              ? effectiveEmptyMessage
+              : t("multi_select.no_match", { query })}
           </div>
         ) : (
           filtered.map((item) => {

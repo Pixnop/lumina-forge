@@ -109,7 +109,7 @@ export function SettingsPage() {
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle>Vault snapshot</CardTitle>
+          <CardTitle>{t("settings.vault_snapshot")}</CardTitle>
           <Button
             variant="outline"
             size="sm"
@@ -119,7 +119,7 @@ export function SettingsPage() {
             <RefreshCw
               className={`h-4 w-4 ${reload.isPending ? "animate-spin" : ""}`}
             />
-            Reload vault
+            {t("settings.reload_vault")}
           </Button>
         </CardHeader>
         <CardContent className="grid grid-cols-3 gap-3 text-sm">
@@ -127,14 +127,14 @@ export function SettingsPage() {
             Object.entries(info.data).map(([key, value]) => (
               <div key={key} className="rounded-md border border-border p-3">
                 <div className="text-xs uppercase tracking-wide text-muted-foreground">
-                  {key}
+                  {t(`settings.kind.${key}`, key)}
                 </div>
                 <div className="text-2xl font-bold">{value}</div>
               </div>
             ))
           ) : (
             <div className="col-span-3 text-sm text-muted-foreground">
-              {info.isPending ? "loading…" : "vault offline"}
+              {info.isPending ? t("settings.vault_loading") : t("settings.vault_offline")}
             </div>
           )}
         </CardContent>

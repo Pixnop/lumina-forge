@@ -1,11 +1,13 @@
 import { invoke } from "@tauri-apps/api/core";
 import { Eraser, Terminal } from "lucide-react";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function SidecarLogPanel() {
+  const { t } = useTranslation();
   const [lines, setLines] = React.useState<string[]>([]);
   const [error, setError] = React.useState<string | null>(null);
   const scrollRef = React.useRef<HTMLPreElement>(null);
@@ -58,7 +60,7 @@ export function SidecarLogPanel() {
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="flex items-center gap-2 text-base">
           <Terminal className="h-4 w-4 text-muted-foreground" />
-          Sidecar log
+          {t("sidecar.title")}
         </CardTitle>
         <Button
           variant="ghost"
@@ -67,20 +69,14 @@ export function SidecarLogPanel() {
           disabled={!!error || lines.length === 0}
         >
           <Eraser className="h-3.5 w-3.5" />
-          Clear
+          {t("sidecar.clear")}
         </Button>
       </CardHeader>
       <CardContent>
         {error ? (
-          <p className="text-sm text-muted-foreground">
-            Log pane available only inside the Tauri app — this is the Vite
-            preview in a regular browser.
-          </p>
+          <p className="text-sm text-muted-foreground">{t("sidecar.browser_only")}</p>
         ) : lines.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No output yet. The Python API prints its own startup lines here —
-            if the badge stays offline, whatever you see below is the reason.
-          </p>
+          <p className="text-sm text-muted-foreground">{t("sidecar.no_output")}</p>
         ) : (
           <pre
             ref={scrollRef}

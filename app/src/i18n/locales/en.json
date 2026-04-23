@@ -131,6 +131,46 @@
     "language": "Language",
     "reset": "Reset",
     "save": "Save",
-    "logs": "Sidecar logs"
+    "vault_snapshot": "Vault snapshot",
+    "reload_vault": "Reload vault",
+    "vault_offline": "vault offline",
+    "vault_loading": "loading…",
+    "kind": {
+      "characters": "characters",
+      "pictos": "pictos",
+      "weapons": "weapons",
+      "luminas": "luminas",
+      "skills": "skills",
+      "synergies": "synergies"
+    }
+  },
+  "library": {
+    "title": "Saved inventories",
+    "save_current": "Save current",
+    "placeholder": "e.g. \"{{character}} — glass cannon\"",
+    "empty": "No saved loadouts yet. Saving stashes the current inventory as a named copy you can load later.",
+    "saved_suffix": "saved {{ago}}",
+    "load": "Load",
+    "load_tooltip": "Replace current draft with this saved inventory",
+    "duplicate_tooltip": "Duplicate this entry",
+    "delete_tooltip": "Delete this entry",
+    "time": {
+      "just_now": "just now",
+      "minutes_ago": "{{count}} min ago",
+      "hours_ago": "{{count}} h ago",
+      "days_ago": "{{count}} d ago"
+    }
+  },
+  "multi_select": {
+    "default_placeholder": "Search…",
+    "default_empty": "Nothing to pick from yet.",
+    "selected": "{{count}} selected",
+    "no_match": "No match for “{{query}}”"
+  },
+  "sidecar": {
+    "title": "Sidecar log",
+    "clear": "Clear",
+    "browser_only": "Log pane available only inside the Tauri app — this is the Vite preview in a regular browser.",
+    "no_output": "No output yet. The Python API prints its own startup lines here — if the badge stays offline, whatever you see below is the reason."
   }
 }

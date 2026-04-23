@@ -131,6 +131,46 @@
     "language": "Langue",
     "reset": "Réinitialiser",
     "save": "Enregistrer",
-    "logs": "Logs du sidecar"
+    "vault_snapshot": "État de la bibliothèque",
+    "reload_vault": "Recharger",
+    "vault_offline": "bibliothèque hors ligne",
+    "vault_loading": "chargement…",
+    "kind": {
+      "characters": "personnages",
+      "pictos": "pictos",
+      "weapons": "armes",
+      "luminas": "luminas",
+      "skills": "compétences",
+      "synergies": "synergies"
+    }
+  },
+  "library": {
+    "title": "Inventaires sauvegardés",
+    "save_current": "Sauvegarder",
+    "placeholder": "ex. « {{character}} — glass cannon »",
+    "empty": "Aucun inventaire sauvegardé. Sauvegarder stocke l'inventaire courant sous un nom que tu peux recharger plus tard.",
+    "saved_suffix": "sauvegardé {{ago}}",
+    "load": "Charger",
+    "load_tooltip": "Remplacer le brouillon courant par cet inventaire",
+    "duplicate_tooltip": "Dupliquer cette entrée",
+    "delete_tooltip": "Supprimer cette entrée",
+    "time": {
+      "just_now": "à l'instant",
+      "minutes_ago": "il y a {{count}} min",
+      "hours_ago": "il y a {{count}} h",
+      "days_ago": "il y a {{count}} j"
+    }
+  },
+  "multi_select": {
+    "default_placeholder": "Rechercher…",
+    "default_empty": "Rien à sélectionner pour l'instant.",
+    "selected": "{{count}} sélectionné(s)",
+    "no_match": "Aucun résultat pour « {{query}} »"
+  },
+  "sidecar": {
+    "title": "Logs du sidecar",
+    "clear": "Effacer",
+    "browser_only": "Le panneau de logs n'est dispo que dans l'app Tauri — ici tu vois le preview Vite dans un navigateur classique.",
+    "no_output": "Aucune sortie pour le moment. L'API Python écrit ses lignes de démarrage ici — si le badge reste hors ligne, la raison est quelque part en dessous."
   }
 }

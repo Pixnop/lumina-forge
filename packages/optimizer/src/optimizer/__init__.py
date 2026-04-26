@@ -1,3 +1,3 @@
 """lumina-forge optimizer — ranks builds for Expedition 33 randomizer runs."""
 
-__version__ = "0.6.1"
+__version__ = "0.7.0"

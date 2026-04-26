@@ -1,130 +1,514 @@
 {
-  "Abysseram": "Abysseram",
-  "Algueron": "Algueron",
-  "Angerim": "Angerim",
-  "Baguettaro": "Baguettaro",
-  "Battlum": "Battlum",
-  "Benisim": "Benisim",
-  "Beselbum": "Beselbum",
-  "Betelim": "Betelim",
-  "Blizzon": "Blizzon",
-  "Blodam": "Blodam",
-  "Boucharo": "Boucharo",
-  "Bourgelon": "Bourgelon",
-  "Braselim": "Braselim",
-  "Brulerum": "Brulerum",
-  "Brumaro": "Brumaro",
-  "Chainebum": "Barrier Breaker",
-  "Chaliso": "Dualiso",
-  "Chapelim": "Chapelim",
-  "Charnon": "Charnon",
-  "Chation": "Chation",
-  "Chevalam": "Chevalam",
-  "Chromaro": "Chromaro",
-  "Clierum": "Clierum",
-  "Coldum": "Coldum",
-  "Confuso": "Confuso",
-  "Contorson": "Moisson",
-  "Coralim": "Coralim",
-  "Corderon": "Corderon",
-  "Corpeso": "Corpeso",
-  "Cruleram": "Cruleram",
-  "Cultam": "Cultam",
-  "Danseso": "Danseso",
-  "DebugLune": "Baguette",
-  "DebugMaelle": "Baguette",
-  "DebugMonoco": "Baguette",
-  "DebugSciel": "Baguette",
-  "DebugVerso": "Baguette",
-  "Delaram": "Delaram",
-  "Deminerim": "Deminerim",
-  "Demonam": "Demonam",
-  "Direton": "Direton",
-  "Dualim": "Troubadim",
-  "Duenum": "Duenum",
-  "Duollison": "Duollison",
-  "Elerim": "Elerim",
-  "Facesum": "Facesum",
-  "Garganon": "Garganon",
-  "Gaulteram": "Gaulteram",
-  "Gelerim": "Gelerim",
-  "Gesam": "Gesam",
-  "Glaceso": "Glaceso",
-  "Glaisum": "Glaisum",
-  "Gobluson": "Gobluson",
-  "Grandaro": "Grandaro",
-  "Hevason": "Hevason",
-  "Jarum": "Jarum",
-  "Joyaro": "Joyaro",
-  "Lanceram": "Lanceram",
-  "Lighterim": "Lighterim",
-  "Lunerim": "Lunerim",
-  "Lusteson": "Lusteson",
-  "Maellum": "Maellum",
-  "Medalum": "Medalum",
-  "Melarum": "Melarum",
-  "Milerim": "Milerim",
-  "Minason": "Minason",
-  "Moissoso": "Contorso",
-  "Monocaro": "Monocaro",
-  "Nibalum": "Nibalum",
-  "Noahram": "Noahram",
-  "Nosaram": "Nosaram",
-  "Painerim": "Painerim",
-  "Potierim": "Potierim",
-  "Ramasson": "Ramasson",
-  "Rangeson": "Rangeson",
-  "Reacharo_1": "Nusaro",
-  "Reacharo_2": "Fragaro",
-  "Reacherim_1": "Kralim",
-  "Reacherim_2": "Lithelim",
-  "Reacheron_1": "Guleson",
-  "Reacheron_2": "Litheson",
-  "Reacheso_1": "Tireso",
-  "Reacheso_2": "Liteso",
-  "Reachum_1": "Lithum",
-  "Reachum_2": "Plenum",
-  "Redalim": "Redalim",
-  "Sadon": "Sadon",
-  "Sakaram": "Sakaram",
-  "Saperim": "Saperim",
-  "Scaverim": "Scaverim",
-  "Scieleson": "Scieleson",
-  "Seashelum": "Seashelum",
-  "Seeram": "Seeram",
-  "Sekarum": "Sekarum",
-  "Sidaro": "Sidaro",
-  "Simonim": "Cleim",
-  "Simoso": "Simoso",
-  "Sirenaro_1": "Ballaro",
-  "Sirenaro_2": "Urnaro",
-  "Sirenim_1": "Choralim",
-  "Sirenim_2": "Colim",
-  "Sirenon_1": "Tisseron",
-  "Sirenon_2": "Martenon",
-  "Sirenum_1": "Tissenum",
-  "Sirenum_2": "Chantenum",
-  "Sireso_1": "Sireso",
-  "Sireso_2": "Dreameso",
-  "Snowim": "Snowim",
-  "Stalum": "Stalum",
-  "Telarim": "Telarim",
-  "Trebuchim": "Trebuchim",
-  "Troubadum": "Chalium",
-  "VD_Lune_1": "Bonbim",
-  "VD_Lune_2": "Esquim",
-  "VD_Maelle_1": "Licorum",
-  "VD_Maelle_2": "Esqium",
-  "VD_Monoco_1": "Cannaro",
-  "VD_Monoco_2": "Esquiaro",
-  "VD_Sciel_1": "Sucetton",
-  "VD_Sciel_2": "Esquion",
-  "VD_Verso_1": "Sucreso",
-  "VD_Verso_2": "Sucreso",
-  "VD_Verso_3": "Esquiso",
-  "Velokan": "Velokan",
-  "Veremum": "Veremum",
-  "Verleso": "Verleso",
-  "Volesterum": "Volesterum",
-  "Yeverum": "Yeverum"
+  "Abysseram": {
+    "character": "Gustave",
+    "display": "Abysseram"
+  },
+  "Algueron": {
+    "character": "Sciel",
+    "display": "Algueron"
+  },
+  "Angerim": {
+    "character": "Lune",
+    "display": "Angerim"
+  },
+  "Baguettaro": {
+    "character": "Monoco",
+    "display": "Baguettaro"
+  },
+  "Battlum": {
+    "character": "Maelle",
+    "display": "Battlum"
+  },
+  "Benisim": {
+    "character": "Lune",
+    "display": "Benisim"
+  },
+  "Beselbum": {
+    "character": "Maelle",
+    "display": "Beselbum"
+  },
+  "Betelim": {
+    "character": "Lune",
+    "display": "Betelim"
+  },
+  "Blizzon": {
+    "character": "Sciel",
+    "display": "Blizzon"
+  },
+  "Blodam": {
+    "character": "Gustave",
+    "display": "Blodam"
+  },
+  "Boucharo": {
+    "character": "Monoco",
+    "display": "Boucharo"
+  },
+  "Bourgelon": {
+    "character": "Sciel",
+    "display": "Bourgelon"
+  },
+  "Braselim": {
+    "character": "Lune",
+    "display": "Braselim"
+  },
+  "Brulerum": {
+    "character": "Maelle",
+    "display": "Brulerum"
+  },
+  "Brumaro": {
+    "character": "Monoco",
+    "display": "Brumaro"
+  },
+  "Chainebum": {
+    "character": "Maelle",
+    "display": "Barrier Breaker"
+  },
+  "Chaliso": {
+    "character": "Verso",
+    "display": "Dualiso"
+  },
+  "Chapelim": {
+    "character": "Lune",
+    "display": "Chapelim"
+  },
+  "Charnon": {
+    "character": "Sciel",
+    "display": "Charnon"
+  },
+  "Chation": {
+    "character": "Sciel",
+    "display": "Chation"
+  },
+  "Chevalam": {
+    "character": "Gustave",
+    "display": "Chevalam"
+  },
+  "Chromaro": {
+    "character": "Monoco",
+    "display": "Chromaro"
+  },
+  "Clierum": {
+    "character": "Maelle",
+    "display": "Clierum"
+  },
+  "Coldum": {
+    "character": "Maelle",
+    "display": "Coldum"
+  },
+  "Confuso": {
+    "character": "Verso",
+    "display": "Confuso"
+  },
+  "Contorson": {
+    "character": "Sciel",
+    "display": "Moisson"
+  },
+  "Coralim": {
+    "character": "Lune",
+    "display": "Coralim"
+  },
+  "Corderon": {
+    "character": "Sciel",
+    "display": "Corderon"
+  },
+  "Corpeso": {
+    "character": "Verso",
+    "display": "Corpeso"
+  },
+  "Cruleram": {
+    "character": "Gustave",
+    "display": "Cruleram"
+  },
+  "Cultam": {
+    "character": "Gustave",
+    "display": "Cultam"
+  },
+  "Danseso": {
+    "character": "Verso",
+    "display": "Danseso"
+  },
+  "DebugLune": {
+    "character": "Lune",
+    "display": "Baguette"
+  },
+  "DebugMaelle": {
+    "character": "Maelle",
+    "display": "Baguette"
+  },
+  "DebugMonoco": {
+    "character": "Monoco",
+    "display": "Baguette"
+  },
+  "DebugSciel": {
+    "character": "Sciel",
+    "display": "Baguette"
+  },
+  "DebugVerso": {
+    "character": "Gustave",
+    "display": "Baguette"
+  },
+  "Delaram": {
+    "character": "Gustave",
+    "display": "Delaram"
+  },
+  "Deminerim": {
+    "character": "Lune",
+    "display": "Deminerim"
+  },
+  "Demonam": {
+    "character": "Gustave",
+    "display": "Demonam"
+  },
+  "Direton": {
+    "character": "Sciel",
+    "display": "Direton"
+  },
+  "Dualim": {
+    "character": "Lune",
+    "display": "Troubadim"
+  },
+  "Duenum": {
+    "character": "Maelle",
+    "display": "Duenum"
+  },
+  "Duollison": {
+    "character": "Sciel",
+    "display": "Duollison"
+  },
+  "Elerim": {
+    "character": "Lune",
+    "display": "Elerim"
+  },
+  "Facesum": {
+    "character": "Maelle",
+    "display": "Facesum"
+  },
+  "Garganon": {
+    "character": "Sciel",
+    "display": "Garganon"
+  },
+  "Gaulteram": {
+    "character": "Gustave",
+    "display": "Gaulteram"
+  },
+  "Gelerim": {
+    "character": "Lune",
+    "display": "Gelerim"
+  },
+  "Gesam": {
+    "character": "Gustave",
+    "display": "Gesam"
+  },
+  "Glaceso": {
+    "character": "Verso",
+    "display": "Glaceso"
+  },
+  "Glaisum": {
+    "character": "Maelle",
+    "display": "Glaisum"
+  },
+  "Gobluson": {
+    "character": "Sciel",
+    "display": "Gobluson"
+  },
+  "Grandaro": {
+    "character": "Monoco",
+    "display": "Grandaro"
+  },
+  "Hevason": {
+    "character": "Sciel",
+    "display": "Hevason"
+  },
+  "Jarum": {
+    "character": "Maelle",
+    "display": "Jarum"
+  },
+  "Joyaro": {
+    "character": "Monoco",
+    "display": "Joyaro"
+  },
+  "Lanceram": {
+    "character": "Gustave",
+    "display": "Lanceram"
+  },
+  "Lighterim": {
+    "character": "Lune",
+    "display": "Lighterim"
+  },
+  "Lunerim": {
+    "character": "Lune",
+    "display": "Lunerim"
+  },
+  "Lusteson": {
+    "character": "Sciel",
+    "display": "Lusteson"
+  },
+  "Maellum": {
+    "character": "Maelle",
+    "display": "Maellum"
+  },
+  "Medalum": {
+    "character": "Maelle",
+    "display": "Medalum"
+  },
+  "Melarum": {
+    "character": "Maelle",
+    "display": "Melarum"
+  },
+  "Milerim": {
+    "character": "Maelle",
+    "display": "Milerim"
+  },
+  "Minason": {
+    "character": "Sciel",
+    "display": "Minason"
+  },
+  "Moissoso": {
+    "character": "Verso",
+    "display": "Contorso"
+  },
+  "Monocaro": {
+    "character": "Monoco",
+    "display": "Monocaro"
+  },
+  "Nibalum": {
+    "character": "Maelle",
+    "display": "Nibalum"
+  },
+  "Noahram": {
+    "character": "Gustave",
+    "display": "Noahram"
+  },
+  "Nosaram": {
+    "character": "Gustave",
+    "display": "Nosaram"
+  },
+  "Painerim": {
+    "character": "Lune",
+    "display": "Painerim"
+  },
+  "Potierim": {
+    "character": "Lune",
+    "display": "Potierim"
+  },
+  "Ramasson": {
+    "character": "Sciel",
+    "display": "Ramasson"
+  },
+  "Rangeson": {
+    "character": "Sciel",
+    "display": "Rangeson"
+  },
+  "Reacharo_1": {
+    "character": "Monoco",
+    "display": "Nusaro"
+  },
+  "Reacharo_2": {
+    "character": "Monoco",
+    "display": "Fragaro"
+  },
+  "Reacherim_1": {
+    "character": "Lune",
+    "display": "Kralim"
+  },
+  "Reacherim_2": {
+    "character": "Lune",
+    "display": "Lithelim"
+  },
+  "Reacheron_1": {
+    "character": "Sciel",
+    "display": "Guleson"
+  },
+  "Reacheron_2": {
+    "character": "Sciel",
+    "display": "Litheson"
+  },
+  "Reacheso_1": {
+    "character": "Verso",
+    "display": "Tireso"
+  },
+  "Reacheso_2": {
+    "character": "Verso",
+    "display": "Liteso"
+  },
+  "Reachum_1": {
+    "character": "Maelle",
+    "display": "Lithum"
+  },
+  "Reachum_2": {
+    "character": "Maelle",
+    "display": "Plenum"
+  },
+  "Redalim": {
+    "character": "Lune",
+    "display": "Redalim"
+  },
+  "Sadon": {
+    "character": "Sciel",
+    "display": "Sadon"
+  },
+  "Sakaram": {
+    "character": "Gustave",
+    "display": "Sakaram"
+  },
+  "Saperim": {
+    "character": "Lune",
+    "display": "Saperim"
+  },
+  "Scaverim": {
+    "character": "Lune",
+    "display": "Scaverim"
+  },
+  "Scieleson": {
+    "character": "Sciel",
+    "display": "Scieleson"
+  },
+  "Seashelum": {
+    "character": "Maelle",
+    "display": "Seashelum"
+  },
+  "Seeram": {
+    "character": "Gustave",
+    "display": "Seeram"
+  },
+  "Sekarum": {
+    "character": "Maelle",
+    "display": "Sekarum"
+  },
+  "Sidaro": {
+    "character": "Monoco",
+    "display": "Sidaro"
+  },
+  "Simonim": {
+    "character": "Lune",
+    "display": "Cleim"
+  },
+  "Simoso": {
+    "character": "Verso",
+    "display": "Simoso"
+  },
+  "Sirenaro_1": {
+    "character": "Monoco",
+    "display": "Ballaro"
+  },
+  "Sirenaro_2": {
+    "character": "Monoco",
+    "display": "Urnaro"
+  },
+  "Sirenim_1": {
+    "character": "Lune",
+    "display": "Choralim"
+  },
+  "Sirenim_2": {
+    "character": "Lune",
+    "display": "Colim"
+  },
+  "Sirenon_1": {
+    "character": "Sciel",
+    "display": "Tisseron"
+  },
+  "Sirenon_2": {
+    "character": "Sciel",
+    "display": "Martenon"
+  },
+  "Sirenum_1": {
+    "character": "Maelle",
+    "display": "Tissenum"
+  },
+  "Sirenum_2": {
+    "character": "Maelle",
+    "display": "Chantenum"
+  },
+  "Sireso_1": {
+    "character": "Verso",
+    "display": "Sireso"
+  },
+  "Sireso_2": {
+    "character": "Verso",
+    "display": "Dreameso"
+  },
+  "Snowim": {
+    "character": "Lune",
+    "display": "Snowim"
+  },
+  "Stalum": {
+    "character": "Maelle",
+    "display": "Stalum"
+  },
+  "Telarim": {
+    "character": "Lune",
+    "display": "Telarim"
+  },
+  "Trebuchim": {
+    "character": "Lune",
+    "display": "Trebuchim"
+  },
+  "Troubadum": {
+    "character": "Maelle",
+    "display": "Chalium"
+  },
+  "VD_Lune_1": {
+    "character": "Lune",
+    "display": "Bonbim"
+  },
+  "VD_Lune_2": {
+    "character": "Lune",
+    "display": "Esquim"
+  },
+  "VD_Maelle_1": {
+    "character": "Maelle",
+    "display": "Licorum"
+  },
+  "VD_Maelle_2": {
+    "character": "Maelle",
+    "display": "Esqium"
+  },
+  "VD_Monoco_1": {
+    "character": "Monoco",
+    "display": "Cannaro"
+  },
+  "VD_Monoco_2": {
+    "character": "Monoco",
+    "display": "Esquiaro"
+  },
+  "VD_Sciel_1": {
+    "character": "Sciel",
+    "display": "Sucetton"
+  },
+  "VD_Sciel_2": {
+    "character": "Sciel",
+    "display": "Esquion"
+  },
+  "VD_Verso_1": {
+    "character": "Verso",
+    "display": "Sucreso"
+  },
+  "VD_Verso_2": {
+    "character": "Verso",
+    "display": "Sucreso"
+  },
+  "VD_Verso_3": {
+    "character": "Verso",
+    "display": "Esquiso"
+  },
+  "Velokan": {
+    "character": "Gustave",
+    "display": "Velokan"
+  },
+  "Veremum": {
+    "character": "Maelle",
+    "display": "Veremum"
+  },
+  "Verleso": {
+    "character": "Verso",
+    "display": "Verleso"
+  },
+  "Volesterum": {
+    "character": "Maelle",
+    "display": "Volesterum"
+  },
+  "Yeverum": {
+    "character": "Maelle",
+    "display": "Yeverum"
+  }
 }

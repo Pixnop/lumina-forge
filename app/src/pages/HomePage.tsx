@@ -9,10 +9,11 @@ import { useTranslation } from "react-i18next";
 import { useVaultInfo } from "@/api/hooks";
 import { InventoryForm } from "@/components/InventoryForm";
 import { InventoryLibrary } from "@/components/InventoryLibrary";
+import { SaveCharacterPicker } from "@/components/SaveCharacterPicker";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GUSTAVE_EXAMPLE } from "@/lib/examples";
-import { characterToInventory, parseSave } from "@/lib/save/importer";
+import { type ParsedSave, parseSave } from "@/lib/save/importer";
 import { useInventoryStore } from "@/stores/inventory";
 
 export function HomePage() {
@@ -21,6 +22,7 @@ export function HomePage() {
   const draft = useInventoryStore((s) => s.draft);
   const setDraft = useInventoryStore((s) => s.setDraft);
   const [importError, setImportError] = React.useState<string | null>(null);
+  const [savedSnapshot, setSavedSnapshot] = React.useState<ParsedSave | null>(null);
 
   const isEmpty =
     draft.weapons_available.length === 0 && draft.pictos_available.length === 0;
@@ -50,12 +52,12 @@ export function HomePage() {
       if (typeof path !== "string") return;
       const json = await invoke<string>("read_save_as_json", { path });
       const parsed = parseSave(JSON.parse(json));
-      const equipped = parsed.find((c) => c.weapon || c.passiveEffects.length > 0);
-      if (!equipped) {
+      if (parsed.characters.length === 0) {
         setImportError(t("home.import_save_empty"));
         return;
       }
-      setDraft(characterToInventory(equipped));
+      // Show the picker — user chooses which character lands in the draft.
+      setSavedSnapshot(parsed);
     } catch (err) {
       setImportError(
         t("home.import_save_failed", { error: (err as Error).message ?? String(err) }),
@@ -98,6 +100,13 @@ export function HomePage() {
         <div className="rounded-md border border-destructive bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {importError}
         </div>
+      )}
+
+      {savedSnapshot && (
+        <SaveCharacterPicker
+          saved={savedSnapshot}
+          onDismiss={() => setSavedSnapshot(null)}
+        />
       )}
 
       {isEmpty && (

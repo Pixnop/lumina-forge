@@ -1,7 +1,16 @@
 import passiveEffectsTable from "./passive-effects-table.json";
+import pictoTable from "./picto-table.json";
 import weaponTable from "./weapon-table.json";
 import type { Inventory } from "@/types/api";
 import { emptyInventory } from "@/types/api";
+
+interface WeaponEntry {
+  display: string;
+  character: string;
+}
+
+const WEAPONS = weaponTable as Record<string, WeaponEntry>;
+const PICTOS = pictoTable as Record<string, string>;
 
 /**
  * Convert PascalCase / Title Case name to our kebab-case vault slug.
@@ -38,10 +47,18 @@ export function passiveSlug(saveName: string): string {
  * all 128 weapons.
  */
 export function weaponSlug(saveName: string): string {
-  const table = weaponTable as Record<string, string>;
-  const display = table[saveName];
-  if (display) return slugify(display);
+  const entry = WEAPONS[saveName];
+  if (entry) return slugify(entry.display);
   return slugify(saveName);
+}
+
+/** Picto hardcoded → display via DT_jRPG_Items_Composite (230 entries). */
+export function pictoSlug(saveName: string): string {
+  const display = PICTOS[saveName];
+  if (display) return slugify(display);
+  // Fall back to the passive-effects table (some pictos share a
+  // RowName there) and finally to a raw slugify.
+  return passiveSlug(saveName);
 }
 
 /**
@@ -82,7 +99,7 @@ export function skillSlug(saveName: string): string {
   return SKILL_NAME_OVERRIDES[slug] ?? slug;
 }
 
-interface ParsedCharacter {
+export interface ParsedCharacter {
   hardcodedName: string;
   level: number;
   attributes: Inventory["attributes"];
@@ -92,27 +109,38 @@ interface ParsedCharacter {
   unlockedSkills: string[]; // UnlockedSkills array
 }
 
+export interface ParsedSave {
+  characters: ParsedCharacter[];
+  // All weapons the player owns, keyed by hardcoded save name. The
+  // frontend filters this by the chosen character at inventory-build
+  // time.
+  ownedWeapons: string[];
+  // All pictos the player owns, in slug form. Pictos aren't
+  // character-bound in-game, so this maps directly to
+  // ``inventory.pictos_available``.
+  ownedPictos: string[];
+}
+
 /**
  * Walk the JSON Save dump produced by ``read_save_as_json`` and return
- * one summary per character. The frontend then asks the user which
- * character to import.
+ * one summary per character + the global inventory. The frontend asks
+ * the user which character to import.
  */
-export function parseSave(saveJson: unknown): ParsedCharacter[] {
+export function parseSave(saveJson: unknown): ParsedSave {
   const root = (saveJson as { root?: { properties?: Record<string, unknown> } })?.root;
-  if (!root?.properties) return [];
+  if (!root?.properties) return { characters: [], ownedWeapons: [], ownedPictos: [] };
 
+  const characters: ParsedCharacter[] = [];
   const collection = findKey(root.properties, /^CharactersCollection_\d+$/);
-  if (!collection) return [];
-
-  // Each entry: collection.Map[i] = { key: { Name: "Frey" }, value: { Struct: { Struct: { ... } } } }
-  const entries = (collection as { Map?: unknown[] }).Map ?? [];
-  const out: ParsedCharacter[] = [];
-  for (const entry of entries as Array<{ key?: unknown; value?: unknown }>) {
+  const entries = ((collection as { Map?: unknown[] })?.Map ?? []) as Array<{
+    key?: unknown;
+    value?: unknown;
+  }>;
+  for (const entry of entries) {
     const name = readName(entry.key);
     const inner = readStructInner(entry.value);
     if (!name || !inner) continue;
-
-    out.push({
+    characters.push({
       hardcodedName: name,
       level: readInt(inner, /^CurrentLevel_/) ?? 1,
       attributes: readAttributes(inner),
@@ -121,6 +149,24 @@ export function parseSave(saveJson: unknown): ParsedCharacter[] {
       passiveEffects: readEquippedPassives(inner),
       unlockedSkills: readUnlockedSkills(inner),
     });
+  }
+
+  return {
+    characters,
+    ownedWeapons: readOwnedItemNames(root.properties).filter((n) => WEAPONS[n] !== undefined),
+    ownedPictos: readOwnedItemNames(root.properties).filter((n) => PICTOS[n] !== undefined),
+  };
+}
+
+function readOwnedItemNames(properties: Record<string, unknown>): string[] {
+  const node = findKey(properties, /^InventoryItems_\d+$/) as
+    | { Map?: Array<{ key?: unknown; value?: unknown }> }
+    | undefined;
+  if (!node?.Map) return [];
+  const out: string[] = [];
+  for (const e of node.Map) {
+    const name = (e.key as { Name?: string })?.Name;
+    if (typeof name === "string") out.push(name);
   }
   return out;
 }
@@ -139,26 +185,58 @@ function characterSlug(hardcodedName: string): string {
 }
 
 /**
- * Build an Inventory draft from a parsed character. Character names
- * map through the override table so the save's "Frey" lands on our
- * "gustave" slug.
+ * Build an Inventory draft from a parsed character + the save's global
+ * inventory list. Character names map through the override table so
+ * the save's "Frey" lands on our "gustave" slug.
+ *
+ * Compared to v0.8.x: ``weapons_available`` now includes *all* weapons
+ * the player owns for this character (filtered from the global
+ * InventoryItems map), not just the equipped one. ``pictos_available``
+ * is the union of every owned picto + everything the player has seen
+ * via passive effects.
  */
-export function characterToInventory(char: ParsedCharacter): Inventory {
+export function characterToInventory(
+  char: ParsedCharacter,
+  saved: ParsedSave,
+): Inventory {
   const inv = emptyInventory(characterSlug(char.hardcodedName));
   inv.level = char.level;
   inv.attributes = char.attributes;
-  if (char.weapon) inv.weapons_available = [char.weapon];
 
-  // Pictos and luminas overlap in our vault — same slug, two roles.
-  // The save splits them: EquippedItemsPerSlot[ItemType=0] are 3 picto
-  // slots, EquippedPassiveEffects mixes pictos and luminas freely. We
-  // treat the union as both pictos_available and luminas_extra, then
-  // mark the slotted three as mastered so the optimizer can use their
-  // lumina form.
-  const allSlugs = Array.from(new Set([...char.pictoSlots, ...char.passiveEffects]));
-  inv.pictos_available = allSlugs;
+  // All weapons the inventory says the player owns, filtered to the
+  // chosen character. The save's hardcodedName is the player-facing
+  // character ("Frey" → Gustave), but DT_jRPG_Items_Composite uses the
+  // dev's internal name ("Noah" → Gustave). Match by the entry's
+  // .character against either alias.
+  const charPlayer = char.hardcodedName === "Frey" ? "Gustave" : char.hardcodedName;
+  const charInternal = char.hardcodedName === "Frey" ? "Noah" : char.hardcodedName;
+  const weaponSlugs = new Set<string>();
+  if (char.weapon) weaponSlugs.add(char.weapon);
+  for (const name of saved.ownedWeapons) {
+    const entry = WEAPONS[name];
+    if (!entry) continue;
+    if (entry.character === charPlayer || entry.character === charInternal) {
+      weaponSlugs.add(slugify(entry.display));
+    }
+  }
+  inv.weapons_available = Array.from(weaponSlugs).sort();
+
+  // Pictos: union of (every picto in inventory) + (passive effects
+  // recorded on the character) + (the three equipped slot pictos).
+  const pictoSlugs = new Set<string>();
+  for (const name of saved.ownedPictos) {
+    pictoSlugs.add(pictoSlug(name));
+  }
+  for (const s of char.passiveEffects) pictoSlugs.add(s);
+  for (const s of char.pictoSlots) pictoSlugs.add(s);
+  inv.pictos_available = Array.from(pictoSlugs).sort();
+
+  // Mastered pictos = the three equipped slots. Luminas_extra =
+  // anything in passive effects not already mastered.
   inv.pictos_mastered = char.pictoSlots;
-  inv.luminas_extra = char.passiveEffects.filter((s) => !char.pictoSlots.includes(s));
+  inv.luminas_extra = char.passiveEffects.filter(
+    (s) => !char.pictoSlots.includes(s),
+  );
   inv.skills_known = char.unlockedSkills;
   return inv;
 }

@@ -6,4 +6,4 @@ import optimizer
 
 
 def test_package_has_version() -> None:
-    assert optimizer.__version__ == "0.8.3"
+    assert optimizer.__version__ == "0.8.4"

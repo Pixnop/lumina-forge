@@ -1,4 +1,5 @@
 import passiveEffectsTable from "./passive-effects-table.json";
+import weaponTable from "./weapon-table.json";
 import type { Inventory } from "@/types/api";
 import { emptyInventory } from "@/types/api";
 
@@ -19,15 +20,66 @@ export function slugify(name: string): string {
  * The save stores picto/lumina entries by their internal RowName
  * (e.g. "Stand"). The Infarctus mapping table translates that to the
  * user-visible display name ("Full Strength"). Slugifying the display
- * name lands on our vault slug for ~90 % of items out of the box.
+ * name lands on our vault slug for ~100 % of items now that the missing
+ * stubs are populated.
  */
 export function passiveSlug(saveName: string): string {
   const table = passiveEffectsTable as Record<string, string>;
   const display = table[saveName];
   if (display) return slugify(display);
-  // Fall back to raw PascalCase → kebab — works for items not in the
-  // string table (some weapons use the same internal name as display).
   return slugify(saveName);
+}
+
+/**
+ * Weapons are stored under their *internal* hardcoded names — usually
+ * the same as the display name ("Gaulteram") but sometimes renamed:
+ * the save says ``Sirenim_1`` for what the player actually sees as
+ * "Choralim". DT_jRPG_Items_Composite gives the canonical mapping for
+ * all 128 weapons.
+ */
+export function weaponSlug(saveName: string): string {
+  const table = weaponTable as Record<string, string>;
+  const display = table[saveName];
+  if (display) return slugify(display);
+  return slugify(saveName);
+}
+
+/**
+ * Skills come with a per-character suffix (``Combo1_Gustave``,
+ * ``MarkingShot_Gustave``). After stripping, some hardcoded names still
+ * differ from Fextralife's display ("UnleashCharge" → Overcharge,
+ * "Combo1" → Lumière Assault). The override map handles the deltas;
+ * everything else falls through to plain slugify.
+ */
+const SKILL_NAME_OVERRIDES: Record<string, string> = {
+  combo1: "lumiere-assault",
+  "unleash-charge": "overcharge",
+  "perfect-recovery": "recovery",
+  // Lune
+  rockslide: "rockslide",
+  earthrising: "earth-rising",
+  lightningdance: "lightning-dance",
+  // Maelle
+  swiftstride: "swift-stride",
+  offensiveswitch: "offensive-switch",
+  guarddown: "guard-down",
+  fleuretfury: "fleuret-fury",
+  mezzoforte: "mezzo-forte",
+  // Sciel
+  focusedforetell: "focused-foretell",
+  sealedfate: "sealed-fate",
+  markingcard: "marking-card",
+  phantomblade: "phantom-blade",
+  badomen: "bad-omen",
+};
+
+export function skillSlug(saveName: string): string {
+  const stripped = saveName.replace(
+    /_(Gustave|Lune|Maelle|Sciel|Verso|Monoco|Frey)$/i,
+    "",
+  );
+  const slug = slugify(stripped);
+  return SKILL_NAME_OVERRIDES[slug] ?? slug;
 }
 
 interface ParsedCharacter {
@@ -37,6 +89,7 @@ interface ParsedCharacter {
   weapon: string | null;
   pictoSlots: string[]; // ItemType=NewEnumerator0 in EquippedItemsPerSlot
   passiveEffects: string[]; // EquippedPassiveEffects array
+  unlockedSkills: string[]; // UnlockedSkills array
 }
 
 /**
@@ -66,6 +119,7 @@ export function parseSave(saveJson: unknown): ParsedCharacter[] {
       weapon: readEquippedWeapon(inner),
       pictoSlots: readEquippedPictos(inner),
       passiveEffects: readEquippedPassives(inner),
+      unlockedSkills: readUnlockedSkills(inner),
     });
   }
   return out;
@@ -105,6 +159,7 @@ export function characterToInventory(char: ParsedCharacter): Inventory {
   inv.pictos_available = allSlugs;
   inv.pictos_mastered = char.pictoSlots;
   inv.luminas_extra = char.passiveEffects.filter((s) => !char.pictoSlots.includes(s));
+  inv.skills_known = char.unlockedSkills;
   return inv;
 }
 
@@ -179,6 +234,7 @@ function slotItemType(key: unknown): string | null {
 function equippedSlotsByType(
   record: Record<string, unknown>,
   itemTypeEnum: string,
+  toSlug: (saveName: string) => string,
 ): string[] {
   const node = findKey(record, /^EquippedItemsPerSlot_/) as
     | { Map?: Array<{ key?: unknown; value?: unknown }> }
@@ -188,19 +244,28 @@ function equippedSlotsByType(
   for (const entry of node.Map) {
     if (slotItemType(entry.key) !== itemTypeEnum) continue;
     const value = (entry.value as { Name?: string })?.Name;
-    if (typeof value === "string") out.push(passiveSlug(value));
+    if (typeof value === "string") out.push(toSlug(value));
   }
   return Array.from(new Set(out));
 }
 
 function readEquippedWeapon(record: Record<string, unknown>): string | null {
-  // ItemType = NewEnumerator0 in the few saves we've inspected → weapon slot
-  return equippedSlotsByType(record, "E_jRPG_ItemType::NewEnumerator0")[0] ?? null;
+  // ItemType = NewEnumerator0 → weapon slot. Weapons go through the
+  // dedicated weapon table so internal aliases (Sirenim_1 → Choralim)
+  // resolve correctly.
+  return equippedSlotsByType(record, "E_jRPG_ItemType::NewEnumerator0", weaponSlug)[0] ?? null;
 }
 
 function readEquippedPictos(record: Record<string, unknown>): string[] {
-  // ItemType = NewEnumerator10 → picto slots
-  return equippedSlotsByType(record, "E_jRPG_ItemType::NewEnumerator10");
+  return equippedSlotsByType(record, "E_jRPG_ItemType::NewEnumerator10", passiveSlug);
+}
+
+function readUnlockedSkills(record: Record<string, unknown>): string[] {
+  const node = findKey(record, /^UnlockedSkills_/) as
+    | { Array?: { Base?: { Name?: string[] } } }
+    | undefined;
+  const names = node?.Array?.Base?.Name ?? [];
+  return Array.from(new Set(names.map((n) => skillSlug(n))));
 }
 
 function readEquippedPassives(record: Record<string, unknown>): string[] {

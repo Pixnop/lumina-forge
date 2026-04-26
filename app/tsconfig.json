@@ -26,5 +26,6 @@
     }
   },
   "include": ["src"],
+  "exclude": ["src/lib/save/__fixtures__"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

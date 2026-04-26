@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { invoke } from "@tauri-apps/api/core";
+import { localDataDir } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-dialog";
 import { FileUp, Sparkles, Wand2 } from "lucide-react";
 import * as React from "react";
@@ -27,8 +28,23 @@ export function HomePage() {
   async function importSave() {
     setImportError(null);
     try {
+      // Default to E33's typical save dir on Windows:
+      //   %LOCALAPPDATA%\Sandfall\Saved\SaveGames
+      // localDataDir() resolves the platform's local-data root (Windows
+      // %LOCALAPPDATA%, macOS ~/Library/Application Support, Linux
+      // ~/.local/share). Best-effort — fall back to no defaultPath if
+      // anything throws.
+      let defaultPath: string | undefined;
+      try {
+        const root = await localDataDir();
+        defaultPath = `${root}/Sandfall/Saved/SaveGames`.replace(/\\/g, "/");
+      } catch {
+        defaultPath = undefined;
+      }
+
       const path = await open({
         multiple: false,
+        defaultPath,
         filters: [{ name: "Save", extensions: ["sav"] }],
       });
       if (typeof path !== "string") return;

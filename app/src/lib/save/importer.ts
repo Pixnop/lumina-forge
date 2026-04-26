@@ -27,15 +27,22 @@ export function slugify(name: string): string {
 
 /**
  * The save stores picto/lumina entries by their internal RowName
- * (e.g. "Stand"). The Infarctus mapping table translates that to the
- * user-visible display name ("Full Strength"). Slugifying the display
- * name lands on our vault slug for ~100 % of items now that the missing
- * stubs are populated.
+ * (e.g. "Stand"). Up to three lookup tables can resolve them:
+ *
+ *   1. ST_PassiveEffects — the string table for picto/lumina display
+ *      names. Built from `PASSIVE_<RowName>_Name` keys.
+ *   2. DT_jRPG_Items_Composite — the broader item data table. Some
+ *      pictos appear under different RowNames here (e.g. ``InitialAp+1A``)
+ *      that the passive table doesn't carry.
+ *   3. Raw slugify, as a last resort.
+ *
+ * Trying both tables makes the importer resilient to E33's two
+ * naming conventions (with-`+`, with-`_`).
  */
 export function passiveSlug(saveName: string): string {
-  const table = passiveEffectsTable as Record<string, string>;
-  const display = table[saveName];
-  if (display) return slugify(display);
+  const st = passiveEffectsTable as Record<string, string>;
+  if (st[saveName]) return slugify(st[saveName]);
+  if (PICTOS[saveName]) return slugify(PICTOS[saveName]);
   return slugify(saveName);
 }
 
@@ -68,26 +75,24 @@ export function pictoSlug(saveName: string): string {
  * "Combo1" → Lumière Assault). The override map handles the deltas;
  * everything else falls through to plain slugify.
  */
+// Skills whose save-internal name doesn't match Fextralife's slug.
+// Two patterns:
+//   1. Renames — the in-game text is different from the wiki text
+//      (UnleashCharge → Overcharge, Combo1 → Lumière Assault).
+//   2. Slug-shape mismatches — Fextralife collapses some PascalCase
+//      names to single-word slugs (RockSlide → rockslide instead of
+//      rock-slide). Slugify always produces hyphens, so map back.
+//
+// Skills not on Fextralife (IceGust, Earthquake, ThermalTransfer…)
+// land in the inventory as their slugified form and the optimizer
+// reports them as unknown. Adding them as vault stubs is future work.
 const SKILL_NAME_OVERRIDES: Record<string, string> = {
   combo1: "lumiere-assault",
   "unleash-charge": "overcharge",
   "perfect-recovery": "recovery",
-  // Lune
-  rockslide: "rockslide",
-  earthrising: "earth-rising",
-  lightningdance: "lightning-dance",
-  // Maelle
-  swiftstride: "swift-stride",
-  offensiveswitch: "offensive-switch",
-  guarddown: "guard-down",
-  fleuretfury: "fleuret-fury",
-  mezzoforte: "mezzo-forte",
-  // Sciel
-  focusedforetell: "focused-foretell",
-  sealedfate: "sealed-fate",
-  markingcard: "marking-card",
-  phantomblade: "phantom-blade",
-  badomen: "bad-omen",
+  "rock-slide": "rockslide",
+  "terra-quake": "terraquake",
+  "thunder-fall": "thunderfall",
 };
 
 export function skillSlug(saveName: string): string {

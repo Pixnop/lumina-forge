@@ -45,8 +45,19 @@ export function BuildCard({ rank, build, active, onClick }: Props) {
       </CardHeader>
       <CardContent className="space-y-3 pt-0">
         <div className="grid grid-cols-2 gap-2 text-sm">
-          <Stat label="DPS" value={build.damage.est_dps.toFixed(0)} />
-          <Stat label="Total" value={build.total_score.toFixed(0)} emphasis />
+          <Stat
+            label={
+              build.damage.raw_dps > build.damage.est_dps + 1
+                ? "DPS (capped)"
+                : "DPS"
+            }
+            value={build.damage.est_dps.toFixed(0)}
+          />
+          <Stat
+            label="Raw"
+            value={build.damage.raw_dps.toFixed(0)}
+            emphasis={build.damage.raw_dps > build.damage.est_dps + 1}
+          />
           <Stat label="Picto mult" value={`×${build.damage.picto_mult.toFixed(2)}`} />
           <Stat label="Lumina mult" value={`×${build.damage.lumina_mult.toFixed(2)}`} />
         </div>

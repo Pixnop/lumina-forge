@@ -29,18 +29,42 @@ Paths forward when someone comes back to this:
 
 ## Inventory auto-detect from save files
 
-**Status**: needs Expedition 33's actual save format first.
+**Status**: confirmed feasible; needs a dedicated session.
 
-The save file lives at `%LOCALAPPDATA%\Sandfall\Saved\SaveGames\` on
-Windows but the format is not documented — likely a proprietary
-binary blob produced by Unreal Engine's SaveGame subsystem.
+Save files live at:
 
-Work needed:
+```
+%LOCALAPPDATA%\Sandfall\Saved\SaveGames\<steam-id>\EXPEDITION_<n>.sav
+```
 
-1. Reverse-engineer the .sav format (likely `FObjectAndNameAsStringProxyArchive`)
-2. Map the in-game inventory state to our `Inventory` schema
-3. Add a file-picker UI in the React app that reads the save → populates
-   the inventory draft
+Investigation in the v0.7.0 session confirmed:
 
-This is a one-off effort of uncertain difficulty. Better done as a
-dedicated side project than a single roadmap item.
+- Files are **GVAS** format (Unreal Engine `USaveGame`), magic `b"GVAS"`
+  in the first 4 bytes.
+- Stringtable contains the structural names we need:
+  `/Game/Gameplay/Inventory/FEquipmentSlot`,
+  `/Game/Gameplay/Pictos/Weapons/S_WeaponInstanceHandle`,
+  `/Game/Gameplay/CharacterData/E_CharacterList`,
+  `CharactersCollection`, `CARD_Pictos`, `CARD_Lumina`, `CARD_SkillCard`,
+  `ECharacterAttribute::NewEnumerator0..4` (Might/Agi/Def/Luck/Vit).
+- Items themselves are stored as **opaque asset handles** — internal
+  Unreal IDs, not the human-readable slugs in our vault. A naive
+  string scan finds maybe 6-14 distinct slugs out of 600+ vault entries
+  and most are coincidental fragments.
+
+Work needed for a real importer:
+
+1. **GVAS property parser** — string FNames + property type tags +
+   nested struct/array recursion. ~400 LoC of careful binary work.
+   References: `gvas-converter` (Rust), `uesave-rs` (Rust). No usable
+   Python package on PyPI as of this writing.
+2. **Asset handle → slug mapping** — build by either
+   (a) unpacking the game's `.pak` files with `repak`/`umodel` and
+   reading the data tables, or
+   (b) instrumenting a small Tauri command that the user runs once
+   per item to record `handle → slug`.
+3. **Tauri command + React file-picker** — read the chosen save,
+   resolve handles, populate the `Inventory` draft.
+
+Conservative estimate: a full session for the parser + a second
+session for the mapping. Not bigger, not smaller.

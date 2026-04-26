@@ -1,6 +1,6 @@
 [package]
 name = "lumina-forge"
-version = "0.7.0"
+version = "0.8.0"
 description = "lumina-forge desktop shell"
 authors = ["Léon Fievet"]
 edition = "2021"
@@ -19,8 +19,12 @@ tauri-build = { version = "2", features = [] }
 tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 tauri-plugin-shell = "2"
+tauri-plugin-dialog = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 log = "0.4"
 chrono = { version = "0.4", default-features = false, features = ["clock"] }
+# Unreal Engine SaveGame (GVAS) parser — the E33 save format.
+# Same crate the Infarctus CO-E33_Save_editor uses.
+uesave = "0.6"
 

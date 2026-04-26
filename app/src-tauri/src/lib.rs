@@ -5,6 +5,8 @@ use chrono::Local;
 use tauri::{AppHandle, Manager, RunEvent, State, WindowEvent};
 use tauri_plugin_shell::{process::CommandChild, ShellExt};
 
+mod save_import;
+
 const LOG_CAPACITY: usize = 200;
 
 /// Holds the Python API sidecar so we can terminate it when the app exits.
@@ -53,11 +55,13 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_dialog::init())
         .manage(Sidecar(Mutex::new(None)))
         .manage(SidecarLogs::default())
         .invoke_handler(tauri::generate_handler![
             get_sidecar_logs,
-            clear_sidecar_logs
+            clear_sidecar_logs,
+            save_import::read_save_as_json
         ])
         .setup(|app| {
             spawn_sidecar(app.handle())?;

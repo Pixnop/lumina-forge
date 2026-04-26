@@ -1,5 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Sparkles, Wand2 } from "lucide-react";
+import { invoke } from "@tauri-apps/api/core";
+import { open } from "@tauri-apps/plugin-dialog";
+import { FileUp, Sparkles, Wand2 } from "lucide-react";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
 
 import { useVaultInfo } from "@/api/hooks";
@@ -8,6 +11,7 @@ import { InventoryLibrary } from "@/components/InventoryLibrary";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GUSTAVE_EXAMPLE } from "@/lib/examples";
+import { characterToInventory, parseSave } from "@/lib/save/importer";
 import { useInventoryStore } from "@/stores/inventory";
 
 export function HomePage() {
@@ -15,9 +19,33 @@ export function HomePage() {
   const info = useVaultInfo();
   const draft = useInventoryStore((s) => s.draft);
   const setDraft = useInventoryStore((s) => s.setDraft);
+  const [importError, setImportError] = React.useState<string | null>(null);
 
   const isEmpty =
     draft.weapons_available.length === 0 && draft.pictos_available.length === 0;
+
+  async function importSave() {
+    setImportError(null);
+    try {
+      const path = await open({
+        multiple: false,
+        filters: [{ name: "Save", extensions: ["sav"] }],
+      });
+      if (typeof path !== "string") return;
+      const json = await invoke<string>("read_save_as_json", { path });
+      const parsed = parseSave(JSON.parse(json));
+      const equipped = parsed.find((c) => c.weapon || c.passiveEffects.length > 0);
+      if (!equipped) {
+        setImportError(t("home.import_save_empty"));
+        return;
+      }
+      setDraft(characterToInventory(equipped));
+    } catch (err) {
+      setImportError(
+        t("home.import_save_failed", { error: (err as Error).message ?? String(err) }),
+      );
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -36,13 +64,25 @@ export function HomePage() {
             </p>
           ) : null}
         </div>
-        <Button asChild>
-          <Link to="/optimize">
-            <Wand2 className="h-4 w-4" />
-            {t("home.optimize")}
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={importSave} title={t("home.import_save_hint")}>
+            <FileUp className="h-4 w-4" />
+            {t("home.import_save")}
+          </Button>
+          <Button asChild>
+            <Link to="/optimize">
+              <Wand2 className="h-4 w-4" />
+              {t("home.optimize")}
+            </Link>
+          </Button>
+        </div>
       </div>
+
+      {importError && (
+        <div className="rounded-md border border-destructive bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          {importError}
+        </div>
+      )}
 
       {isEmpty && (
         <Card className="border-primary/40 bg-primary/5">

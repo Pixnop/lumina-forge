@@ -19,7 +19,11 @@
     "optimize": "Optimiser",
     "first_time_title": "Première visite ?",
     "first_time_hint": "Charge un inventaire Gustave de démonstration (3 armes, 10 pictos, 2 maîtrisés) pour voir l'optimiseur en action immédiatement.",
-    "load_example": "Charger l'exemple Gustave"
+    "load_example": "Charger l'exemple Gustave",
+    "import_save": "Importer depuis une save",
+    "import_save_hint": "Choisis un Expedition_*.sav dans %LOCALAPPDATA%/Sandfall/Saved/SaveGames/. Le premier perso équipé devient ton brouillon.",
+    "import_save_failed": "Import impossible : {{error}}",
+    "import_save_empty": "Aucun perso équipé trouvé dans cette save."
   },
   "inventory": {
     "character_attributes": "Personnage & attributs",

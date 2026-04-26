@@ -19,7 +19,11 @@
     "optimize": "Optimize",
     "first_time_title": "First time here?",
     "first_time_hint": "Load a starter Gustave inventory (3 weapons, 10 pictos, 2 mastered) to see the optimizer in action right away.",
-    "load_example": "Load Gustave example"
+    "load_example": "Load Gustave example",
+    "import_save": "Import from save file",
+    "import_save_hint": "Pick an Expedition_*.sav from %LOCALAPPDATA%/Sandfall/Saved/SaveGames/. The first character with equipment is loaded as your draft.",
+    "import_save_failed": "Could not import save: {{error}}",
+    "import_save_empty": "No characters with equipment found in this save."
   },
   "inventory": {
     "character_attributes": "Character & attributes",

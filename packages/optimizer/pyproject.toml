@@ -1,6 +1,6 @@
 [project]
 name = "lumina-forge-optimizer"
-version = "0.7.0"
+version = "0.8.0"
 description = "Ranks Expedition 33 builds from the items a player has on hand."
 readme = "README.md"
 requires-python = ">=3.13"

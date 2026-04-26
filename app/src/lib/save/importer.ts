@@ -71,13 +71,26 @@ export function parseSave(saveJson: unknown): ParsedCharacter[] {
   return out;
 }
 
+// E33 stores Gustave under the internal name "Frey" (his original name in
+// the dev's pre-launch builds). Other characters happen to ship under
+// their public names; we still go through this map so future renames
+// land in one place.
+const CHARACTER_NAME_OVERRIDES: Record<string, string> = {
+  frey: "gustave",
+};
+
+function characterSlug(hardcodedName: string): string {
+  const raw = slugify(hardcodedName);
+  return CHARACTER_NAME_OVERRIDES[raw] ?? raw;
+}
+
 /**
- * Build an Inventory draft from a parsed character. The character name
- * comes from the save's hardcoded name and is lowercased to match our
- * vault's character slugs (Gustave → gustave, Frey → frey, …).
+ * Build an Inventory draft from a parsed character. Character names
+ * map through the override table so the save's "Frey" lands on our
+ * "gustave" slug.
  */
 export function characterToInventory(char: ParsedCharacter): Inventory {
-  const inv = emptyInventory(slugify(char.hardcodedName));
+  const inv = emptyInventory(characterSlug(char.hardcodedName));
   inv.level = char.level;
   inv.attributes = char.attributes;
   if (char.weapon) inv.weapons_available = [char.weapon];
@@ -152,48 +165,42 @@ function readAttributes(record: Record<string, unknown>): Inventory["attributes"
   return out;
 }
 
-function readEquippedWeapon(record: Record<string, unknown>): string | null {
-  // EquippedItemsPerSlot is a Map<FEquipmentSlot, NameProperty>.
-  // FEquipmentSlot.ItemType = NewEnumerator0 → weapon (typically slot 0).
-  const node = findKey(record, /^EquippedItemsPerSlot_/) as
-    | { Map?: Array<{ key?: unknown; value?: unknown }> }
+function slotItemType(key: unknown): string | null {
+  // Map keys have shape { Struct: { Struct: { ItemType_..., SlotIndex_... } } }
+  const inner = ((key as { Struct?: { Struct?: Record<string, unknown> } })?.Struct
+    ?.Struct) as Record<string, unknown> | undefined;
+  if (!inner) return null;
+  const entry = Object.entries(inner).find(([k]) => k.startsWith("ItemType_"))?.[1] as
+    | { Byte?: { Label?: string } }
     | undefined;
-  if (!node?.Map) return null;
-  for (const entry of node.Map) {
-    const slotInner = readStructInner({ Struct: entry.key });
-    if (!slotInner) continue;
-    const itemType = (
-      Object.entries(slotInner).find(([k]) => k.startsWith("ItemType_"))?.[1] as
-        | { Byte?: { Label?: string } }
-        | undefined
-    )?.Byte?.Label;
-    if (itemType !== "E_jRPG_ItemType::NewEnumerator0") continue;
-    const value = (entry.value as { Name?: string })?.Name;
-    if (typeof value === "string") return passiveSlug(value);
-  }
-  return null;
+  return entry?.Byte?.Label ?? null;
 }
 
-function readEquippedPictos(record: Record<string, unknown>): string[] {
-  // ItemType = NewEnumerator10 in the few saves we've inspected → picto slots
+function equippedSlotsByType(
+  record: Record<string, unknown>,
+  itemTypeEnum: string,
+): string[] {
   const node = findKey(record, /^EquippedItemsPerSlot_/) as
     | { Map?: Array<{ key?: unknown; value?: unknown }> }
     | undefined;
   if (!node?.Map) return [];
   const out: string[] = [];
   for (const entry of node.Map) {
-    const slotInner = readStructInner({ Struct: entry.key });
-    if (!slotInner) continue;
-    const itemType = (
-      Object.entries(slotInner).find(([k]) => k.startsWith("ItemType_"))?.[1] as
-        | { Byte?: { Label?: string } }
-        | undefined
-    )?.Byte?.Label;
-    if (itemType !== "E_jRPG_ItemType::NewEnumerator10") continue;
+    if (slotItemType(entry.key) !== itemTypeEnum) continue;
     const value = (entry.value as { Name?: string })?.Name;
     if (typeof value === "string") out.push(passiveSlug(value));
   }
   return Array.from(new Set(out));
+}
+
+function readEquippedWeapon(record: Record<string, unknown>): string | null {
+  // ItemType = NewEnumerator0 in the few saves we've inspected → weapon slot
+  return equippedSlotsByType(record, "E_jRPG_ItemType::NewEnumerator0")[0] ?? null;
+}
+
+function readEquippedPictos(record: Record<string, unknown>): string[] {
+  // ItemType = NewEnumerator10 → picto slots
+  return equippedSlotsByType(record, "E_jRPG_ItemType::NewEnumerator10");
 }
 
 function readEquippedPassives(record: Record<string, unknown>): string[] {

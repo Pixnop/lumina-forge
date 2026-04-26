@@ -23,7 +23,12 @@ from optimizer.vault import VaultIndex
 
 log = logging.getLogger(__name__)
 
-MAX_COMBOS_SAFETY: int = 10_000_000  # truncate pictos_available above this
+# Hard cap on enumerated builds. 10M was the original ceiling but a
+# late-game save with 131 owned pictos × 18 weapons hits 6.6M
+# combinations and stalls the optimize call for minutes. 250k keeps
+# the latency under a couple of seconds while still searching ~50
+# pictos worth of combos — plenty to surface every meta build.
+MAX_COMBOS_SAFETY: int = 250_000
 PICTOS_PER_BUILD: int = 3
 
 

@@ -2,6 +2,7 @@
   "nav": {
     "inventory": "Inventaire",
     "optimize": "Optimiser",
+    "team": "Équipe",
     "vault": "Bibliothèque",
     "settings": "Réglages"
   },
@@ -29,7 +30,27 @@
     "import_pick_pictos": "{{n}} picto",
     "import_pick_passives": "{{n}} passif",
     "import_pick_skills": "{{n}} skill",
-    "import_pick_unequipped": "aucun équipement"
+    "import_pick_unequipped": "aucun équipement",
+    "import_pick_hint": "Clique un perso pour le charger en solo, ou coche-en 2-3 pour composer une équipe.",
+    "import_run_team": "Optimiser l'équipe ({{count}})",
+    "import_toggle_select": "Ajouter {{name}} à l'équipe"
+  },
+  "team": {
+    "title": "Équipe",
+    "back": "Retour à l'inventaire",
+    "summary": "{{members}} membres, {{pictos}} pictos uniques, {{weapons}} armes au total.",
+    "run": "Optimiser",
+    "run_hint": "Clique sur Optimiser pour explorer les compositions valides (pictos disjoints).",
+    "empty_hint": "Aucune équipe sélectionnée. Importe une save et coche 2-3 personnages.",
+    "go_to_import": "Aller à l'import",
+    "composition_title": "Composition",
+    "total_score": "Score équipe",
+    "member": {
+      "level": "niv {{lvl}}",
+      "pp": "{{pp}} PP",
+      "weapons": "{{n}} arme",
+      "pictos": "{{n}} picto"
+    }
   },
   "inventory": {
     "character_attributes": "Personnage & attributs",
@@ -77,6 +98,15 @@
     "top": "Top {{count}}",
     "run": "Lancer",
     "loading": "Énumération des combinaisons…",
+    "elapsed": "{{seconds}} s écoulées",
+    "estimated": "~{{seconds}} s estimées",
+    "weapons_word": "armes",
+    "phase": {
+      "loading": "chargement de la bibliothèque",
+      "scoring": "scoring des builds",
+      "ranking": "classement & déduplication",
+      "done": "terminé"
+    },
     "empty": "Aucun build n'a pu être assemblé. Vérifie que tu as au moins une arme compatible et 3 pictos.",
     "hint": "Clique sur **Lancer** pour classer les builds depuis ton inventaire."
   },
@@ -87,6 +117,10 @@
     "raw_dps": "brut",
     "capped": "plafonné",
     "also_works": "Fonctionne aussi avec",
+    "deck_variants_title": "Variantes de ce deck",
+    "deck_variants_hint": "Mêmes 2 pictos clés, 1 picto échangé — le filtre de diversité les met ici plutôt que de spammer le top.",
+    "deck_variants_swap": "Picto échangé",
+    "deck_variants_same": "(même équipement, juste l'arme change)",
     "loadout": "Équipement",
     "rotation": "Rotation",
     "why": "Pourquoi ce build",
@@ -94,6 +128,7 @@
     "weapon": "Arme",
     "pictos": "Pictos",
     "luminas": "Luminas",
+    "luminas_with_pp": "Luminas ({{used}}/{{budget}} PP)",
     "skills": "Compétences",
     "synergies": "Synergies",
     "archetype": {

@@ -40,15 +40,33 @@ class BuildLoadout(BaseModel):
 
     character: str
     weapon: str
+    weapon_level: int | None = None
     pictos: list[str]
     luminas: list[str]
     skills_used: list[str]
+    # Sum of pp_cost across the slotted luminas, alongside the inventory's
+    # cap. Surfaces how much of the player's lumina budget the engine
+    # actually consumed so they can spot under-utilization at a glance.
+    pp_used: int = 0
+    pp_budget: int = 0
 
 
 class WeaponAlternativeResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     weapon: str
+    est_dps: float
+    raw_dps: float
+
+
+class DeckVariantResponse(BaseModel):
+    """Near-duplicate build with ≥2 pictos in common with the parent."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    weapon: str
+    pictos: list[str]
+    luminas: list[str]
     est_dps: float
     raw_dps: float
 
@@ -65,6 +83,7 @@ class RankedBuildResponse(BaseModel):
     rotation_hint: list[str]
     why: list[str]
     weapon_alternatives: list[WeaponAlternativeResponse] = []
+    deck_variants: list[DeckVariantResponse] = []
     archetype: ArchetypeMatch | None = None
     rotation_trace: RotationTrace | None = None
 
@@ -75,6 +94,46 @@ class OptimizeResponse(BaseModel):
     builds: list[RankedBuildResponse]
     aspirational: list[AspirationalBuild] = []
     total_enumerated: int | None = None
+
+
+# --- team optimize ----------------------------------------------------------
+
+
+class TeamOptimizeRequest(BaseModel):
+    """Optimize a 2- or 3-character party. Each inventory is a full
+    single-character inventory; the team optimizer pools their luminas
+    and enforces picto disjointness across members."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    inventories: Annotated[list[Inventory], Field(min_length=2, max_length=3)]
+    top: Annotated[int, Field(ge=1, le=20)] = 5
+    mode: Mode = "dps"
+    weight_utility: Annotated[float | None, Field(ge=0.0, le=1.0)] = None
+
+
+class TeamMemberResponse(BaseModel):
+    """One slot of a team result. ``inventory_index`` is the position of
+    the source inventory in the request (0-based), so the UI can match
+    the build back to the character card the user picked it for."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    inventory_index: int
+    build: RankedBuildResponse
+
+
+class TeamBuildResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    members: list[TeamMemberResponse]
+    total_score: float
+
+
+class TeamOptimizeResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    teams: list[TeamBuildResponse]
 
 
 # --- info / health ----------------------------------------------------------

@@ -20,6 +20,9 @@ export interface Inventory {
   luminas_extra: string[];
   pp_budget: number;
   skills_known: string[];
+  /** Per-weapon current level (1–33). Optional — empty when the user
+   * built the inventory by hand instead of importing a save. */
+  weapon_levels?: Record<string, number>;
 }
 
 export interface DamageEstimate {
@@ -40,6 +43,14 @@ export interface WeaponAlternative {
   raw_dps: number;
 }
 
+export interface DeckVariant {
+  weapon: string;
+  pictos: string[];
+  luminas: string[];
+  est_dps: number;
+  raw_dps: number;
+}
+
 export interface UtilityScore {
   has_revive: boolean;
   has_heal: boolean;
@@ -50,9 +61,12 @@ export interface UtilityScore {
 export interface BuildLoadout {
   character: string;
   weapon: string;
+  weapon_level?: number | null;
   pictos: string[];
   luminas: string[];
   skills_used: string[];
+  pp_used?: number;
+  pp_budget?: number;
 }
 
 export type DpsTier = "S" | "A" | "B" | "C" | "D";
@@ -113,6 +127,7 @@ export interface RankedBuildResponse {
   rotation_hint: string[];
   why: string[];
   weapon_alternatives: WeaponAlternative[];
+  deck_variants?: DeckVariant[];
   archetype?: ArchetypeMatch | null;
   rotation_trace?: RotationTrace | null;
 }
@@ -128,6 +143,27 @@ export interface OptimizeResponse {
   builds: RankedBuildResponse[];
   aspirational: AspirationalBuild[];
   total_enumerated?: number | null;
+}
+
+export interface TeamMemberResponse {
+  inventory_index: number;
+  build: RankedBuildResponse;
+}
+
+export interface TeamBuildResponse {
+  members: TeamMemberResponse[];
+  total_score: number;
+}
+
+export interface TeamOptimizeRequest {
+  inventories: Inventory[];
+  top?: number;
+  mode?: Mode;
+  weight_utility?: number | null;
+}
+
+export interface TeamOptimizeResponse {
+  teams: TeamBuildResponse[];
 }
 
 export interface VaultItem {
@@ -177,5 +213,6 @@ export function emptyInventory(character: string): Inventory {
     luminas_extra: [],
     pp_budget: 0,
     skills_known: [],
+    weapon_levels: {},
   };
 }

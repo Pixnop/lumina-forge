@@ -3,16 +3,25 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from optimizer.archetype import ArchetypeMatcher, find_aspirational
-from optimizer.enumerator import build_context, enumerate_builds
-from optimizer.formulas import DamageModel, DefaultDamageModel, VaultFormulaModel
+from optimizer.enumerator import build_context, enumerate_builds, expected_total_combos
+from optimizer.formulas import (
+    DamageModel,
+    DefaultDamageModel,
+    VaultFormulaModel,
+)
+from optimizer.formulas import (
+    clear_caches as _clear_formula_caches,
+)
 from optimizer.models import (
     ArchetypeMatch,
     AspirationalBuild,
     Build,
     DamageEstimate,
+    DeckVariant,
     Inventory,
     Mode,
     RankedBuild,
@@ -34,6 +43,11 @@ class EngineOptions:
     top_k: int = 5
     mode: Mode = "dps"
     weight_utility: float | None = None  # explicit override; else derived from mode
+    # Skip the picto-diversity filter and just return the K best winners.
+    # Useful when the caller needs a wide candidate pool (e.g. team
+    # optimize, where disjoint-picto matching is the real diversity
+    # constraint and the in-listing filter just shrinks the search).
+    diverse_top_k: bool = True
 
     def resolved_utility_weight(self) -> float:
         if self.weight_utility is not None:
@@ -49,12 +63,16 @@ class OptimizeResult:
     aspirational: list[AspirationalBuild]
 
 
+ProgressCallback = Callable[[str, float], None]
+
+
 def optimize(
     inventory: Inventory,
     index: VaultIndex,
     options: EngineOptions | None = None,
     *,
     damage_model: DamageModel | None = None,
+    on_progress: ProgressCallback | None = None,
 ) -> OptimizeResult:
     """Enumerate valid builds for ``inventory`` and return the top ``options.top_k``.
 
@@ -73,6 +91,9 @@ def optimize(
     """
     opts = options or EngineOptions()
     utility_weight = opts.resolved_utility_weight()
+    _clear_formula_caches()
+    progress = on_progress or (lambda _phase, _pct: None)
+    progress("loading", 0.02)
 
     # Prefer the vault-driven model when Formulas/damage-formula.md exists.
     if damage_model is not None:
@@ -87,10 +108,17 @@ def optimize(
     skills_known = frozenset(inventory.skills_known)
 
     ctx = build_context(inventory, index)
+    total_combos = expected_total_combos(ctx)
+    # Reserve 5–90 % of the bar for scoring; the rest covers vault load,
+    # ranking, and the lazy rotation_hint/why pass on the top-K.
+    progress("scoring", 0.05)
+    # Tick ~1 % at a time — 100 events on a 100k-combo run is more than
+    # enough for a smooth bar without flooding the channel.
+    tick_every = max(1, total_combos // 100) if total_combos else 1
 
     # Stage 1 — score every candidate and bucket them by loadout signature.
     groups: dict[tuple[str, ...], list[RankedBuild]] = {}
-    for candidate in enumerate_builds(ctx):
+    for i, candidate in enumerate(enumerate_builds(ctx)):
         ranked = _score(
             candidate,
             model,
@@ -101,7 +129,10 @@ def optimize(
             skills_known,
         )
         groups.setdefault(_signature(candidate), []).append(ranked)
+        if total_combos and i % tick_every == 0:
+            progress("scoring", 0.05 + 0.85 * (i / total_combos))
 
+    progress("ranking", 0.92)
     # Stage 2 — per signature, promote the best weapon; keep the rest as alts.
     winners: list[RankedBuild] = []
     for group in groups.values():
@@ -118,15 +149,87 @@ def optimize(
         winners.append(best.model_copy(update={"weapon_alternatives": alternatives}))
 
     winners.sort(key=_ranking_key, reverse=True)
+    top = (
+        _select_diverse_top_k(winners, opts.top_k)
+        if opts.diverse_top_k
+        else winners[: opts.top_k]
+    )
+    # Build the rotation_hint + why strings only for the few builds we
+    # actually return. _score skips them so the inner loop doesn't pay
+    # the cost on every one of the ~100k enumerated candidates.
+    finalised: list[RankedBuild] = []
+    for r in top:
+        finalised.append(
+            r.model_copy(
+                update={
+                    "rotation_hint": suggest_rotation(r.build),
+                    "why": _explain(
+                        r.build, r.damage, r.utility, r.synergies_matched, r.archetype
+                    ),
+                }
+            )
+        )
 
     aspirational = find_aspirational(index.curated_builds, inventory)
+    progress("done", 1.0)
     return OptimizeResult(
-        builds=winners[: opts.top_k],
+        builds=finalised,
         aspirational=aspirational,
     )
 
 
 # --- internals --------------------------------------------------------------
+
+
+_DIVERSITY_OVERLAP_THRESHOLD: int = 2  # ≥2 shared pictos → variant of an earlier build
+_MAX_DECK_VARIANTS: int = 5
+
+
+def _select_diverse_top_k(
+    winners: list[RankedBuild], top_k: int
+) -> list[RankedBuild]:
+    """Walk ``winners`` (already sorted descending by score) and keep
+    only builds whose pictos overlap with each previously-kept build by
+    fewer than ``_DIVERSITY_OVERLAP_THRESHOLD``. Skipped builds attach
+    to their closest parent as :class:`DeckVariant` entries — capped at
+    ``_MAX_DECK_VARIANTS`` per parent so the API response stays small.
+
+    If the strictly-diverse pass leaves fewer than ``top_k`` builds (a
+    common case on small inventories where every build cluster shares 2
+    pictos with another), we fill the remaining slots with the best
+    leftover candidates by score. The diversity rule is a UX preference,
+    not a correctness invariant — better to surface near-duplicates than
+    return fewer builds than the user asked for.
+    """
+    selected: list[RankedBuild] = []
+    parent_picto_sets: list[frozenset[str]] = []
+    for cand in winners:
+        cand_pictos = frozenset(p.slug for p in cand.build.pictos)
+        parent_idx: int | None = None
+        for i, parent_set in enumerate(parent_picto_sets):
+            if len(cand_pictos & parent_set) >= _DIVERSITY_OVERLAP_THRESHOLD:
+                parent_idx = i
+                break
+        if parent_idx is None:
+            if len(selected) >= top_k:
+                continue
+            selected.append(cand)
+            parent_picto_sets.append(cand_pictos)
+            continue
+        parent = selected[parent_idx]
+        if len(parent.deck_variants) >= _MAX_DECK_VARIANTS:
+            continue
+        variant = DeckVariant(
+            weapon=cand.build.weapon.slug,
+            pictos=[p.slug for p in cand.build.pictos],
+            luminas=[lu.slug for lu in cand.build.luminas],
+            est_dps=cand.damage.est_dps,
+            raw_dps=cand.damage.raw_dps,
+        )
+        selected[parent_idx] = parent.model_copy(
+            update={"deck_variants": [*parent.deck_variants, variant]}
+        )
+    return selected
 
 
 def _signature(build: Build) -> tuple[str, ...]:
@@ -157,7 +260,12 @@ def _score(
 ) -> RankedBuild:
     matched = matcher.matches(build)
     synergy_mult = matcher.multiplier(matched)
-    damage = _apply_synergy(model.estimate(build), synergy_mult)
+    # One simulation per scored build — share it between the formula
+    # (which needs total_hits) and the RankedBuild trace exposed to the
+    # API. Doing the work twice was the dominant hot spot in cProfile.
+    rotation_turns = getattr(model, "rotation_turns", 3) or 3
+    rotation_trace = simulate_rotation(build, rotation_turns)
+    damage = _apply_synergy(model.estimate(build, rotation_trace), synergy_mult)
     damage = _apply_ceiling(damage, _build_ceiling(build, model))
     utility = util_scorer.score(build)
     archetype = archetype_matcher.match(build, skills_known=skills_known)
@@ -165,17 +273,14 @@ def _score(
     if archetype is not None:
         total *= 1.0 + archetype.bonus_applied
 
-    rotation_turns = getattr(model, "rotation_turns", 3) or 3
-    rotation_trace = simulate_rotation(build, rotation_turns)
-
+    # rotation_hint and why are computed lazily — only the top-K
+    # builds we actually return need them. See ``_finalise_winners``.
     return RankedBuild(
         build=build,
         damage=damage,
         utility=utility,
         synergies_matched=matched,
         total_score=total,
-        rotation_hint=suggest_rotation(build),
-        why=_explain(build, damage, utility, matched, archetype),
         archetype=archetype,
         rotation_trace=rotation_trace,
     )

@@ -1,6 +1,6 @@
 ---
 base_damage: 2970
-character: Gustave
+character: Verso
 image_path: _assets/Weapons/danseso.png
 image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/daneso-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Danseso

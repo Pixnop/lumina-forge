@@ -25,11 +25,22 @@ log = logging.getLogger(__name__)
 
 # Hard cap on enumerated builds. 10M was the original ceiling but a
 # late-game save with 131 owned pictos × 18 weapons hits 6.6M
-# combinations and stalls the optimize call for minutes. 250k keeps
-# the latency under a couple of seconds while still searching ~50
-# pictos worth of combos — plenty to surface every meta build.
-MAX_COMBOS_SAFETY: int = 250_000
+# combinations and stalls the optimize call for minutes. The full v2
+# rotation simulator + archetype matcher + status sim per build adds
+# ~150 µs per candidate, so 250k put us at ~40 s per character —
+# still painful for an interactive UI. 100k keeps the latency around
+# 10–15 s and still searches ~30 pictos worth of combos, more than
+# enough to surface every meta loadout.
+MAX_COMBOS_SAFETY: int = 100_000
 PICTOS_PER_BUILD: int = 3
+
+# Characters that share a weapon pool. The lore reason: Gustave's
+# weapons pass to Verso (and vice versa) — both use single-hand
+# swords. Anything outside this map plays solo.
+_COMPATIBLE_CHARACTER_POOLS: dict[str, set[str]] = {
+    "gustave": {"gustave", "verso"},
+    "verso": {"gustave", "verso"},
+}
 
 
 @dataclass(slots=True)
@@ -49,10 +60,13 @@ def build_context(inventory: Inventory, index: VaultIndex) -> EnumerationContext
 
     weapons = _resolve_many(inventory.weapons_available, index.weapons, "weapon")
     # Only weapons compatible with the active character survive the enumeration.
+    # Gustave (= Frey internally, Noah in some data tables) and Verso share a
+    # single-hand-sword pool — anything tagged for one is usable by the other.
     target_char = character.slug.lower()
+    pool = _COMPATIBLE_CHARACTER_POOLS.get(target_char, {target_char})
     weapons = [
         w for w in weapons
-        if (w.character or "").lower() in {"", target_char}
+        if not w.character or w.character.lower() in pool
     ]
 
     pictos = _resolve_many(inventory.pictos_available, index.pictos, "picto")
@@ -70,6 +84,14 @@ def build_context(inventory: Inventory, index: VaultIndex) -> EnumerationContext
         attributes=inventory.attributes,
         pp_budget=inventory.pp_budget,
     )
+
+
+def expected_total_combos(ctx: EnumerationContext) -> int:
+    """Exact build count the engine will iterate. Used so the streaming
+    progress endpoint can compute a real percentage instead of guessing."""
+    if not ctx.weapons or len(ctx.pictos) < PICTOS_PER_BUILD:
+        return 0
+    return len(ctx.weapons) * math.comb(len(ctx.pictos), PICTOS_PER_BUILD)
 
 
 def enumerate_builds(ctx: EnumerationContext) -> Iterator[Build]:

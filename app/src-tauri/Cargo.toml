@@ -1,6 +1,6 @@
 [package]
 name = "lumina-forge"
-version = "0.8.4"
+version = "0.9.0"
 description = "lumina-forge desktop shell"
 authors = ["Léon Fievet"]
 edition = "2021"

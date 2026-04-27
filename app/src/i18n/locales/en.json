@@ -2,6 +2,7 @@
   "nav": {
     "inventory": "Inventory",
     "optimize": "Optimize",
+    "team": "Team",
     "vault": "Vault",
     "settings": "Settings"
   },
@@ -29,7 +30,27 @@
     "import_pick_pictos": "{{n}} picto",
     "import_pick_passives": "{{n}} passive",
     "import_pick_skills": "{{n}} skill",
-    "import_pick_unequipped": "no equipment"
+    "import_pick_unequipped": "no equipment",
+    "import_pick_hint": "Click a character to load them solo, or check 2-3 to compose a team.",
+    "import_run_team": "Optimize team ({{count}})",
+    "import_toggle_select": "Add {{name}} to the team"
+  },
+  "team": {
+    "title": "Team",
+    "back": "Back to inventory",
+    "summary": "{{members}} members, {{pictos}} unique pictos, {{weapons}} total weapons.",
+    "run": "Optimize",
+    "run_hint": "Click Optimize to explore valid compositions (disjoint pictos).",
+    "empty_hint": "No team selected. Import a save and check 2-3 characters.",
+    "go_to_import": "Go to import",
+    "composition_title": "Composition",
+    "total_score": "Team score",
+    "member": {
+      "level": "lvl {{lvl}}",
+      "pp": "{{pp}} PP",
+      "weapons": "{{n}} weapon",
+      "pictos": "{{n}} picto"
+    }
   },
   "inventory": {
     "character_attributes": "Character & attributes",
@@ -77,6 +98,15 @@
     "top": "Top {{count}}",
     "run": "Run",
     "loading": "Enumerating combinations…",
+    "elapsed": "{{seconds}} s elapsed",
+    "estimated": "~{{seconds}} s estimated",
+    "weapons_word": "weapons",
+    "phase": {
+      "loading": "loading vault",
+      "scoring": "scoring builds",
+      "ranking": "ranking & deduping",
+      "done": "done"
+    },
     "empty": "No build could be assembled. Check that you have at least one compatible weapon and 3 pictos.",
     "hint": "Click **Run** to rank builds from your inventory."
   },
@@ -87,6 +117,10 @@
     "raw_dps": "raw",
     "capped": "capped",
     "also_works": "Also works with",
+    "deck_variants_title": "Deck variants",
+    "deck_variants_hint": "Same 2 core pictos, 1 swap — the diversity filter parks them here instead of spamming the top.",
+    "deck_variants_swap": "Picto swap",
+    "deck_variants_same": "(same loadout, only weapon differs)",
     "loadout": "Loadout",
     "rotation": "Rotation",
     "why": "Why this build",
@@ -94,6 +128,7 @@
     "weapon": "Weapon",
     "pictos": "Pictos",
     "luminas": "Luminas",
+    "luminas_with_pp": "Luminas ({{used}}/{{budget}} PP)",
     "skills": "Skills",
     "synergies": "Synergies",
     "archetype": {

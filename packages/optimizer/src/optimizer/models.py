@@ -166,6 +166,9 @@ class Inventory(BaseModel):
     luminas_extra: list[str] = Field(default_factory=list)
     pp_budget: int = 0
     skills_known: list[str] = Field(default_factory=list)
+    # Per-weapon current level (1–33). Populated by the save importer;
+    # missing entries fall back to ``DEFAULT_WEAPON_LEVEL`` in the engine.
+    weapon_levels: dict[str, int] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def _mastered_subset_of_available(self) -> Self:
@@ -239,6 +242,26 @@ class WeaponAlternative(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     weapon: str
+    est_dps: float
+    raw_dps: float
+
+
+class DeckVariant(BaseModel):
+    """A near-duplicate build skipped from the top-K listing.
+
+    The diversity filter drops a candidate from the listing when it
+    shares ≥2 pictos with a higher-scoring build already selected. The
+    skipped candidate becomes a *variant* of its parent so the user can
+    still inspect the alternate loadout from the build detail page —
+    instead of seeing five copies of the same deck with one picto
+    swapped out for a stat-stick that contributes nothing.
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    weapon: str
+    pictos: list[str] = Field(default_factory=list)
+    luminas: list[str] = Field(default_factory=list)
     est_dps: float
     raw_dps: float
 
@@ -321,6 +344,10 @@ class RankedBuild(BaseModel):
     # descending. ``build.weapon`` is the primary pick; this list holds
     # the runners-up so the UI can show "also works with…".
     weapon_alternatives: list[WeaponAlternative] = Field(default_factory=list)
+    # Other strong builds that overlap with this one on at least two
+    # pictos. The diversity filter promotes one variant per cluster to
+    # the top-K listing and tucks the rest here so they're a click away.
+    deck_variants: list[DeckVariant] = Field(default_factory=list)
     # Set when this candidate matches a curated archetype from ``vault/Builds``.
     archetype: ArchetypeMatch | None = None
     # Turn-by-turn simulator trace. Left optional because some callers

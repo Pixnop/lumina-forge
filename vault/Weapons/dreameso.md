@@ -1,6 +1,6 @@
 ---
 base_damage: 3067
-character: Gustave
+character: Verso
 image_path: _assets/Weapons/dreameso.png
 image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/dreameso-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Dreameso

@@ -19,7 +19,8 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from optimizer.models import Build, DamageEstimate, FormulaItem
-from optimizer.rotation_sim import total_hits_per_rotation
+from optimizer.rotation_sim import RotationTrace
+from optimizer.rotation_sim import simulate as simulate_rotation
 
 # Placeholder-formula defaults. Mirrored in vault/Formulas/damage-formula.md
 # so the two models produce identical numbers out of the box.
@@ -36,7 +37,9 @@ DEFAULT_PICTO_BOOST: float = 0.05  # fallback when effect_structured has nothing
 class DamageModel(Protocol):
     """Contract for anything that turns a :class:`Build` into a DPS estimate."""
 
-    def estimate(self, build: Build) -> DamageEstimate: ...
+    def estimate(
+        self, build: Build, trace: RotationTrace | None = None
+    ) -> DamageEstimate: ...
 
     def rotation_ceiling(self) -> float:
         """Hard clamp on full-rotation damage. Applied by the engine after
@@ -58,8 +61,14 @@ class DefaultDamageModel:
     damage_cap_per_hit: int = DAMAGE_CAP_PER_HIT
     hits_per_rotation: int = HITS_PER_ROTATION
 
-    def estimate(self, build: Build) -> DamageEstimate:
-        total_hits = total_hits_per_rotation(build, self.rotation_turns)
+    def estimate(self, build: Build, trace: RotationTrace | None = None) -> DamageEstimate:
+        # Reuse the caller's rotation trace if supplied — the engine's hot
+        # loop computes one anyway to attach to RankedBuild, so passing it
+        # back avoids running the simulator twice per scored build (~9 s
+        # saved on a 100k-combo run).
+        if trace is None:
+            trace = simulate_rotation(build, self.rotation_turns)
+        total_hits = max(trace.total_hits, 1)
         base = float(build.weapon.base_damage or 0) * total_hits
         scaling_value = _scaling_attribute_value(build)
         might_mult = 1.0 + scaling_value * self.might_per_point
@@ -111,8 +120,8 @@ class VaultFormulaModel:
 
     inner: DefaultDamageModel
 
-    def estimate(self, build: Build) -> DamageEstimate:
-        return self.inner.estimate(build)
+    def estimate(self, build: Build, trace: RotationTrace | None = None) -> DamageEstimate:
+        return self.inner.estimate(build, trace)
 
     def rotation_ceiling(self) -> float:
         return self.inner.rotation_ceiling()
@@ -273,12 +282,41 @@ def _ap_from_effect(effect_structured: dict[str, object], rotation_turns: int) -
     return bonus * freq_per_turn * rotation_turns
 
 
+# Cache keyed by content — within a single ``optimize`` call the same
+# picto/lumina objects show up across millions of build combinations, but
+# their effect_structured + effect_text content is identical every time.
+# ~840k calls → ~30 unique (effect_structured, text) pairs, cache hit
+# rate ~99.99%.
+#
+# We hash the content rather than ``id(effect_structured)`` because dicts
+# are mutable and short-lived in tests — Python recycles ids between
+# objects fast enough that two unrelated pictos can collide on the same
+# cache entry within a single test. Content-keyed caching survives that.
+_CONTRIB_CACHE: dict[tuple[tuple[tuple[str, object], ...], str], float] = {}
+
+
+def clear_caches() -> None:
+    """Reset memoised state. Called by the engine at the top of every
+    ``optimize`` and from the test conftest, so a refreshed vault or a new
+    test never reads stale cache entries."""
+    _CONTRIB_CACHE.clear()
+
+
 def _picto_contribution(effect_structured: dict[str, object], effect_text: str) -> float:
     """Heuristic: if ``effect_structured`` has known DPS keys, use them —
     scaled by ``trigger_uptime`` when the effect is conditional.
     Otherwise nudge the multiplier up slightly on offensive-sounding text.
     Clamp to a reasonable range to prevent runaway stacks.
     """
+    try:
+        cache_key = (tuple(sorted(effect_structured.items())), effect_text)
+    except TypeError:
+        cache_key = None  # unhashable values — skip caching for this call
+    if cache_key is not None:
+        cached = _CONTRIB_CACHE.get(cache_key)
+        if cached is not None:
+            return cached
+
     damage_sum = 0.0
     other_sum = 0.0
     for key, value in effect_structured.items():
@@ -294,6 +332,10 @@ def _picto_contribution(effect_structured: dict[str, object], effect_text: str) 
     numeric_sum = damage_sum * uptime + other_sum
 
     if numeric_sum > 0:
-        return min(numeric_sum, 1.0)
-    low = (effect_text or "").lower()
-    return DEFAULT_PICTO_BOOST if any(word in low for word in _KEYWORDS_DPS) else 0.0
+        result = min(numeric_sum, 1.0)
+    else:
+        low = (effect_text or "").lower()
+        result = DEFAULT_PICTO_BOOST if any(word in low for word in _KEYWORDS_DPS) else 0.0
+    if cache_key is not None:
+        _CONTRIB_CACHE[cache_key] = result
+    return result

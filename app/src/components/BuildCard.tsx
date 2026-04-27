@@ -27,6 +27,11 @@ export function BuildCard({ rank, build, active, onClick }: Props) {
             </Badge>
             <Sword className="h-4 w-4 text-muted-foreground" />
             {build.loadout.weapon}
+            {build.loadout.weapon_level != null && (
+              <Badge variant="secondary" className="text-[0.65rem]">
+                lvl {build.loadout.weapon_level}
+              </Badge>
+            )}
           </CardTitle>
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </div>

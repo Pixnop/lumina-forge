@@ -13,6 +13,15 @@ from typing import Any
 
 import pytest
 import yaml
+from optimizer.formulas import clear_caches as _clear_formula_caches
+
+
+@pytest.fixture(autouse=True)
+def _reset_formula_caches() -> None:
+    """Wipe the _picto_contribution cache between tests — it's content-keyed,
+    so it's safe across runs, but a fresh slate keeps perf assertions and
+    timing-sensitive tests honest."""
+    _clear_formula_caches()
 
 
 def _write(

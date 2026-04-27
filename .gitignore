@@ -71,3 +71,4 @@ vault/.trash/
 # --- Logs ---
 *.log
 logs/
+app/src/lib/save/__fixtures__/

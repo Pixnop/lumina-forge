@@ -10,6 +10,8 @@ import { BuildDetailPage } from "@/pages/BuildDetailPage";
 import { HomePage } from "@/pages/HomePage";
 import { OptimizePage } from "@/pages/OptimizePage";
 import { SettingsPage } from "@/pages/SettingsPage";
+import { TeamBuildDetailPage } from "@/pages/TeamBuildDetailPage";
+import { TeamOptimizePage } from "@/pages/TeamOptimizePage";
 import { VaultPage } from "@/pages/VaultPage";
 
 const rootRoute = createRootRoute({
@@ -30,6 +32,18 @@ const optimizeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/optimize",
   component: OptimizePage,
+});
+
+const teamRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/team",
+  component: TeamOptimizePage,
+});
+
+const teamBuildDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/team/$rank/$slot",
+  component: TeamBuildDetailPage,
 });
 
 const buildDetailRoute = createRoute({
@@ -53,6 +67,8 @@ const vaultRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   homeRoute,
   optimizeRoute,
+  teamRoute,
+  teamBuildDetailRoute,
   buildDetailRoute,
   settingsRoute,
   vaultRoute,

@@ -109,9 +109,14 @@ export interface ParsedCharacter {
   level: number;
   attributes: Inventory["attributes"];
   weapon: string | null;
+  weaponLevel: number | null;
   pictoSlots: string[]; // ItemType=NewEnumerator0 in EquippedItemsPerSlot
   passiveEffects: string[]; // EquippedPassiveEffects array
   unlockedSkills: string[]; // UnlockedSkills array
+  // Total lumina points granted by character-level "Lumina Points"
+  // consumables (Goblu fights, side quests). The base PP budget is
+  // ``level + this`` — see ``characterToInventory``.
+  luminaFromConsumables: number;
 }
 
 export interface ParsedSave {
@@ -124,6 +129,10 @@ export interface ParsedSave {
   // character-bound in-game, so this maps directly to
   // ``inventory.pictos_available``.
   ownedPictos: string[];
+  // Map<weapon save-name, level> read from ``WeaponProgressions_*`` —
+  // each weapon levels independently from 1 to 33 by absorbing combat
+  // hits, unlocking passives at level thresholds.
+  weaponLevels: Record<string, number>;
 }
 
 /**
@@ -133,8 +142,10 @@ export interface ParsedSave {
  */
 export function parseSave(saveJson: unknown): ParsedSave {
   const root = (saveJson as { root?: { properties?: Record<string, unknown> } })?.root;
-  if (!root?.properties) return { characters: [], ownedWeapons: [], ownedPictos: [] };
+  if (!root?.properties)
+    return { characters: [], ownedWeapons: [], ownedPictos: [], weaponLevels: {} };
 
+  const weaponLevels = readWeaponLevels(root.properties);
   const characters: ParsedCharacter[] = [];
   const collection = findKey(root.properties, /^CharactersCollection_\d+$/);
   const entries = ((collection as { Map?: unknown[] })?.Map ?? []) as Array<{
@@ -145,14 +156,19 @@ export function parseSave(saveJson: unknown): ParsedSave {
     const name = readName(entry.key);
     const inner = readStructInner(entry.value);
     if (!name || !inner) continue;
+    const level = readInt(inner, /^CurrentLevel_/) ?? 1;
+    const weaponSaveName = readEquippedWeaponSaveName(inner);
+    const weaponLvl = weaponSaveName ? (weaponLevels[weaponSaveName] ?? null) : null;
     characters.push({
       hardcodedName: name,
-      level: readInt(inner, /^CurrentLevel_/) ?? 1,
+      level,
       attributes: readAttributes(inner),
       weapon: readEquippedWeapon(inner),
+      weaponLevel: weaponLvl,
       pictoSlots: readEquippedPictos(inner),
       passiveEffects: readEquippedPassives(inner),
       unlockedSkills: readUnlockedSkills(inner),
+      luminaFromConsumables: readInt(inner, /^LuminaFromConsumables_/) ?? 0,
     });
   }
 
@@ -160,7 +176,40 @@ export function parseSave(saveJson: unknown): ParsedSave {
     characters,
     ownedWeapons: readOwnedItemNames(root.properties).filter((n) => WEAPONS[n] !== undefined),
     ownedPictos: readOwnedItemNames(root.properties).filter((n) => PICTOS[n] !== undefined),
+    weaponLevels,
   };
+}
+
+function readWeaponLevels(
+  properties: Record<string, unknown>,
+): Record<string, number> {
+  // WeaponProgressions_<idx>_<hash>_0 → Array of S_WeaponInstanceHandle
+  // structs, each with DefinitionID (the save's hardcoded weapon name)
+  // and CurrentLevel. Per save fixture, 50+ entries are present even
+  // before the player engages many weapons in combat — the game seeds
+  // the array with every weapon that's been picked up.
+  const node = findKey(properties, /^WeaponProgressions_/) as
+    | { Array?: { Struct?: { value?: Array<{ Struct?: Record<string, unknown> }> } } }
+    | undefined;
+  const entries = node?.Array?.Struct?.value ?? [];
+  const out: Record<string, number> = {};
+  for (const entry of entries) {
+    const inner = entry?.Struct;
+    if (!inner) continue;
+    let saveName: string | null = null;
+    let level: number | null = null;
+    for (const [key, value] of Object.entries(inner)) {
+      if (key.startsWith("DefinitionID_")) {
+        const n = (value as { Name?: string })?.Name;
+        if (typeof n === "string") saveName = n;
+      } else if (key.startsWith("CurrentLevel_")) {
+        const n = (value as { Int?: number })?.Int;
+        if (typeof n === "number") level = n;
+      }
+    }
+    if (saveName && level !== null) out[saveName] = level;
+  }
+  return out;
 }
 
 function readOwnedItemNames(properties: Record<string, unknown>): string[] {
@@ -182,6 +231,14 @@ function readOwnedItemNames(properties: Record<string, unknown>): string[] {
 // land in one place.
 const CHARACTER_NAME_OVERRIDES: Record<string, string> = {
   frey: "gustave",
+};
+
+// Gustave and Verso share a weapon pool in-game (single-hand swords).
+// Picking either as the draft character should pull weapons tagged for
+// both. Other characters fall back to their own pool only.
+const SHARED_POOLS: Record<string, Set<string>> = {
+  Gustave: new Set(["Gustave", "Verso", "Noah"]),
+  Verso: new Set(["Gustave", "Verso", "Noah"]),
 };
 
 function characterSlug(hardcodedName: string): string {
@@ -211,20 +268,37 @@ export function characterToInventory(
   // All weapons the inventory says the player owns, filtered to the
   // chosen character. The save's hardcodedName is the player-facing
   // character ("Frey" → Gustave), but DT_jRPG_Items_Composite uses the
-  // dev's internal name ("Noah" → Gustave). Match by the entry's
-  // .character against either alias.
+  // dev's internal name ("Noah" → Gustave).
+  //
+  // Gustave and Verso *share* a weapon pool in-game, so a Verso draft
+  // also accepts Gustave-tagged weapons (the save itself proves this:
+  // Verso shows up with Chevalam equipped on EXP0).
   const charPlayer = char.hardcodedName === "Frey" ? "Gustave" : char.hardcodedName;
   const charInternal = char.hardcodedName === "Frey" ? "Noah" : char.hardcodedName;
+  const compatible = SHARED_POOLS[charPlayer] ?? new Set([charPlayer, charInternal]);
   const weaponSlugs = new Set<string>();
   if (char.weapon) weaponSlugs.add(char.weapon);
   for (const name of saved.ownedWeapons) {
     const entry = WEAPONS[name];
     if (!entry) continue;
-    if (entry.character === charPlayer || entry.character === charInternal) {
+    if (compatible.has(entry.character)) {
       weaponSlugs.add(slugify(entry.display));
     }
   }
   inv.weapons_available = Array.from(weaponSlugs).sort();
+
+  // Carry the per-weapon level over so the optimizer (and the UI) knows
+  // the player isn't running everything at lvl 1 — keyed by slug to
+  // match the rest of the inventory, with the save's internal name
+  // resolved through DT_jRPG_Items_Composite.
+  const weaponLevelsBySlug: Record<string, number> = {};
+  for (const [saveName, level] of Object.entries(saved.weaponLevels)) {
+    const entry = WEAPONS[saveName];
+    if (!entry) continue;
+    if (!compatible.has(entry.character)) continue;
+    weaponLevelsBySlug[slugify(entry.display)] = level;
+  }
+  inv.weapon_levels = weaponLevelsBySlug;
 
   // Pictos: union of (every picto in inventory) + (passive effects
   // recorded on the character) + (the three equipped slot pictos).
@@ -243,6 +317,11 @@ export function characterToInventory(
     (s) => !char.pictoSlots.includes(s),
   );
   inv.skills_known = char.unlockedSkills;
+  // PP budget: each character gets a base scaling with level (~1 per
+  // level past 1) plus the Lumina Points they've claimed from
+  // consumables. Late-game saves land near 100 PP, which roughly
+  // matches what the in-game UI shows on the Lumina screen.
+  inv.pp_budget = Math.max(0, char.level + char.luminaFromConsumables);
   return inv;
 }
 
@@ -337,6 +416,12 @@ function readEquippedWeapon(record: Record<string, unknown>): string | null {
   // dedicated weapon table so internal aliases (Sirenim_1 → Choralim)
   // resolve correctly.
   return equippedSlotsByType(record, "E_jRPG_ItemType::NewEnumerator0", weaponSlug)[0] ?? null;
+}
+
+function readEquippedWeaponSaveName(record: Record<string, unknown>): string | null {
+  // Same slot lookup but returning the raw save-internal name — needed
+  // to cross-reference WeaponProgressions for the current level.
+  return equippedSlotsByType(record, "E_jRPG_ItemType::NewEnumerator0", (n) => n)[0] ?? null;
 }
 
 function readEquippedPictos(record: Record<string, unknown>): string[] {

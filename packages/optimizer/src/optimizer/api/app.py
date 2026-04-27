@@ -7,23 +7,33 @@ client swap in a newer scrape without restarting the process.
 
 from __future__ import annotations
 
+import asyncio
+import json
 import logging
+import queue
+import threading
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from optimizer import __version__
 from optimizer.api.schemas import (
     BuildLoadout,
+    DeckVariantResponse,
     HealthResponse,
     OptimizeRequest,
     OptimizeResponse,
     RankedBuildResponse,
+    TeamBuildResponse,
+    TeamMemberResponse,
+    TeamOptimizeRequest,
+    TeamOptimizeResponse,
     VaultInfoResponse,
     VaultItem,
     VaultItemsResponse,
@@ -31,6 +41,7 @@ from optimizer.api.schemas import (
 )
 from optimizer.engine import EngineOptions, optimize
 from optimizer.models import RankedBuild
+from optimizer.team import optimize_team
 from optimizer.vault import VaultIndex, VaultLoader
 
 log = logging.getLogger(__name__)
@@ -167,12 +178,205 @@ def _register_routes(app: FastAPI) -> None:
         )
         result = optimize(body.inventory, index, options)
         return OptimizeResponse(
-            builds=[_to_response(rank, r) for rank, r in enumerate(result.builds, start=1)],
+            builds=[
+                _to_response(
+                    rank,
+                    r,
+                    pp_budget=body.inventory.pp_budget,
+                    weapon_levels=body.inventory.weapon_levels,
+                )
+                for rank, r in enumerate(result.builds, start=1)
+            ],
             aspirational=list(result.aspirational),
+        )
+
+    @app.post("/optimize/team", response_model=TeamOptimizeResponse)
+    def optimize_team_endpoint(
+        body: TeamOptimizeRequest, index: IndexDep
+    ) -> TeamOptimizeResponse:
+        _validate_team_inventories(body, index)
+        options = EngineOptions(
+            top_k=body.top, mode=body.mode, weight_utility=body.weight_utility
+        )
+        result = optimize_team(body.inventories, index, options)
+        return TeamOptimizeResponse(
+            teams=[_team_to_response(t, body.inventories) for t in result.teams]
+        )
+
+    @app.post("/optimize/team/stream")
+    async def optimize_team_stream(
+        body: TeamOptimizeRequest, index: IndexDep
+    ) -> StreamingResponse:
+        """Streaming counterpart of ``/optimize/team`` — same NDJSON
+        envelope (progress / result / error) as ``/optimize/stream``."""
+        _validate_team_inventories(body, index)
+        options = EngineOptions(
+            top_k=body.top, mode=body.mode, weight_utility=body.weight_utility
+        )
+        return StreamingResponse(
+            _team_event_stream(body, index, options),
+            media_type="application/x-ndjson",
+        )
+
+    @app.post("/optimize/stream")
+    async def optimize_stream(body: OptimizeRequest, index: IndexDep) -> StreamingResponse:
+        """Same payload as ``POST /optimize``, but the response is a stream
+        of NDJSON events. The client gets ``{"event": "progress", ...}``
+        ticks while the engine scores candidates, then a final
+        ``{"event": "result", ...}`` carrying the full ``OptimizeResponse``.
+
+        Errors arrive as ``{"event": "error", "detail": ...}`` and are
+        always followed by stream close — the client should surface them
+        the same way it surfaces a failed POST.
+        """
+        if body.inventory.character not in index.characters:
+            raise HTTPException(
+                status_code=404,
+                detail=(
+                    f"character {body.inventory.character!r} not found in vault "
+                    f"(known: {sorted(index.characters)})"
+                ),
+            )
+        options = EngineOptions(
+            top_k=body.top,
+            mode=body.mode,
+            weight_utility=body.weight_utility,
+        )
+        return StreamingResponse(
+            _optimize_event_stream(body, index, options),
+            media_type="application/x-ndjson",
         )
 
 
 # --- helpers ----------------------------------------------------------------
+
+
+_STREAM_SENTINEL = object()
+
+
+def _validate_team_inventories(
+    body: TeamOptimizeRequest, index: VaultIndex
+) -> None:
+    """Reject parties with unknown characters or duplicates — the engine
+    happily de-duplicates inventories internally, but a human asking
+    for "Lune + Lune" almost certainly meant something else."""
+    seen: set[str] = set()
+    for i, inv in enumerate(body.inventories):
+        if inv.character not in index.characters:
+            raise HTTPException(
+                status_code=404,
+                detail=(
+                    f"member {i}: character {inv.character!r} not found in vault "
+                    f"(known: {sorted(index.characters)})"
+                ),
+            )
+        if inv.character in seen:
+            raise HTTPException(
+                status_code=400,
+                detail=f"member {i}: character {inv.character!r} appears twice in the party",
+            )
+        seen.add(inv.character)
+
+
+def _team_to_response(team: Any, inventories: list[Any]) -> TeamBuildResponse:
+    return TeamBuildResponse(
+        members=[
+            TeamMemberResponse(
+                inventory_index=m.inventory_index,
+                build=_to_response(
+                    idx + 1,
+                    m.build,
+                    pp_budget=inventories[m.inventory_index].pp_budget,
+                    weapon_levels=inventories[m.inventory_index].weapon_levels,
+                ),
+            )
+            for idx, m in enumerate(team.members)
+        ],
+        total_score=team.total_score,
+    )
+
+
+async def _team_event_stream(
+    body: TeamOptimizeRequest,
+    index: VaultIndex,
+    options: EngineOptions,
+) -> AsyncIterator[bytes]:
+    events: queue.Queue[Any] = queue.Queue()
+
+    def on_progress(phase: str, pct: float) -> None:
+        events.put({"event": "progress", "phase": phase, "pct": pct})
+
+    def runner() -> None:
+        try:
+            result = optimize_team(
+                body.inventories, index, options, on_progress=on_progress
+            )
+            response = TeamOptimizeResponse(
+                teams=[_team_to_response(t, body.inventories) for t in result.teams]
+            )
+            events.put({"event": "result", "data": response.model_dump(mode="json")})
+        except Exception as exc:  # pragma: no cover — defensive surface
+            log.exception("team optimize stream failed")
+            events.put({"event": "error", "detail": str(exc)})
+        finally:
+            events.put(_STREAM_SENTINEL)
+
+    threading.Thread(target=runner, daemon=True).start()
+
+    loop = asyncio.get_running_loop()
+    while True:
+        item = await loop.run_in_executor(None, events.get)
+        if item is _STREAM_SENTINEL:
+            return
+        yield (json.dumps(item) + "\n").encode("utf-8")
+
+
+async def _optimize_event_stream(
+    body: OptimizeRequest,
+    index: VaultIndex,
+    options: EngineOptions,
+) -> AsyncIterator[bytes]:
+    """Run ``optimize`` on a worker thread and forward progress + result
+    events back through the response. We run the work on a thread (rather
+    than awaiting an async optimize) because the engine is CPU-bound — an
+    async loop would just block. The thread feeds a ``queue.Queue`` and
+    this coroutine drains it via ``run_in_executor``."""
+    events: queue.Queue[Any] = queue.Queue()
+
+    def on_progress(phase: str, pct: float) -> None:
+        events.put({"event": "progress", "phase": phase, "pct": pct})
+
+    def runner() -> None:
+        try:
+            result = optimize(body.inventory, index, options, on_progress=on_progress)
+            response = OptimizeResponse(
+                builds=[
+                    _to_response(
+                        rank,
+                        b,
+                        pp_budget=body.inventory.pp_budget,
+                        weapon_levels=body.inventory.weapon_levels,
+                    )
+                    for rank, b in enumerate(result.builds, start=1)
+                ],
+                aspirational=list(result.aspirational),
+            )
+            events.put({"event": "result", "data": response.model_dump(mode="json")})
+        except Exception as exc:  # pragma: no cover — defensive surface
+            log.exception("optimize stream failed")
+            events.put({"event": "error", "detail": str(exc)})
+        finally:
+            events.put(_STREAM_SENTINEL)
+
+    thread = threading.Thread(target=runner, daemon=True)
+    thread.start()
+
+    loop = asyncio.get_running_loop()
+    while True:
+        item = await loop.run_in_executor(None, events.get)
+        if item is _STREAM_SENTINEL:
+            return
+        yield (json.dumps(item) + "\n").encode("utf-8")
 
 
 _KNOWN_TYPES: frozenset[str] = frozenset({"character", "picto", "weapon", "lumina", "skill"})
@@ -262,16 +466,27 @@ def _project_items(index: VaultIndex, type: str, character: str | None) -> list[
     return entries
 
 
-def _to_response(rank: int, r: RankedBuild) -> RankedBuildResponse:
+def _to_response(
+    rank: int,
+    r: RankedBuild,
+    *,
+    pp_budget: int = 0,
+    weapon_levels: dict[str, int] | None = None,
+) -> RankedBuildResponse:
+    pp_used = sum(int(lu.pp_cost or 0) for lu in r.build.luminas)
+    weapon_level = (weapon_levels or {}).get(r.build.weapon.slug)
     return RankedBuildResponse(
         rank=rank,
         total_score=r.total_score,
         loadout=BuildLoadout(
             character=r.build.character.slug,
             weapon=r.build.weapon.slug,
+            weapon_level=weapon_level,
             pictos=[p.slug for p in r.build.pictos],
             luminas=[lu.slug for lu in r.build.luminas],
             skills_used=[s.slug for s in r.build.skills_used],
+            pp_used=pp_used,
+            pp_budget=pp_budget,
         ),
         damage=r.damage,
         utility=r.utility,
@@ -283,6 +498,16 @@ def _to_response(rank: int, r: RankedBuild) -> RankedBuildResponse:
                 weapon=a.weapon, est_dps=a.est_dps, raw_dps=a.raw_dps
             )
             for a in r.weapon_alternatives
+        ],
+        deck_variants=[
+            DeckVariantResponse(
+                weapon=v.weapon,
+                pictos=v.pictos,
+                luminas=v.luminas,
+                est_dps=v.est_dps,
+                raw_dps=v.raw_dps,
+            )
+            for v in r.deck_variants
         ],
         archetype=r.archetype,
         rotation_trace=r.rotation_trace,

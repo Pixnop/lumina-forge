@@ -27,8 +27,15 @@ export function BuildDetail({ build }: Props) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <div>
-            <CardTitle className="text-2xl">
-              {t("build.rank", { rank: build.rank })} — {build.loadout.weapon}
+            <CardTitle className="flex items-center gap-2 text-2xl">
+              <span>
+                {t("build.rank", { rank: build.rank })} — {build.loadout.weapon}
+              </span>
+              {build.loadout.weapon_level != null && (
+                <Badge variant="secondary" className="text-xs">
+                  lvl {build.loadout.weapon_level}
+                </Badge>
+              )}
             </CardTitle>
             <div className="text-sm text-muted-foreground">
               {build.loadout.character}
@@ -117,6 +124,65 @@ export function BuildDetail({ build }: Props) {
         </Card>
       )}
 
+      {build.deck_variants && build.deck_variants.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("build.deck_variants_title")}</CardTitle>
+            <p className="text-xs text-muted-foreground">
+              {t("build.deck_variants_hint")}
+            </p>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-3 text-sm">
+              {build.deck_variants.map((variant, idx) => {
+                const swapped = variant.pictos.filter(
+                  (p) => !build.loadout.pictos.includes(p),
+                );
+                return (
+                  <li
+                    key={`${variant.weapon}-${variant.pictos.join(",")}`}
+                    className="rounded-md border border-border bg-secondary/40 p-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-2">
+                        <Badge variant="outline" className="tabular-nums">
+                          v{idx + 1}
+                        </Badge>
+                        <span className="font-medium">{variant.weapon}</span>
+                      </span>
+                      <span className="text-muted-foreground tabular-nums">
+                        est. {variant.est_dps.toFixed(0)}
+                        {variant.raw_dps > variant.est_dps + 1 && (
+                          <span className="ml-2 text-xs">
+                            (capped, raw {variant.raw_dps.toFixed(0)})
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="mt-2 flex flex-wrap items-center gap-1 text-xs">
+                      <span className="text-muted-foreground">
+                        {t("build.deck_variants_swap")}:
+                      </span>
+                      {swapped.length === 0 ? (
+                        <span className="text-muted-foreground">
+                          {t("build.deck_variants_same")}
+                        </span>
+                      ) : (
+                        swapped.map((slug) => (
+                          <Badge key={slug} variant="secondary">
+                            {slug}
+                          </Badge>
+                        ))
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle>{t("build.loadout")}</CardTitle>
@@ -124,7 +190,17 @@ export function BuildDetail({ build }: Props) {
         <CardContent className="space-y-3">
           <Row label={t("build.weapon")} items={[build.loadout.weapon]} />
           <Row label={t("build.pictos")} items={build.loadout.pictos} />
-          <Row label={t("build.luminas")} items={build.loadout.luminas} />
+          <Row
+            label={
+              build.loadout.pp_budget && build.loadout.pp_budget > 0
+                ? t("build.luminas_with_pp", {
+                    used: build.loadout.pp_used ?? 0,
+                    budget: build.loadout.pp_budget,
+                  })
+                : t("build.luminas")
+            }
+            items={build.loadout.luminas}
+          />
           <Row label={t("build.skills")} items={build.loadout.skills_used} />
           {build.synergies_matched.length > 0 && (
             <Row label={t("build.synergies")} items={build.synergies_matched} variant="success" />

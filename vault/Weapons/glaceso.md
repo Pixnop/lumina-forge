@@ -1,6 +1,6 @@
 ---
 base_damage: 2873
-character: Gustave
+character: Verso
 image_path: _assets/Weapons/glaceso.png
 image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/glaceso-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Glaceso

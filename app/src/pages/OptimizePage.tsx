@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useOptimize } from "@/api/hooks";
 import { AspirationalList } from "@/components/AspirationalList";
 import { BuildCard } from "@/components/BuildCard";
+import { OptimizeProgress } from "@/components/OptimizeProgress";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -36,7 +37,7 @@ export function OptimizePage() {
   function run() {
     mutation.mutate(
       { inventory: draft, mode, top },
-      { onSuccess: (data) => setResults(data) },
+      { onSuccess: (data: typeof mutation.data) => data && setResults(data) },
     );
   }
 
@@ -104,10 +105,12 @@ export function OptimizePage() {
       )}
 
       {mutation.isPending && (
-        <div className="flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border py-12 text-sm text-muted-foreground">
-          <Loader2 className="h-6 w-6 animate-spin" />
-          {t("optimize.loading")}
-        </div>
+        <OptimizeProgress
+          pictosCount={draft.pictos_available.length}
+          weaponsCount={draft.weapons_available.length}
+          phase={mutation.progress.phase}
+          pct={mutation.progress.pct}
+        />
       )}
 
       {mutation.data && mutation.data.builds.length === 0 && (

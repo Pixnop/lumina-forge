@@ -1,6 +1,6 @@
 ---
 base_damage: 3713
-character: Gustave
+character: Verso
 image_path: _assets/Weapons/tireso.png
 image_url: https://expedition33.wiki.fextralife.com/file/Expedition-33/tireso-verso-gustave-weapon-expedition-33-wiki-guide-130px.png
 name: Tireso
